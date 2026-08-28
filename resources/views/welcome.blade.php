@@ -9,7 +9,7 @@
     <meta property="og:description" content="Jelajahi keindahan alam Bali yang menakjubkan bersama Dewasufa.">
     <meta property="og:type" content="website">
 
-    <title>Dewasufa - Keindahan Alam Bali</title>
+    <title>Dewasufa</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
