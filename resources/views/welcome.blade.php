@@ -7,7 +7,7 @@
     <meta property="og:title" content="Dewasufa">
     <meta property="og:description" content="Website personal yang dibangun dengan Laravel.">
 
-    <title>Dewasufa — Digital Creative</title>
+    <title>Dewaprabs — Digital Creative</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -18,7 +18,7 @@
     <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <a href="#home" class="nav-logo" aria-label="Dewasufa Home">
             <div class="nav-logo-icon">D</div>
-            <span class="nav-logo-text">Dewasufa</span>
+            <span class="nav-logo-text">Dewaprabs</span>
         </a>
 
         <div class="nav-links" id="nav-links">
