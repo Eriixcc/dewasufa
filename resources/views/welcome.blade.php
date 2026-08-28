@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Dewasufa — Website personal yang dibangun dengan Laravel. Eksplorasi, kreasi, dan inovasi digital.">
+    <meta name="description" content="Dewasufa Menampilkan Keindahan Alam Yang Ada Di Bali">
     <meta property="og:title" content="Dewasufa">
-    <meta property="og:description" content="Website personal yang dibangun dengan Laravel.">
+    <meta property="og:description" content="Website yang menampilkan keindahan alam yang ada diBali">
 
-    <title>Dewaprabs — Digital Creative</title>
+    <title>Dewasufa</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
