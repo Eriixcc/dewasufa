@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dewasufa - Jelajahi keindahan alam Bali yang memukau. Temukan air terjun tersembunyi, pantai sunset yang dramatis, sunrise di tepi laut, dan puncak gunung berapi yang megah.">
     <meta name="keywords" content="Bali, wisata alam Bali, air terjun Bali, pantai Bali, gunung Bali, dewasufa">
-    <meta property="og:title" content="Dewasufa - Keindahan Alam Bali">
+    <meta property="og:title" content="Dewasufa">
     <meta property="og:description" content="Jelajahi keindahan alam Bali yang menakjubkan bersama Dewasufa.">
     <meta property="og:type" content="website">
 
@@ -75,7 +75,7 @@
         </div>
 
         <div class="hero-scroll" aria-hidden="true">
-            <span>Gulir</span>
+            <span></span>
             <div class="scroll-line"></div>
         </div>
     </section>
@@ -335,7 +335,7 @@
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2026 Dewasufa. Dibuat dengan <span aria-label="cinta">❤️</span> untuk keindahan alam Bali.</p>
+                <p>&copy; 2026 Dewasufa. <span aria-label="cinta"></span> Untuk keindahan alam Bali.</p>
                 <div class="social-links" aria-label="Media sosial">
                     <a href="#" class="social-link" id="social-instagram" aria-label="Instagram Dewasufa" title="Instagram">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
