@@ -29,10 +29,33 @@
     <header class="navbar-wrapper">
         <nav class="navbar" id="navbar" role="navigation" aria-label="Navigasi Utama">
             <!-- Brand Logo -->
+            @php
+                $logoFile = null;
+                $possibleLogos = [
+                    'images/logo.png',
+                    'images/logo.svg',
+                    'images/logo.webp',
+                    'images/logo.jpg',
+                    'images/logo.jpeg',
+                    'logo.png',
+                    'logo.svg',
+                    'logo.webp',
+                ];
+                foreach ($possibleLogos as $file) {
+                    if (file_exists(public_path($file))) {
+                        $logoFile = $file;
+                        break;
+                    }
+                }
+            @endphp
             <a href="#home" class="nav-logo" aria-label="Dewasufa - Beranda">
-                <div class="nav-logo-leaf" aria-hidden="true">
-                    <span>🌿</span>
-                </div>
+                @if($logoFile)
+                    <img src="{{ asset($logoFile) }}" alt="Dewasufa Logo" class="nav-logo-img">
+                @else
+                    <div class="nav-logo-leaf" aria-hidden="true">
+                        <span>🌿</span>
+                    </div>
+                @endif
                 <span class="nav-logo-text">Dewasufa</span>
             </a>
 
@@ -440,9 +463,13 @@
                 <!-- Brand Col -->
                 <div class="footer-brand">
                     <a href="#home" class="nav-logo" aria-label="Dewasufa Beranda">
-                        <div class="nav-logo-leaf" aria-hidden="true">
-                            <span>🌿</span>
-                        </div>
+                        @if($logoFile)
+                            <img src="{{ asset($logoFile) }}" alt="Dewasufa Logo" class="nav-logo-img">
+                        @else
+                            <div class="nav-logo-leaf" aria-hidden="true">
+                                <span>🌿</span>
+                            </div>
+                        @endif
                         <span class="nav-logo-text">Dewasufa</span>
                     </a>
                     <p class="footer-about">

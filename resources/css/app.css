@@ -147,8 +147,21 @@ body::before {
     transition: var(--transition-fast);
 }
 
+.nav-logo-img {
+    height: 36px;
+    width: auto;
+    max-width: 140px;
+    object-fit: contain;
+    display: block;
+    transition: var(--transition-fast);
+}
+
 .nav-logo:hover .nav-logo-leaf {
     transform: rotate(-10deg) scale(1.05);
+}
+
+.nav-logo:hover .nav-logo-img {
+    transform: scale(1.05);
 }
 
 .nav-logo-text {
