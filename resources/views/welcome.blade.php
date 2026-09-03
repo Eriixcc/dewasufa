@@ -181,8 +181,8 @@
                 <!-- Left Visual with Floating Badges -->
                 <div class="welcome-visual-wrap">
                     <img
-                        src="/images/eco-villa.jpg"
-                        alt="Villa kayu alami di perbukitan Bali nan asri saat mentari pagi"
+                        src="/images/air terjun sekumpul.png"
+                        alt="air terjun sekumpul di Bali nan asri saat mentari pagi"
                         class="welcome-card-img"
                         loading="lazy"
                     >
