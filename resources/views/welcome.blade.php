@@ -187,23 +187,35 @@
                         loading="lazy"
                     >
 
-                    <!-- Top-Left Circular Green Badge -->
+                    <!-- Top-Left Circular Green Badge (Leaf) -->
                     <div class="badge-circle-top" title="Eksplorasi Alam Asli">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm4 0h-2v-6h2v6zm-2-8a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" fill="currentColor" fill-opacity="0.25"/>
+                            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
                         </svg>
                         <span>Alam Asli</span>
                     </div>
 
-                    <!-- Bottom-Right Circular Warm Sun Badge -->
-                    <div class="badge-circle-bottom" title="Pulau Seribu Pura">
-                        <span>☀️</span>
+                    <!-- Bottom-Right Circular Waterfall Badge -->
+                    <div class="badge-circle-bottom" title="Air Terjun Sekumpul Bali">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <!-- Tebing karang kiri & kanan -->
+                            <path d="M2 4h4a1.5 1.5 0 0 1 1.5 1.5V11a2 2 0 0 1-2 2H2" fill="currentColor" fill-opacity="0.2"/>
+                            <path d="M22 6h-4a1.5 1.5 0 0 0-1.5 1.5V13a2 2 0 0 0 2 2h3.5" fill="currentColor" fill-opacity="0.2"/>
+                            <!-- Aliran air terjun vertikal -->
+                            <path d="M10 3v11"/>
+                            <path d="M12 2v13"/>
+                            <path d="M14 4v10"/>
+                            <!-- Percikan riak air di danau bawah -->
+                            <path d="M3 18.5c2.5 1.2 4.5-1.2 7 0s4.5-1.2 7 0 2.5 1.2 4 0"/>
+                            <path d="M5 21c2 1 4-1 6 0s4-1 6 0"/>
+                        </svg>
                     </div>
                 </div>
 
                 <!-- Right Content -->
                 <div class="welcome-content">
-                    <span class="section-tag-pill" style="align-self: flex-start;">✦ Tentang Dewasufa</span>
+                    <span class="section-tag-pill" style="align-self: flex-start;">Tentang Dewasufa</span>
                     <h2 class="welcome-title">Selamat Datang di Dewasufa Bali</h2>
                     <p class="welcome-desc">
                         Dewasufa mempersembahkan panduan terpercaya untuk menyusuri keasrian Pulau Dewata.
@@ -239,7 +251,7 @@
                             <span>Jelajahi 4 Kategori</span>
                         </a>
                         <a href="#stats" class="btn-welcome-secondary">
-                            <span>Pelajari Selengkapnya →</span>
+                            <span>Pelajari Selengkapnya</span>
                         </a>
                     </div>
                 </div>
@@ -451,7 +463,7 @@
                 "Tri Hita Karana mengajarkan keharmonisan abadi antara manusia, alam semesta, dan sang pencipta.
                 Jelajahi Bali dengan rasa hormat dan lestarikan keasrian alamnya untuk generasi mendatang."
             </blockquote>
-            <p class="quote-author">✦ Filosofi Alam Dewasufa Bali ✦</p>
+            <p class="quote-author">Filosofi Alam Dewasufa Bali</p>
         </div>
     </section>
 

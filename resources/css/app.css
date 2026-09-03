@@ -580,10 +580,9 @@ body::before {
     width: 22px;
     height: 22px;
     margin-bottom: 2px;
-    fill: currentColor;
 }
 
-/* Bottom-Right Circular Badge (Sun/Warm) */
+/* Bottom-Right Circular Badge (Waterfall) */
 .badge-circle-bottom {
     position: absolute;
     bottom: -18px;
@@ -591,16 +590,20 @@ body::before {
     width: 68px;
     height: 68px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #f7a93b 0%, #e06d29 100%);
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
     color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 20px rgba(224, 109, 41, 0.3);
+    box-shadow: 0 8px 20px rgba(2, 132, 199, 0.35);
     border: 3px solid #ffffff;
-    font-size: 24px;
     z-index: 5;
     animation: floatReverse 4.5s ease-in-out infinite alternate;
+}
+
+.badge-circle-bottom svg {
+    width: 32px;
+    height: 32px;
 }
 
 @keyframes floatSlow {
