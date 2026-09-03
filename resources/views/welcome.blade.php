@@ -19,6 +19,12 @@
 
 <body>
 
+    <!-- ===== FIXED SCENIC BACKGROUND (LOW OPACITY & DARK) ===== -->
+    <div class="fixed-scenery-bg" aria-hidden="true">
+        <div class="scenery-img"></div>
+        <div class="scenery-dark-overlay"></div>
+    </div>
+
     <!-- ===== FLOATING PILL NAVBAR ===== -->
     <header class="navbar-wrapper">
         <nav class="navbar" id="navbar" role="navigation" aria-label="Navigasi Utama">
@@ -95,7 +101,7 @@
                     <form class="search-pill-inner" id="search-form" onsubmit="handleSearch(event)">
                         <!-- Input Field -->
                         <div class="search-field">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c9080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ec7a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                 <circle cx="12" cy="10" r="3"></circle>
                             </svg>

@@ -421,7 +421,8 @@ body::before {
 }
 
 .search-field {
-    flex: 1.2;
+    flex: 1.8;
+    min-width: 0;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -446,13 +447,15 @@ body::before {
     width: 1px;
     height: 28px;
     background: var(--border-soft);
+    flex-shrink: 0;
 }
 
 .search-category-select {
-    flex: 1;
+    flex: 0 1 215px;
+    max-width: 220px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .search-category-select select {
@@ -465,13 +468,15 @@ body::before {
     font-weight: 600;
     color: var(--clr-forest);
     cursor: pointer;
+    text-overflow: ellipsis;
 }
 
 .search-icons-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     color: var(--text-muted);
+    flex-shrink: 0;
 }
 
 .search-icons-group svg {
@@ -1537,6 +1542,11 @@ body::before {
     .search-divider {
         width: 100%;
         height: 1px;
+    }
+
+    .search-category-select {
+        width: 100%;
+        max-width: none;
     }
 
     .category-cards-grid {
