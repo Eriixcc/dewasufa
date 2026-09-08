@@ -26,7 +26,7 @@ class ExampleTest extends TestCase
         $response->assertSee('Destinasi Baru Rilis');
         $response->assertSee('Riwayat Terakhir Dilihat');
         $response->assertSee('Daftar sebagai Author');
-        $response->assertSee('Pengaturan (Settings)');
+        $response->assertSee('Pengaturan');
         $response->assertSee('Logout');
         $response->assertDontSee('Log Out (Keluar)');
     }
@@ -74,5 +74,18 @@ class ExampleTest extends TestCase
         $response->assertSee('Mengulas sebagai:');
         $response->assertSee('Akun Aktif');
         $response->assertDontSee('Nama Anda (Opsional)');
+    }
+
+    public function test_admin_dashboard_returns_a_successful_response(): void
+    {
+        $response = $this->get('/admin');
+
+        $response->assertStatus(200);
+        $response->assertSee('Admin Portal');
+        $response->assertSee('Dewasufa');
+        $response->assertSee('Selamat Pagi, Admin Dewasufa!');
+        $response->assertSee('Verifikasi Author');
+        $response->assertSee('Moderasi Ulasan');
+        $response->assertSee('Kelola Destinasi');
     }
 }
