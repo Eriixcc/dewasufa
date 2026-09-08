@@ -67,6 +67,7 @@ body {
     overflow-x: hidden;
     position: relative;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Subtle background noise texture */
@@ -1127,29 +1128,7 @@ body::before {
     transform: translateY(-2px);
 }
 
-/* ========== MODAL: LOGIN POPUP (OPENED FROM TOP-RIGHT BUTTON) ========== */
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(14, 30, 18, 0.65);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* ========== MODAL: LOGIN POPUP (COMPACT & WELL-FITTED) ========== */
+/* ========== MODAL: LOGIN POPUP & DESTINATION MODAL ========== */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -1169,6 +1148,306 @@ body::before {
 .modal-overlay.active {
     opacity: 1;
     visibility: visible;
+}
+
+/* ========== DARK MODE TOGGLE BUTTON ========== */
+.btn-dark-toggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.btn-dark-toggle:hover {
+    background: var(--bg-sage-light);
+    color: var(--clr-forest);
+    border-color: var(--border-hover);
+    transform: scale(1.08) rotate(15deg);
+}
+
+.btn-dark-toggle svg {
+    width: 17px;
+    height: 17px;
+    transition: var(--transition-fast);
+}
+
+/* Sun icon shown in light mode, Moon in dark */
+.icon-sun  { display: block; }
+.icon-moon { display: none; }
+
+html[data-theme="dark"] .icon-sun  { display: none; }
+html[data-theme="dark"] .icon-moon { display: block; }
+
+/* ========== DARK MODE CSS VARIABLES ========== */
+html[data-theme="dark"] {
+    --bg-main:         #0d1a10;
+    --bg-surface:      #122018;
+    --bg-surface-soft: #172d1e;
+    --bg-sage-pill:    #1e3d28;
+    --bg-sage-light:   #1a3022;
+
+    --clr-forest:      #5aad6f;
+    --clr-forest-dark: #4a9a5e;
+    --clr-forest-hover:#6bbf82;
+    --clr-sage-accent: #4e9962;
+    --clr-sage-tag:    #72b882;
+
+    --text-primary:    #e2f0e6;
+    --text-secondary:  #9ec8aa;
+    --text-muted:      #6a9975;
+    --text-light:      #ffffff;
+
+    --border-subtle:   rgba(90, 173, 111, 0.12);
+    --border-soft:     rgba(90, 173, 111, 0.18);
+    --border-hover:    rgba(90, 173, 111, 0.4);
+
+    --shadow-sm:       0 4px 16px rgba(0, 0, 0, 0.25);
+    --shadow-md:       0 10px 30px rgba(0, 0, 0, 0.35);
+    --shadow-lg:       0 20px 45px rgba(0, 0, 0, 0.45);
+    --shadow-glow:     0 8px 24px rgba(90, 173, 111, 0.3);
+}
+
+/* Dark mode: body and background */
+html[data-theme="dark"] body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+}
+
+html[data-theme="dark"] body::before {
+    background-image: radial-gradient(rgba(90, 173, 111, 0.4) 0.75px, transparent 0.75px);
+    opacity: 0.025;
+}
+
+/* Dark mode: navbar */
+html[data-theme="dark"] .navbar {
+    background: rgba(18, 32, 24, 0.92);
+    border-color: var(--border-subtle);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+html[data-theme="dark"] .navbar.scrolled {
+    background: rgba(18, 32, 24, 0.98);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="dark"] .nav-menu {
+    background: transparent;
+}
+
+html[data-theme="dark"] .nav-menu a {
+    color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .nav-menu a:hover,
+html[data-theme="dark"] .nav-menu a.active {
+    color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .nav-logo-text {
+    color: var(--clr-forest);
+}
+
+/* Dark mode: search bar */
+html[data-theme="dark"] .search-pill-outer {
+    background: #1e4d2b;
+    border-color: rgba(90, 173, 111, 0.2);
+}
+
+html[data-theme="dark"] .search-pill-inner {
+    background: var(--bg-surface);
+}
+
+html[data-theme="dark"] .search-field input {
+    color: var(--text-primary);
+    background: transparent;
+}
+
+html[data-theme="dark"] .search-field input::placeholder {
+    color: var(--text-muted);
+}
+
+html[data-theme="dark"] .search-category-select select {
+    color: var(--clr-forest);
+}
+
+/* Dark mode: welcome section */
+html[data-theme="dark"] .welcome-point-item {
+    background: var(--bg-surface);
+    border-color: var(--border-subtle);
+    color: var(--text-primary);
+}
+
+html[data-theme="dark"] .welcome-title {
+    color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .welcome-desc {
+    color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .welcome-card-img {
+    border-color: var(--bg-surface);
+}
+
+/* Dark mode: category cards */
+html[data-theme="dark"] .cat-card {
+    background: var(--bg-surface);
+    border-color: var(--border-subtle);
+}
+
+html[data-theme="dark"] .cat-card-title {
+    color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .cat-card-desc {
+    color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .filter-tab-btn {
+    background: var(--bg-surface);
+    border-color: var(--border-subtle);
+    color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .filter-tab-btn:hover {
+    background: var(--bg-sage-light);
+    color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .filter-tab-btn.active {
+    background: var(--clr-forest);
+    color: #fff;
+    border-color: var(--clr-forest);
+}
+
+/* Dark mode: section pills and headings */
+html[data-theme="dark"] .section-tag-pill {
+    background: var(--bg-sage-light);
+    color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .section-heading {
+    color: var(--text-primary);
+}
+
+html[data-theme="dark"] .section-subhead {
+    color: var(--text-secondary);
+}
+
+/* Dark mode: stats strip */
+html[data-theme="dark"] .stats-strip {
+    background: var(--bg-surface);
+    border-color: var(--border-subtle);
+}
+
+html[data-theme="dark"] .stat-number {
+    color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .stat-label {
+    color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .stat-item {
+    border-right-color: var(--border-subtle);
+}
+
+/* Dark mode: quote banner */
+html[data-theme="dark"] .quote-banner {
+    background: linear-gradient(135deg, #0a1f0f 0%, #122018 100%);
+    border: 1px solid var(--border-subtle);
+}
+
+/* Dark mode: modal */
+html[data-theme="dark"] .modal-box {
+    background: var(--bg-surface);
+    border-color: var(--border-soft);
+    color: var(--text-primary);
+}
+
+html[data-theme="dark"] .modal-close-btn {
+    background: var(--bg-sage-light);
+    border-color: var(--border-subtle);
+    color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .modal-close-btn:hover {
+    background: var(--bg-sage-pill);
+    color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .modal-title {
+    color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .modal-subtitle {
+    color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .form-label {
+    color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .form-input {
+    background: var(--bg-sage-light);
+    border-color: var(--border-soft);
+    color: var(--text-primary);
+}
+
+html[data-theme="dark"] .form-input:focus {
+    background: var(--bg-surface);
+    border-color: var(--clr-forest);
+    box-shadow: 0 0 0 3px rgba(90, 173, 111, 0.15);
+}
+
+html[data-theme="dark"] .modal-divider span {
+    background: var(--bg-surface);
+    color: var(--text-muted);
+}
+
+html[data-theme="dark"] .modal-divider::before {
+    background: var(--border-soft);
+}
+
+html[data-theme="dark"] .btn-social-login {
+    background: var(--bg-sage-light);
+    border-color: var(--border-soft);
+    color: var(--text-primary);
+}
+
+html[data-theme="dark"] .btn-social-login:hover {
+    background: var(--bg-sage-pill);
+}
+
+html[data-theme="dark"] .dest-spot-card {
+    background: var(--bg-sage-light);
+    border-color: var(--border-subtle);
+}
+
+html[data-theme="dark"] .dest-spot-info h5 {
+    color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .dest-spot-time {
+    background: var(--bg-surface);
+    border-color: var(--border-subtle);
+    color: var(--clr-forest);
+}
+
+/* Dark mode: nav mobile menu */
+@media (max-width: 768px) {
+    html[data-theme="dark"] .nav-menu {
+        background: var(--bg-surface);
+        border-color: var(--border-subtle);
+    }
 }
 
 .modal-box {
