@@ -4453,8 +4453,8 @@ html[data-theme="dark"] .dest-spot-time {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 8px;
-    padding-right: 32px; /* Space for close button */
+    gap: 12px;
+    padding-right: 48px; /* Ruang aman agar rating tidak menimpa icon close */
 }
 
 .dash-dest-card-title {
@@ -4475,7 +4475,7 @@ html[data-theme="dark"] .dest-spot-time {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 4px 9px;
+    padding: 4px 10px;
     border-radius: var(--radius-pill);
     background: rgba(229, 155, 43, 0.16);
     border: 1px solid rgba(229, 155, 43, 0.35);
@@ -4483,6 +4483,7 @@ html[data-theme="dark"] .dest-spot-time {
     font-size: 12px;
     font-weight: 800;
     flex-shrink: 0;
+    margin-right: 8px; /* Geser rating ke kiri agar tidak menimpa tombol close */
 }
 
 /* Compact Comment Form */
