@@ -4073,6 +4073,7 @@ html[data-theme="dark"] .dest-spot-time {
     overflow: hidden;
     position: relative;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
 }
 
 .dash-dest-img-main {
@@ -4081,11 +4082,13 @@ html[data-theme="dark"] .dest-spot-time {
     max-height: 200px;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
+    cursor: pointer;
+    transition: transform 0.4s ease, filter 0.3s ease;
 }
 
 .dash-dest-photo-tall:hover .dash-dest-img-main {
-    transform: scale(1.03);
+    transform: scale(1.04);
+    filter: brightness(1.08);
 }
 
 .dash-dest-photo-stack {
@@ -5100,7 +5103,11 @@ html[data-theme="dark"] .dest-spot-time {
     display: block;
 }
 
-/* Modal Lightbox Foto Ulasan */
+/* Modal Lightbox Foto (Ulasan & Destinasi) */
+#comment-photo-lightbox {
+    z-index: 20000;
+}
+
 .dash-lightbox-content {
     position: relative;
     max-width: 90vw;

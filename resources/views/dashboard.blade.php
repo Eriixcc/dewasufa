@@ -572,18 +572,18 @@
                     <!-- Photo Grid: 1 Tall Main Image (Left) + 1 Wide Top Right + 2 Small Bottom Right -->
                     <div class="dash-dest-photo-grid">
                         <div class="dash-dest-photo-tall">
-                            <img id="dest-detail-img" src="/images/waterfall.jpg" alt="Destinasi Utama" class="dash-dest-img-main">
+                            <img id="dest-detail-img" src="/images/waterfall.jpg" alt="Destinasi Utama" class="dash-dest-img-main" onclick="openCommentPhotoModal(this.src)" title="Klik untuk melihat foto lebih besar">
                         </div>
                         <div class="dash-dest-photo-stack">
                             <div class="dash-dest-photo-wide">
-                                <img id="dest-detail-img-thumb-1" src="/images/waterfall.jpg" alt="Foto Destinasi 2" class="dash-dest-img-thumb" onclick="swapDestDetailImage(1)">
+                                <img id="dest-detail-img-thumb-1" src="/images/waterfall.jpg" alt="Foto Destinasi 2" class="dash-dest-img-thumb" onclick="openCommentPhotoModal(this.src)" title="Klik untuk melihat foto lebih besar">
                             </div>
                             <div class="dash-dest-photo-row">
                                 <div class="dash-dest-photo-small">
-                                    <img id="dest-detail-img-thumb-2" src="/images/waterfall.jpg" alt="Foto Destinasi 3" class="dash-dest-img-thumb" onclick="swapDestDetailImage(2)">
+                                    <img id="dest-detail-img-thumb-2" src="/images/waterfall.jpg" alt="Foto Destinasi 3" class="dash-dest-img-thumb" onclick="openCommentPhotoModal(this.src)" title="Klik untuk melihat foto lebih besar">
                                 </div>
                                 <div class="dash-dest-photo-small">
-                                    <img id="dest-detail-img-thumb-3" src="/images/waterfall.jpg" alt="Foto Destinasi 4" class="dash-dest-img-thumb" onclick="swapDestDetailImage(3)">
+                                    <img id="dest-detail-img-thumb-3" src="/images/waterfall.jpg" alt="Foto Destinasi 4" class="dash-dest-img-thumb" onclick="openCommentPhotoModal(this.src)" title="Klik untuk melihat foto lebih besar">
                                 </div>
                             </div>
                         </div>
@@ -786,11 +786,11 @@
         </div>
     </div>
 
-    <!-- ===== LIGHTBOX MODAL PREVIEW FOTO ULASAN ===== -->
-    <div class="dash-modal-backdrop" id="comment-photo-lightbox" role="dialog" aria-modal="true" aria-label="Lihat Foto Ulasan">
+    <!-- ===== LIGHTBOX MODAL PREVIEW FOTO ===== -->
+    <div class="dash-modal-backdrop" id="comment-photo-lightbox" role="dialog" aria-modal="true" aria-label="Lihat Foto">
         <div class="dash-lightbox-content">
             <button type="button" class="dash-lightbox-close" id="btn-close-lightbox" aria-label="Tutup Foto">&times;</button>
-            <img id="lightbox-img" src="" alt="Pratinjau Foto Ulasan" class="dash-lightbox-img">
+            <img id="lightbox-img" src="" alt="Pratinjau Foto" class="dash-lightbox-img">
         </div>
     </div>
 

@@ -997,8 +997,14 @@ export function closeCommentPhotoModal() {
     if (!modal) return;
 
     modal.classList.remove('active');
-    document.body.style.overflow = '';
+    const anyOtherModalActive = document.querySelector('.dash-modal-backdrop.active:not(#comment-photo-lightbox)');
+    if (!anyOtherModalActive) {
+        document.body.style.overflow = '';
+    }
 }
+
+export const openPhotoModal = openCommentPhotoModal;
+export const closePhotoModal = closeCommentPhotoModal;
 
 export function renderDestinationComments(key) {
     const commentsList = document.getElementById('dest-comments-list');
@@ -1388,6 +1394,8 @@ Object.assign(window, {
     removeCommentPhoto,
     openCommentPhotoModal,
     closeCommentPhotoModal,
+    openPhotoModal,
+    closePhotoModal,
 });
 
 // Setup DOM Event Listeners
@@ -1759,13 +1767,17 @@ function initApp() {
     // ESC Key Close Modals
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            const lightbox = document.getElementById('comment-photo-lightbox');
+            if (lightbox && lightbox.classList.contains('active')) {
+                closeCommentPhotoModal();
+                return;
+            }
             closeLoginModal();
             closeDestModal();
             closeCreateDestModal();
             closeSettingsModal();
             closeDestDetailModal();
             closeSavedPlansModal();
-            closeCommentPhotoModal();
             if (userDropdown) userDropdown.classList.remove('show');
             if (notifPopover) notifPopover.classList.remove('show');
         }
