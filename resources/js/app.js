@@ -368,11 +368,19 @@ const spotDetailsData = {
         title: 'Air Terjun Sekumpul',
         location: 'Sawan, Buleleng, Bali Utara',
         category: 'Air Terjun',
-        image: '/images/waterfall.jpg',
+        image: '/images/air terjun sekumpul.png',
+        gallery: [
+            '/images/air terjun sekumpul.png',
+            '/images/waterfall.jpg',
+            '/images/hero-bg.jpg',
+            '/images/mountain.jpg'
+        ],
         rating: 4.9,
         reviewsCount: 142,
         bestTime: '07:00 - 16:00 WITA',
+        bestVisit: '08:00 - 11:00 WITA (Sinar pagi menembus lembah)',
         ticket: 'Rp 20.000 / orang',
+        gmapsUrl: 'https://maps.google.com/?q=Air+Terjun+Sekumpul+Buleleng+Bali',
         tags: ['Trekking Alami', 'Fotografi Lanskap', 'Air Sejuk Pegunungan'],
         desc: 'Air Terjun Sekumpul dinobatkan sebagai salah satu air terjun terindah di Bali. Tersembunyi di rimbunnya lembah Buleleng, destinasi ini menampilkan gugusan air terjun kembar megah berketinggian lebih dari 80 meter yang dikelilingi vegetasi hutan tropis dan perkebunan cengkeh asri.',
         initialComments: [
@@ -395,10 +403,18 @@ const spotDetailsData = {
         location: 'Kemenuh, Sukawati, Gianyar',
         category: 'Air Terjun',
         image: '/images/waterfall.jpg',
+        gallery: [
+            '/images/waterfall.jpg',
+            '/images/air terjun sekumpul.png',
+            '/images/hero-bg.jpg',
+            '/images/sunset-beach.jpg'
+        ],
         rating: 4.8,
         reviewsCount: 236,
         bestTime: '06:30 - 18:00 WITA',
+        bestVisit: '07:00 - 09:30 WITA (Suasana tenang dan udara sejuk)',
         ticket: 'Rp 25.000 / orang',
+        gmapsUrl: 'https://maps.google.com/?q=Air+Terjun+Tegenungan+Gianyar+Bali',
         tags: ['Akses Mudah', 'Spot Foto', 'Dekat Ubud'],
         desc: 'Air Terjun Tegenungan menawarkan debit air deras nan mempesona di lembah hijau Sukawati. Dengan akses tangga terawat, spot foto ayunan estetik, dan fasilitas lengkap, tempat ini menjadi tujuan favorit wisatawan yang ingin menikmati alam tanpa pendakian terjal.',
         initialComments: [
@@ -421,10 +437,18 @@ const spotDetailsData = {
         location: 'Ungasan, Kuta Selatan, Badung',
         category: 'Sunset Beach',
         image: '/images/sunset-beach.jpg',
+        gallery: [
+            '/images/sunset-beach.jpg',
+            '/images/sunrise-beach.jpg',
+            '/images/hero-bg.jpg',
+            '/images/mountain.jpg'
+        ],
         rating: 4.9,
         reviewsCount: 318,
         bestTime: '16:00 - 18:45 WITA',
+        bestVisit: '16:30 - 18:30 WITA (Golden hour sunset spektakuler)',
         ticket: 'Rp 10.000 / orang',
+        gmapsUrl: 'https://maps.google.com/?q=Pantai+Melasti+Ungasan+Bali',
         tags: ['Sunset Epik', 'Pasir Putih Bersih', 'Tebing Kapur Megah'],
         desc: 'Pantai Melasti menyajikan perpaduan spektakuler tebing kapur putih menjulang tinggi dengan hamparan pasir putih bersih dan laut biru kehijauan. Jalan aspal berliku yang membelah tebing menjadi spot foto ikonik, disempurnakan momen matahari terbenam yang memukau.',
         initialComments: [
@@ -447,10 +471,18 @@ const spotDetailsData = {
         location: 'Sanur, Denpasar Selatan',
         category: 'Sunrise Beach',
         image: '/images/sunrise-beach.jpg',
+        gallery: [
+            '/images/sunrise-beach.jpg',
+            '/images/sunset-beach.jpg',
+            '/images/hero-bg.jpg',
+            '/images/waterfall.jpg'
+        ],
         rating: 4.8,
         reviewsCount: 189,
         bestTime: '05:30 - 07:00 WITA',
+        bestVisit: '05:30 - 06:45 WITA (Fajar tenang berlatar siluet gazebo)',
         ticket: 'Gratis (Parkir Rp 2.000)',
+        gmapsUrl: 'https://maps.google.com/?q=Pantai+Sanur+Denpasar+Bali',
         tags: ['Jogging Track Tepi Laut', 'Sunrise Damai', 'Ramah Keluarga'],
         desc: 'Pantai Sanur merupakan surga fajar terbaik di pulau Dewata. Ombak tenang, jalur pedestrian sepanjang 5 kilometer yang nyaman untuk bersepeda, serta siluet gazebo tradisional di atas karang menjadikan Sanur destinasi ideal untuk memulai hari dengan ketenangan.',
         initialComments: [
@@ -473,10 +505,18 @@ const spotDetailsData = {
         location: 'Kintamani, Kabupaten Bangli',
         category: 'Gunung & Kaldera',
         image: '/images/mountain.jpg',
+        gallery: [
+            '/images/mountain.jpg',
+            '/images/sunrise-beach.jpg',
+            '/images/hero-bg.jpg',
+            '/images/air terjun sekumpul.png'
+        ],
         rating: 4.9,
         reviewsCount: 275,
         bestTime: '03:30 - 08:30 WITA',
+        bestVisit: '04:00 - 07:00 WITA (Samudera awan magis saat sunrise)',
         ticket: 'Retribusi Kintamani Rp 25.000',
+        gmapsUrl: 'https://maps.google.com/?q=Gunung+Batur+Kintamani+Bali',
         tags: ['Sunrise Trekking', 'Samudera Awan', 'Kaldera Vulkanik'],
         desc: 'Gunung Batur menawarkan pengalaman pendakian berdurasi sekitar 2 jam menuju kawah aktif. Di puncak, pendaki disambut pemandangan magis matahari terbit di atas samudera awan tebal dengan latar megah Danau Batur, Gunung Abang, dan siluet Gunung Rinjani Lombok.',
         initialComments: [
@@ -498,6 +538,7 @@ const spotDetailsData = {
 
 let currentDetailSpotKey = 'waterfall';
 let currentCommentRating = 5;
+let currentSpotGallery = [];
 
 // Helper star SVG generator
 function generateStarIconsHtml(rating, max = 5, size = 15) {
@@ -511,6 +552,23 @@ function generateStarIconsHtml(rating, max = 5, size = 15) {
     return html;
 }
 
+export function swapDestDetailImage(thumbIndex) {
+    if (!currentSpotGallery || currentSpotGallery.length <= thumbIndex) return;
+    const temp = currentSpotGallery[0];
+    currentSpotGallery[0] = currentSpotGallery[thumbIndex];
+    currentSpotGallery[thumbIndex] = temp;
+
+    const imgMain = document.getElementById('dest-detail-img');
+    const thumb1 = document.getElementById('dest-detail-img-thumb-1');
+    const thumb2 = document.getElementById('dest-detail-img-thumb-2');
+    const thumb3 = document.getElementById('dest-detail-img-thumb-3');
+
+    if (imgMain && currentSpotGallery[0]) imgMain.src = currentSpotGallery[0];
+    if (thumb1 && currentSpotGallery[1]) thumb1.src = currentSpotGallery[1];
+    if (thumb2 && currentSpotGallery[2]) thumb2.src = currentSpotGallery[2];
+    if (thumb3 && currentSpotGallery[3]) thumb3.src = currentSpotGallery[3];
+}
+
 export function openDashSpotDetail(key) {
     // Bring history card to top
     bringHistoryCardToTop(key);
@@ -521,32 +579,56 @@ export function openDashSpotDetail(key) {
     const modal = document.getElementById('dest-detail-modal');
     if (!modal) return;
 
+    // Populate gallery images
+    currentSpotGallery = data.gallery ? [...data.gallery] : [data.image, data.image, data.image, data.image];
+    const imgMain = document.getElementById('dest-detail-img');
+    const thumb1 = document.getElementById('dest-detail-img-thumb-1');
+    const thumb2 = document.getElementById('dest-detail-img-thumb-2');
+    const thumb3 = document.getElementById('dest-detail-img-thumb-3');
+
+    if (imgMain && currentSpotGallery[0]) {
+        imgMain.src = currentSpotGallery[0];
+        imgMain.alt = data.title;
+    }
+    if (thumb1 && currentSpotGallery[1]) {
+        thumb1.src = currentSpotGallery[1];
+        thumb1.alt = `${data.title} 2`;
+    }
+    if (thumb2 && currentSpotGallery[2]) {
+        thumb2.src = currentSpotGallery[2];
+        thumb2.alt = `${data.title} 3`;
+    }
+    if (thumb3 && currentSpotGallery[3]) {
+        thumb3.src = currentSpotGallery[3];
+        thumb3.alt = `${data.title} 4`;
+    }
+
     // Populate data
-    const imgEl = document.getElementById('dest-detail-img');
     const titleEl = document.getElementById('dest-detail-title');
     const catEl = document.getElementById('dest-detail-category');
     const locTextEl = document.getElementById('dest-detail-location-text');
     const scoreEl = document.getElementById('dest-detail-score');
-    const starsEl = document.getElementById('dest-detail-stars');
-    const revCountEl = document.getElementById('dest-detail-reviews-count');
+    const sideScoreEl = document.getElementById('dest-detail-score-side');
     const timeEl = document.getElementById('dest-detail-time');
+    const bestVisitEl = document.getElementById('dest-detail-best-visit');
     const ticketEl = document.getElementById('dest-detail-ticket');
     const descEl = document.getElementById('dest-detail-desc');
     const tagsEl = document.getElementById('dest-detail-tags');
+    const gmapsLink = document.getElementById('dest-detail-gmaps-link');
 
-    if (imgEl) {
-        imgEl.src = data.image;
-        imgEl.alt = data.title;
-    }
     if (titleEl) titleEl.textContent = data.title;
     if (catEl) catEl.textContent = data.category;
     if (locTextEl) locTextEl.textContent = data.location;
     if (scoreEl) scoreEl.textContent = Number(data.rating).toFixed(1);
-    if (starsEl) starsEl.innerHTML = generateStarIconsHtml(data.rating, 5, 17);
-    if (revCountEl) revCountEl.textContent = `${data.reviewsCount} Ulasan Terverifikasi`;
+    if (sideScoreEl) sideScoreEl.textContent = Number(data.rating).toFixed(1);
     if (timeEl) timeEl.textContent = data.bestTime;
+    if (bestVisitEl) bestVisitEl.textContent = data.bestVisit || data.bestTime;
     if (ticketEl) ticketEl.textContent = data.ticket;
     if (descEl) descEl.textContent = data.desc;
+
+    if (gmapsLink) {
+        gmapsLink.href = data.gmapsUrl || `https://maps.google.com/?q=${encodeURIComponent(data.title + ' Bali')}`;
+    }
 
     if (tagsEl && data.tags) {
         tagsEl.innerHTML = data.tags.map(tag => `<span class="dash-dest-tag-pill">${tag}</span>`).join('');
@@ -946,6 +1028,7 @@ Object.assign(window, {
     showDashboardSlide,
     openDashSpotDetail,
     closeDestDetailModal,
+    swapDestDetailImage,
     handleCommentSubmit,
     setCommentRating,
     openCreateDestModal,

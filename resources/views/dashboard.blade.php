@@ -569,130 +569,176 @@
     <!-- ===== MODAL DETAIL DESTINASI (DESKRIPSI, RATING & KOMENTAR) ===== -->
     <div class="dash-modal-backdrop" id="dest-detail-modal" role="dialog" aria-modal="true" aria-labelledby="dest-detail-title">
         <div class="dash-modal-card dash-dest-detail-card">
-            <!-- Modal Header Image & Title Banner -->
-            <div class="dash-dest-hero-wrap">
-                <img id="dest-detail-img" src="/images/waterfall.jpg" alt="Destinasi" class="dash-dest-hero-img">
-                <div class="dash-dest-hero-overlay"></div>
-                <button type="button" class="dash-dest-close-btn" id="btn-close-dest-detail" aria-label="Tutup Detail Destinasi">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-                <div class="dash-dest-hero-content">
-                    <div class="dash-dest-badges-row">
-                        <span class="dash-dest-cat-pill" id="dest-detail-category">Air Terjun</span>
-                        <span class="dash-dest-location-badge">
-                            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Modal Close Button -->
+            <button type="button" class="dash-dest-close-btn" id="btn-close-dest-detail" aria-label="Tutup Detail Destinasi">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Two Column Main Layout -->
+            <div class="dash-dest-main-layout">
+                <!-- Left Column (Layout & Photos matching reference image) -->
+                <div class="dash-dest-left-col">
+                    <!-- Photo Grid: 1 Tall Main Image (Left) + 1 Wide Top Right + 2 Small Bottom Right -->
+                    <div class="dash-dest-photo-grid">
+                        <div class="dash-dest-photo-tall">
+                            <img id="dest-detail-img" src="/images/waterfall.jpg" alt="Destinasi Utama" class="dash-dest-img-main">
+                        </div>
+                        <div class="dash-dest-photo-stack">
+                            <div class="dash-dest-photo-wide">
+                                <img id="dest-detail-img-thumb-1" src="/images/waterfall.jpg" alt="Foto Destinasi 2" class="dash-dest-img-thumb" onclick="swapDestDetailImage(1)">
+                            </div>
+                            <div class="dash-dest-photo-row">
+                                <div class="dash-dest-photo-small">
+                                    <img id="dest-detail-img-thumb-2" src="/images/waterfall.jpg" alt="Foto Destinasi 3" class="dash-dest-img-thumb" onclick="swapDestDetailImage(2)">
+                                </div>
+                                <div class="dash-dest-photo-small">
+                                    <img id="dest-detail-img-thumb-3" src="/images/waterfall.jpg" alt="Foto Destinasi 4" class="dash-dest-img-thumb" onclick="swapDestDetailImage(3)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Destination Header: Title & Badges -->
+                    <div class="dash-dest-header-info">
+                        <h2 class="dash-dest-detail-title" id="dest-detail-title">Air Terjun Sekumpul</h2>
+                        <div class="dash-dest-location-row">
+                            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                 <circle cx="12" cy="10" r="3"></circle>
                             </svg>
                             <span id="dest-detail-location-text">Buleleng, Bali</span>
-                        </span>
-                    </div>
-                    <h2 class="dash-dest-detail-title" id="dest-detail-title">Air Terjun Sekumpul</h2>
-                </div>
-            </div>
-
-            <!-- Modal Body Content -->
-            <div class="dash-dest-detail-body">
-                <!-- Rating Score & Information Strip -->
-                <div class="dash-dest-rating-strip">
-                    <div class="dash-dest-score-box">
-                        <div class="dash-dest-score-num" id="dest-detail-score">4.9</div>
-                        <div class="dash-dest-stars" id="dest-detail-stars">
-                            <!-- Star SVGs injected dynamically -->
                         </div>
-                        <span class="dash-dest-reviews-count" id="dest-detail-reviews-count">142 Ulasan Terverifikasi</span>
-                    </div>
-                    <div class="dash-dest-meta-cards">
-                        <div class="dash-dest-meta-item">
-                            <span class="dash-dest-meta-label">Waktu Kunjungan</span>
-                            <span class="dash-dest-meta-val" id="dest-detail-time">07:00 - 16:00 WITA</span>
-                        </div>
-                        <div class="dash-dest-meta-item">
-                            <span class="dash-dest-meta-label">Tiket Masuk</span>
-                            <span class="dash-dest-meta-val" id="dest-detail-ticket">Rp 20.000 / orang</span>
+                        <!-- Tag Pills & Category -->
+                        <div class="dash-dest-pills-row">
+                            <span class="dash-dest-cat-pill" id="dest-detail-category">Air Terjun</span>
+                            <div class="dash-dest-tags-wrap" id="dest-detail-tags"></div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Short Description Section -->
-                <div class="dash-dest-section">
-                    <h3 class="dash-dest-section-title">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="16" x2="12" y2="12"></line>
-                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                        </svg>
-                        <span>Deskripsi Singkat</span>
-                    </h3>
-                    <p class="dash-dest-desc-text" id="dest-detail-desc"></p>
-                    <div class="dash-dest-tags-wrap" id="dest-detail-tags">
-                        <!-- Tags injected dynamically -->
+                    <!-- Features & Info Strip (Like "Hotel Features") -->
+                    <div class="dash-dest-features-section">
+                        <h4 class="dash-dest-subheading">Informasi & Fasilitas Destinasi</h4>
+                        <div class="dash-dest-features-grid">
+                            <div class="dash-dest-feat-item">
+                                <div class="dash-dest-feat-icon">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </div>
+                                <div class="dash-dest-feat-text">
+                                    <span class="dash-dest-feat-label">Rating</span>
+                                    <span class="dash-dest-feat-val"><strong id="dest-detail-score">4.9</strong> / 5.0</span>
+                                </div>
+                            </div>
+                            <div class="dash-dest-feat-item">
+                                <div class="dash-dest-feat-icon">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                </div>
+                                <div class="dash-dest-feat-text">
+                                    <span class="dash-dest-feat-label">Jam Buka</span>
+                                    <span class="dash-dest-feat-val" id="dest-detail-time">07:00 - 16:00 WITA</span>
+                                </div>
+                            </div>
+                            <div class="dash-dest-feat-item">
+                                <div class="dash-dest-feat-icon">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                                </div>
+                                <div class="dash-dest-feat-text">
+                                    <span class="dash-dest-feat-label">Tiket Masuk</span>
+                                    <span class="dash-dest-feat-val" id="dest-detail-ticket">Rp 20.000</span>
+                                </div>
+                            </div>
+                            <div class="dash-dest-feat-item">
+                                <div class="dash-dest-feat-icon">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
+                                </div>
+                                <div class="dash-dest-feat-text">
+                                    <span class="dash-dest-feat-label">Waktu Terbaik</span>
+                                    <span class="dash-dest-feat-val" id="dest-detail-best-visit">Pagi Hari</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description & Mini Map Preview Section -->
+                    <div class="dash-dest-desc-and-map">
+                        <div class="dash-dest-desc-box">
+                            <h4 class="dash-dest-subheading">Tentang Destinasi</h4>
+                            <p class="dash-dest-desc-text" id="dest-detail-desc"></p>
+                        </div>
+                        <div class="dash-dest-map-card">
+                            <div class="dash-dest-map-bg">
+                                <div class="dash-dest-map-grid-pattern"></div>
+                                <div class="dash-dest-map-pin">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="#ef4444" stroke="#ffffff" stroke-width="1.5">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3" fill="#ffffff"></circle>
+                                    </svg>
+                                    <span class="dash-dest-map-pulse"></span>
+                                </div>
+                            </div>
+                            <div class="dash-dest-map-footer">
+                                <a id="dest-detail-gmaps-link" href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="dash-dest-gmaps-btn">
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                                    </svg>
+                                    <span>Buka di Google Maps</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <hr class="dash-modal-divider">
-
-                <!-- Comments & Reviews Section -->
-                <div class="dash-dest-section">
-                    <div class="dash-dest-comments-header">
-                        <h3 class="dash-dest-section-title">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                            </svg>
-                            <span>Ulasan &amp; Komentar Pengunjung</span>
-                        </h3>
-                        <span class="dash-dest-comment-badge" id="dest-comments-counter">2 Komentar</span>
-                    </div>
-
-                    <!-- Add Comment Form -->
-                    <form id="dest-comment-form" class="dash-comment-form" onsubmit="handleCommentSubmit(event)">
-                        <div class="dash-comment-form-header">
-                            <span class="dash-comment-rating-label">Beri Penilaian Anda:</span>
-                            <div class="dash-star-picker" id="comment-star-picker" role="radiogroup" aria-label="Pilih Bintang">
-                                <button type="button" class="dash-star-btn active" data-rating="1" aria-label="1 Bintang">
-                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                </button>
-                                <button type="button" class="dash-star-btn active" data-rating="2" aria-label="2 Bintang">
-                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                </button>
-                                <button type="button" class="dash-star-btn active" data-rating="3" aria-label="3 Bintang">
-                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                </button>
-                                <button type="button" class="dash-star-btn active" data-rating="4" aria-label="4 Bintang">
-                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                </button>
-                                <button type="button" class="dash-star-btn active" data-rating="5" aria-label="5 Bintang">
-                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                </button>
-                                <span class="dash-star-picker-val" id="comment-rating-val">5.0 / 5.0</span>
+                <!-- Right Column (Comments & Reviews Section - takes smaller width) -->
+                <div class="dash-dest-right-col">
+                    <div class="dash-dest-reviews-card">
+                        <!-- Card Header -->
+                        <div class="dash-dest-reviews-card-header">
+                            <div>
+                                <h3 class="dash-dest-card-title">Ulasan Pengunjung</h3>
+                                <p class="dash-dest-card-subtitle">Pengalaman wisatawan di destinasi ini</p>
+                            </div>
+                            <div class="dash-dest-rating-pill">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <span id="dest-detail-score-side">4.9</span>
                             </div>
                         </div>
 
-                        <div class="dash-comment-input-row">
+                        <!-- Add Comment Form -->
+                        <form id="dest-comment-form" class="dash-comment-form-compact" onsubmit="handleCommentSubmit(event)">
+                            <div class="dash-comment-rating-row">
+                                <span class="dash-comment-rating-label">Beri Penilaian:</span>
+                                <div class="dash-star-picker" id="comment-star-picker" role="radiogroup" aria-label="Pilih Bintang">
+                                    <button type="button" class="dash-star-btn active" data-rating="1" aria-label="1 Bintang"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></button>
+                                    <button type="button" class="dash-star-btn active" data-rating="2" aria-label="2 Bintang"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></button>
+                                    <button type="button" class="dash-star-btn active" data-rating="3" aria-label="3 Bintang"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></button>
+                                    <button type="button" class="dash-star-btn active" data-rating="4" aria-label="4 Bintang"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></button>
+                                    <button type="button" class="dash-star-btn active" data-rating="5" aria-label="5 Bintang"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></button>
+                                    <span class="dash-star-picker-val" id="comment-rating-val">5.0 / 5.0</span>
+                                </div>
+                            </div>
+
                             <input type="text" id="comment-author-name" class="dash-comment-name-input" placeholder="Nama Anda (Opsional)" maxlength="40">
-                        </div>
+                            <textarea id="comment-textarea" class="dash-comment-textarea" rows="2" placeholder="Bagikan ulasan atau tips kunjungan..." required></textarea>
 
-                        <div class="dash-comment-textarea-wrap">
-                            <textarea id="comment-textarea" class="dash-comment-textarea" rows="3" placeholder="Tuliskan ulasan, tips perjalanan, atau rekomendasi untuk pengunjung lain..." required></textarea>
-                        </div>
-
-                        <div class="dash-comment-actions">
                             <button type="submit" class="dash-btn-submit-comment" id="btn-submit-comment">
-                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="22" y1="2" x2="11" y2="13"></line>
                                     <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                                 </svg>
                                 <span>Kirim Ulasan</span>
                             </button>
-                        </div>
-                    </form>
+                        </form>
 
-                    <!-- Comments List -->
-                    <div class="dash-comments-list" id="dest-comments-list">
-                        <!-- Comments rendered dynamically -->
+                        <!-- Comments Counter & List -->
+                        <div class="dash-dest-comments-divider">
+                            <span class="dash-dest-comment-badge" id="dest-comments-counter">2 Komentar</span>
+                        </div>
+
+                        <div class="dash-comments-list dash-comments-list-compact" id="dest-comments-list">
+                            <!-- Injected dynamically -->
+                        </div>
                     </div>
                 </div>
             </div>
