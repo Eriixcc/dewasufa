@@ -362,17 +362,343 @@ export function bringHistoryCardToTop(key) {
     setTimeout(() => card.classList.remove('dash-history-highlight'), 1400);
 }
 
+// Detail Destinasi Data (Deskripsi, Rating, dan Komentar)
+const spotDetailsData = {
+    sekumpul: {
+        title: 'Air Terjun Sekumpul',
+        location: 'Sawan, Buleleng, Bali Utara',
+        category: 'Air Terjun',
+        image: '/images/waterfall.jpg',
+        rating: 4.9,
+        reviewsCount: 142,
+        bestTime: '07:00 - 16:00 WITA',
+        ticket: 'Rp 20.000 / orang',
+        tags: ['Trekking Alami', 'Fotografi Lanskap', 'Air Sejuk Pegunungan'],
+        desc: 'Air Terjun Sekumpul dinobatkan sebagai salah satu air terjun terindah di Bali. Tersembunyi di rimbunnya lembah Buleleng, destinasi ini menampilkan gugusan air terjun kembar megah berketinggian lebih dari 80 meter yang dikelilingi vegetasi hutan tropis dan perkebunan cengkeh asri.',
+        initialComments: [
+            {
+                name: 'Putu Arya Wiguna',
+                date: '2 hari lalu',
+                rating: 5,
+                comment: 'Trek menuju lokasi cukup menantang namun terbayar lunas saat melihat hempasan air terjun yang begitu megah. Disarankan datang pagi hari saat udara masih sejuk.'
+            },
+            {
+                name: 'Sarah Wijaya',
+                date: '1 minggu lalu',
+                rating: 5,
+                comment: 'Airnya luar biasa jernih dan segar. Pemandu lokal sangat ramah dan jalur trekking tertata baik.'
+            }
+        ]
+    },
+    waterfall: {
+        title: 'Air Terjun Tegenungan',
+        location: 'Kemenuh, Sukawati, Gianyar',
+        category: 'Air Terjun',
+        image: '/images/waterfall.jpg',
+        rating: 4.8,
+        reviewsCount: 236,
+        bestTime: '06:30 - 18:00 WITA',
+        ticket: 'Rp 25.000 / orang',
+        tags: ['Akses Mudah', 'Spot Foto', 'Dekat Ubud'],
+        desc: 'Air Terjun Tegenungan menawarkan debit air deras nan mempesona di lembah hijau Sukawati. Dengan akses tangga terawat, spot foto ayunan estetik, dan fasilitas lengkap, tempat ini menjadi tujuan favorit wisatawan yang ingin menikmati alam tanpa pendakian terjal.',
+        initialComments: [
+            {
+                name: 'Budi Santoso',
+                date: 'Kemarin',
+                rating: 5,
+                comment: 'Lokasi sangat strategis dekat Ubud. Fasilitas toilet dan kafe sekitar tertata rapi. Sangat nyaman untuk liburan keluarga.'
+            },
+            {
+                name: 'Ketut Dharmayana',
+                date: '5 hari lalu',
+                rating: 4,
+                comment: 'Pemandangan air terjun sangat indah. Datanglah sebelum jam 10 pagi agar tidak terlalu padat pengunjung.'
+            }
+        ]
+    },
+    sunset: {
+        title: 'Pantai Melasti & Tebing Karang',
+        location: 'Ungasan, Kuta Selatan, Badung',
+        category: 'Sunset Beach',
+        image: '/images/sunset-beach.jpg',
+        rating: 4.9,
+        reviewsCount: 318,
+        bestTime: '16:00 - 18:45 WITA',
+        ticket: 'Rp 10.000 / orang',
+        tags: ['Sunset Epik', 'Pasir Putih Bersih', 'Tebing Kapur Megah'],
+        desc: 'Pantai Melasti menyajikan perpaduan spektakuler tebing kapur putih menjulang tinggi dengan hamparan pasir putih bersih dan laut biru kehijauan. Jalan aspal berliku yang membelah tebing menjadi spot foto ikonik, disempurnakan momen matahari terbenam yang memukau.',
+        initialComments: [
+            {
+                name: 'Ni Made Anindya',
+                date: '3 hari lalu',
+                rating: 5,
+                comment: 'Sunset terindah di semenanjung Bukit Bali. Akses jalan mulus dan area parkir luas. Sangat direkomendasikan!'
+            },
+            {
+                name: 'Rizky Ramadhan',
+                date: '6 hari lalu',
+                rating: 5,
+                comment: 'Pantainya sangat bersih dan air lautnya jernih saat surut. Suasana sore hari sangat tenang dan damai.'
+            }
+        ]
+    },
+    sunrise: {
+        title: 'Pantai Sanur & Matahari Terbit',
+        location: 'Sanur, Denpasar Selatan',
+        category: 'Sunrise Beach',
+        image: '/images/sunrise-beach.jpg',
+        rating: 4.8,
+        reviewsCount: 189,
+        bestTime: '05:30 - 07:00 WITA',
+        ticket: 'Gratis (Parkir Rp 2.000)',
+        tags: ['Jogging Track Tepi Laut', 'Sunrise Damai', 'Ramah Keluarga'],
+        desc: 'Pantai Sanur merupakan surga fajar terbaik di pulau Dewata. Ombak tenang, jalur pedestrian sepanjang 5 kilometer yang nyaman untuk bersepeda, serta siluet gazebo tradisional di atas karang menjadikan Sanur destinasi ideal untuk memulai hari dengan ketenangan.',
+        initialComments: [
+            {
+                name: 'I Wayan Gede',
+                date: '4 hari lalu',
+                rating: 5,
+                comment: 'Matahari terbit di Pantai Sanur selalu menenangkan jiwa. Udara pagi segar dan banyak pilihan sarapan khas Bali di sekitar.'
+            },
+            {
+                name: 'Dewi Lestari',
+                date: '1 minggu lalu',
+                rating: 4,
+                comment: 'Tempat favorit untuk bersepeda pagi bersama keluarga. Pemandangan Gunung Agung di kejauhan saat cuaca cerah sangat menakjubkan.'
+            }
+        ]
+    },
+    mountain: {
+        title: 'Gunung Batur (1.717 mdpl)',
+        location: 'Kintamani, Kabupaten Bangli',
+        category: 'Gunung & Kaldera',
+        image: '/images/mountain.jpg',
+        rating: 4.9,
+        reviewsCount: 275,
+        bestTime: '03:30 - 08:30 WITA',
+        ticket: 'Retribusi Kintamani Rp 25.000',
+        tags: ['Sunrise Trekking', 'Samudera Awan', 'Kaldera Vulkanik'],
+        desc: 'Gunung Batur menawarkan pengalaman pendakian berdurasi sekitar 2 jam menuju kawah aktif. Di puncak, pendaki disambut pemandangan magis matahari terbit di atas samudera awan tebal dengan latar megah Danau Batur, Gunung Abang, dan siluet Gunung Rinjani Lombok.',
+        initialComments: [
+            {
+                name: 'Agus Pratama',
+                date: 'Kemarin',
+                rating: 5,
+                comment: 'Pengalaman mendaki yang luar biasa. Pemandangan samudera awan saat fajar benar-benar memanjakan mata. Jangan lupa bawa jaket tebal.'
+            },
+            {
+                name: 'Jessica Tan',
+                date: '3 hari lalu',
+                rating: 5,
+                comment: 'Trek cukup bersahabat untuk pemula. Pemandu lokal sangat membantu dan sarapan telur rebus uap belerang di kawah sangat berkesan.'
+            }
+        ]
+    }
+};
+
+let currentDetailSpotKey = 'waterfall';
+let currentCommentRating = 5;
+
+// Helper star SVG generator
+function generateStarIconsHtml(rating, max = 5, size = 15) {
+    let html = '';
+    const rounded = Math.round(rating);
+    for (let i = 1; i <= max; i++) {
+        const fill = i <= rounded ? 'currentColor' : 'none';
+        const opacity = i <= rounded ? '1' : '0.25';
+        html += `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="${fill}" stroke="currentColor" stroke-width="1.8" style="opacity:${opacity};"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
+    }
+    return html;
+}
+
 export function openDashSpotDetail(key) {
-    const spotMap = {
-        sekumpul:  { name: 'Air Terjun Sekumpul (Buleleng)' },
-        waterfall: { name: 'Air Terjun Tegenungan (Gianyar)' },
-        sunset:    { name: 'Pantai Melasti & Tanah Lot (Sunset Point)' },
-        sunrise:   { name: 'Pantai Sanur (Sunrise Point)' },
-        mountain:  { name: 'Gunung Batur (Kaldera Kintamani)' }
-    };
-    const spot = spotMap[key] || { name: key };
+    // Bring history card to top
     bringHistoryCardToTop(key);
-    showToast(`Membuka rute dan panduan: ${spot.name}`, '');
+
+    const data = spotDetailsData[key] || spotDetailsData.waterfall;
+    currentDetailSpotKey = key;
+
+    const modal = document.getElementById('dest-detail-modal');
+    if (!modal) return;
+
+    // Populate data
+    const imgEl = document.getElementById('dest-detail-img');
+    const titleEl = document.getElementById('dest-detail-title');
+    const catEl = document.getElementById('dest-detail-category');
+    const locTextEl = document.getElementById('dest-detail-location-text');
+    const scoreEl = document.getElementById('dest-detail-score');
+    const starsEl = document.getElementById('dest-detail-stars');
+    const revCountEl = document.getElementById('dest-detail-reviews-count');
+    const timeEl = document.getElementById('dest-detail-time');
+    const ticketEl = document.getElementById('dest-detail-ticket');
+    const descEl = document.getElementById('dest-detail-desc');
+    const tagsEl = document.getElementById('dest-detail-tags');
+
+    if (imgEl) {
+        imgEl.src = data.image;
+        imgEl.alt = data.title;
+    }
+    if (titleEl) titleEl.textContent = data.title;
+    if (catEl) catEl.textContent = data.category;
+    if (locTextEl) locTextEl.textContent = data.location;
+    if (scoreEl) scoreEl.textContent = Number(data.rating).toFixed(1);
+    if (starsEl) starsEl.innerHTML = generateStarIconsHtml(data.rating, 5, 17);
+    if (revCountEl) revCountEl.textContent = `${data.reviewsCount} Ulasan Terverifikasi`;
+    if (timeEl) timeEl.textContent = data.bestTime;
+    if (ticketEl) ticketEl.textContent = data.ticket;
+    if (descEl) descEl.textContent = data.desc;
+
+    if (tagsEl && data.tags) {
+        tagsEl.innerHTML = data.tags.map(tag => `<span class="dash-dest-tag-pill">${tag}</span>`).join('');
+    }
+
+    // Reset comment form
+    setCommentRating(5);
+    const textarea = document.getElementById('comment-textarea');
+    if (textarea) textarea.value = '';
+    const authorInput = document.getElementById('comment-author-name');
+    if (authorInput) {
+        const userName = sessionStorage.getItem('dewasufa_user') || '';
+        authorInput.value = userName;
+    }
+
+    // Render Comments
+    renderDestinationComments(key);
+
+    // Open modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+export function closeDestDetailModal() {
+    const modal = document.getElementById('dest-detail-modal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function getStoredComments(key) {
+    try {
+        const stored = localStorage.getItem('dewasufa_comments_' + key);
+        if (stored) return JSON.parse(stored);
+    } catch (e) {
+        console.warn(e);
+    }
+    const defaultData = spotDetailsData[key] || spotDetailsData.waterfall;
+    return defaultData.initialComments ? [...defaultData.initialComments] : [];
+}
+
+function saveStoredComments(key, comments) {
+    try {
+        localStorage.setItem('dewasufa_comments_' + key, JSON.stringify(comments));
+    } catch (e) {
+        console.warn(e);
+    }
+}
+
+export function renderDestinationComments(key) {
+    const commentsList = document.getElementById('dest-comments-list');
+    const counterEl = document.getElementById('dest-comments-counter');
+    if (!commentsList) return;
+
+    const comments = getStoredComments(key);
+
+    if (counterEl) {
+        counterEl.textContent = `${comments.length} Komentar`;
+    }
+
+    if (comments.length === 0) {
+        commentsList.innerHTML = '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.45); font-size: 13px;">Belum ada ulasan untuk destinasi ini. Jadilah yang pertama memberikan ulasan!</div>';
+        return;
+    }
+
+    commentsList.innerHTML = comments.map(c => {
+        const initial = (c.name || 'W').charAt(0).toUpperCase();
+        return `
+            <div class="dash-comment-card">
+                <div class="dash-comment-top">
+                    <div class="dash-comment-author-info">
+                        <div class="dash-comment-avatar">${initial}</div>
+                        <span class="dash-comment-author-name">
+                            ${c.name}
+                            <span class="dash-comment-badge-verified">Terverifikasi</span>
+                        </span>
+                    </div>
+                    <div class="dash-comment-meta-right">
+                        <span class="dash-comment-date">${c.date || 'Baru saja'}</span>
+                        <div class="dash-comment-stars">
+                            ${generateStarIconsHtml(c.rating || 5, 5, 13)}
+                        </div>
+                    </div>
+                </div>
+                <p class="dash-comment-text">${c.comment}</p>
+            </div>
+        `;
+    }).join('');
+}
+
+export function setCommentRating(rating) {
+    currentCommentRating = Math.max(1, Math.min(5, rating));
+    const starPicker = document.getElementById('comment-star-picker');
+    const ratingVal = document.getElementById('comment-rating-val');
+
+    if (starPicker) {
+        const btns = starPicker.querySelectorAll('.dash-star-btn');
+        btns.forEach(btn => {
+            const starNum = parseInt(btn.dataset.rating, 10);
+            if (starNum <= currentCommentRating) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    if (ratingVal) {
+        ratingVal.textContent = `${currentCommentRating}.0 / 5.0`;
+    }
+}
+
+export function handleCommentSubmit(event) {
+    if (event) event.preventDefault();
+
+    const textarea = document.getElementById('comment-textarea');
+    if (!textarea) return;
+
+    const commentText = textarea.value.trim();
+    if (!commentText) {
+        showToast('Mohon tuliskan ulasan Anda terlebih dahulu.', '');
+        textarea.focus();
+        return;
+    }
+
+    const nameInput = document.getElementById('comment-author-name');
+    const authorName = (nameInput && nameInput.value.trim()) 
+        ? nameInput.value.trim() 
+        : (sessionStorage.getItem('dewasufa_user') || 'Wisatawan Bali');
+
+    const newComment = {
+        name: authorName,
+        date: 'Baru saja',
+        rating: currentCommentRating,
+        comment: commentText
+    };
+
+    const comments = getStoredComments(currentDetailSpotKey);
+    comments.unshift(newComment);
+    saveStoredComments(currentDetailSpotKey, comments);
+
+    // Re-render
+    renderDestinationComments(currentDetailSpotKey);
+
+    // Highlight the newly added comment
+    const listEl = document.getElementById('dest-comments-list');
+    if (listEl && listEl.firstElementChild) {
+        listEl.firstElementChild.classList.add('newly-added');
+    }
+
+    textarea.value = '';
+    showToast('Ulasan Anda berhasil dikirimkan.', '');
 }
 
 // Modal Daftar sebagai Author
@@ -619,6 +945,9 @@ Object.assign(window, {
     handleSearch,
     showDashboardSlide,
     openDashSpotDetail,
+    closeDestDetailModal,
+    handleCommentSubmit,
+    setCommentRating,
     openCreateDestModal,
     closeCreateDestModal,
     handleCreateDestSubmit,
@@ -931,6 +1260,32 @@ function initApp() {
         });
     }
 
+    // Destination Detail Modal Listeners
+    const btnCloseDestDetail = document.getElementById('btn-close-dest-detail');
+    const destDetailModal = document.getElementById('dest-detail-modal');
+
+    if (btnCloseDestDetail) {
+        btnCloseDestDetail.addEventListener('click', closeDestDetailModal);
+    }
+
+    if (destDetailModal) {
+        destDetailModal.addEventListener('click', (e) => {
+            if (e.target === destDetailModal) closeDestDetailModal();
+        });
+    }
+
+    // Star Picker in Comment Form
+    const starPicker = document.getElementById('comment-star-picker');
+    if (starPicker) {
+        const starBtns = starPicker.querySelectorAll('.dash-star-btn');
+        starBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const rating = parseInt(btn.dataset.rating, 10);
+                setCommentRating(rating);
+            });
+        });
+    }
+
     // ESC Key Close Modals
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -938,6 +1293,7 @@ function initApp() {
             closeDestModal();
             closeCreateDestModal();
             closeSettingsModal();
+            closeDestDetailModal();
             if (userDropdown) userDropdown.classList.remove('show');
             if (notifPopover) notifPopover.classList.remove('show');
         }

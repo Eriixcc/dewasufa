@@ -114,12 +114,6 @@
                             </svg>
                             <span>Daftar sebagai Author</span>
                         </a>
-                        <a href="{{ route('home') }}" class="dash-dropdown-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                            </svg>
-                            <span>Kembali ke Beranda</span>
-                        </a>
                         <a href="javascript:void(0)" class="dash-dropdown-item" id="dash-btn-my-plan">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
@@ -568,6 +562,139 @@
                     </svg>
                     <span>Logout</span>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DETAIL DESTINASI (DESKRIPSI, RATING & KOMENTAR) ===== -->
+    <div class="dash-modal-backdrop" id="dest-detail-modal" role="dialog" aria-modal="true" aria-labelledby="dest-detail-title">
+        <div class="dash-modal-card dash-dest-detail-card">
+            <!-- Modal Header Image & Title Banner -->
+            <div class="dash-dest-hero-wrap">
+                <img id="dest-detail-img" src="/images/waterfall.jpg" alt="Destinasi" class="dash-dest-hero-img">
+                <div class="dash-dest-hero-overlay"></div>
+                <button type="button" class="dash-dest-close-btn" id="btn-close-dest-detail" aria-label="Tutup Detail Destinasi">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="dash-dest-hero-content">
+                    <div class="dash-dest-badges-row">
+                        <span class="dash-dest-cat-pill" id="dest-detail-category">Air Terjun</span>
+                        <span class="dash-dest-location-badge">
+                            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span id="dest-detail-location-text">Buleleng, Bali</span>
+                        </span>
+                    </div>
+                    <h2 class="dash-dest-detail-title" id="dest-detail-title">Air Terjun Sekumpul</h2>
+                </div>
+            </div>
+
+            <!-- Modal Body Content -->
+            <div class="dash-dest-detail-body">
+                <!-- Rating Score & Information Strip -->
+                <div class="dash-dest-rating-strip">
+                    <div class="dash-dest-score-box">
+                        <div class="dash-dest-score-num" id="dest-detail-score">4.9</div>
+                        <div class="dash-dest-stars" id="dest-detail-stars">
+                            <!-- Star SVGs injected dynamically -->
+                        </div>
+                        <span class="dash-dest-reviews-count" id="dest-detail-reviews-count">142 Ulasan Terverifikasi</span>
+                    </div>
+                    <div class="dash-dest-meta-cards">
+                        <div class="dash-dest-meta-item">
+                            <span class="dash-dest-meta-label">Waktu Kunjungan</span>
+                            <span class="dash-dest-meta-val" id="dest-detail-time">07:00 - 16:00 WITA</span>
+                        </div>
+                        <div class="dash-dest-meta-item">
+                            <span class="dash-dest-meta-label">Tiket Masuk</span>
+                            <span class="dash-dest-meta-val" id="dest-detail-ticket">Rp 20.000 / orang</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Short Description Section -->
+                <div class="dash-dest-section">
+                    <h3 class="dash-dest-section-title">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <span>Deskripsi Singkat</span>
+                    </h3>
+                    <p class="dash-dest-desc-text" id="dest-detail-desc"></p>
+                    <div class="dash-dest-tags-wrap" id="dest-detail-tags">
+                        <!-- Tags injected dynamically -->
+                    </div>
+                </div>
+
+                <hr class="dash-modal-divider">
+
+                <!-- Comments & Reviews Section -->
+                <div class="dash-dest-section">
+                    <div class="dash-dest-comments-header">
+                        <h3 class="dash-dest-section-title">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>Ulasan &amp; Komentar Pengunjung</span>
+                        </h3>
+                        <span class="dash-dest-comment-badge" id="dest-comments-counter">2 Komentar</span>
+                    </div>
+
+                    <!-- Add Comment Form -->
+                    <form id="dest-comment-form" class="dash-comment-form" onsubmit="handleCommentSubmit(event)">
+                        <div class="dash-comment-form-header">
+                            <span class="dash-comment-rating-label">Beri Penilaian Anda:</span>
+                            <div class="dash-star-picker" id="comment-star-picker" role="radiogroup" aria-label="Pilih Bintang">
+                                <button type="button" class="dash-star-btn active" data-rating="1" aria-label="1 Bintang">
+                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </button>
+                                <button type="button" class="dash-star-btn active" data-rating="2" aria-label="2 Bintang">
+                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </button>
+                                <button type="button" class="dash-star-btn active" data-rating="3" aria-label="3 Bintang">
+                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </button>
+                                <button type="button" class="dash-star-btn active" data-rating="4" aria-label="4 Bintang">
+                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </button>
+                                <button type="button" class="dash-star-btn active" data-rating="5" aria-label="5 Bintang">
+                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </button>
+                                <span class="dash-star-picker-val" id="comment-rating-val">5.0 / 5.0</span>
+                            </div>
+                        </div>
+
+                        <div class="dash-comment-input-row">
+                            <input type="text" id="comment-author-name" class="dash-comment-name-input" placeholder="Nama Anda (Opsional)" maxlength="40">
+                        </div>
+
+                        <div class="dash-comment-textarea-wrap">
+                            <textarea id="comment-textarea" class="dash-comment-textarea" rows="3" placeholder="Tuliskan ulasan, tips perjalanan, atau rekomendasi untuk pengunjung lain..." required></textarea>
+                        </div>
+
+                        <div class="dash-comment-actions">
+                            <button type="submit" class="dash-btn-submit-comment" id="btn-submit-comment">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                </svg>
+                                <span>Kirim Ulasan</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Comments List -->
+                    <div class="dash-comments-list" id="dest-comments-list">
+                        <!-- Comments rendered dynamically -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
