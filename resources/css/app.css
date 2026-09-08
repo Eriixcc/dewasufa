@@ -4034,44 +4034,52 @@ html[data-theme="dark"] .dest-spot-time {
     grid-template-columns: minmax(0, 1.85fr) minmax(310px, 1fr);
     gap: 0;
     height: 100%;
-    max-height: 90vh;
+    max-height: 88vh;
     overflow: hidden;
+    min-height: 0;
 }
 
 /* Left Column */
 .dash-dest-left-col {
-    padding: 26px 28px 30px;
+    padding: 20px 24px 26px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
+    min-height: 0;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
-/* Photo Grid: 1 Tall on left + 1 Wide Top Right + 2 Small Bottom Right */
+/* Photo Grid: Compact 1 Tall on left + 1 Wide Top Right + 2 Small Bottom Right */
 .dash-dest-photo-grid {
     display: grid;
     grid-template-columns: 1.15fr 1fr;
-    gap: 12px;
-    height: 290px;
-    min-height: 290px;
+    gap: 10px;
+    height: 200px;
+    max-height: 200px;
+    flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .dash-dest-photo-tall {
-    height: 100%;
-    border-radius: 18px;
+    height: 200px;
+    max-height: 200px;
+    border-radius: 14px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
 .dash-dest-img-main {
     width: 100%;
     height: 100%;
+    max-height: 200px;
     object-fit: cover;
     display: block;
-    transition: transform 0.5s ease;
+    transition: transform 0.4s ease;
 }
 
 .dash-dest-photo-tall:hover .dash-dest-img-main {
@@ -4081,36 +4089,47 @@ html[data-theme="dark"] .dest-spot-time {
 .dash-dest-photo-stack {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    height: 100%;
+    gap: 8px;
+    height: 200px;
+    max-height: 200px;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .dash-dest-photo-wide {
-    flex: 1;
-    border-radius: 16px;
+    height: 96px;
+    max-height: 96px;
+    border-radius: 12px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .dash-dest-photo-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    flex: 1;
+    gap: 8px;
+    height: 96px;
+    max-height: 96px;
+    flex-shrink: 0;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .dash-dest-photo-small {
-    height: 100%;
-    border-radius: 14px;
+    height: 96px;
+    max-height: 96px;
+    border-radius: 10px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .dash-dest-img-thumb {
     width: 100%;
     height: 100%;
+    max-height: 96px;
     object-fit: cover;
     display: block;
     cursor: pointer;
@@ -4126,22 +4145,23 @@ html[data-theme="dark"] .dest-spot-time {
 .dash-dest-header-info {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
+    flex-shrink: 0;
 }
 
 .dash-dest-detail-title {
-    font-size: 24px;
+    font-size: 21px;
     font-weight: 800;
     color: #ffffff;
     line-height: 1.25;
-    letter-spacing: -0.4px;
+    letter-spacing: -0.3px;
 }
 
 .dash-dest-location-row {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 12.5px;
     color: rgba(255, 255, 255, 0.7);
 }
 
@@ -4154,8 +4174,8 @@ html[data-theme="dark"] .dest-spot-time {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 4px;
+    gap: 6px;
+    margin-top: 2px;
 }
 
 .dash-dest-cat-pill {
@@ -4165,9 +4185,9 @@ html[data-theme="dark"] .dest-spot-time {
     backdrop-filter: blur(8px);
     border: 1px solid rgba(186, 209, 176, 0.35);
     color: #bad1b0;
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 700;
-    padding: 3px 11px;
+    padding: 2.5px 10px;
     border-radius: var(--radius-pill);
     letter-spacing: 0.2px;
 }
@@ -4180,45 +4200,49 @@ html[data-theme="dark"] .dest-spot-time {
 }
 
 .dash-dest-tag-pill {
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.75);
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    padding: 3px 10px;
+    padding: 2.5px 9px;
     border-radius: var(--radius-pill);
 }
 
 /* Features Section (Like "Hotel Features") */
+.dash-dest-features-section {
+    flex-shrink: 0;
+}
+
 .dash-dest-subheading {
-    font-size: 13px;
+    font-size: 11.5px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: rgba(255, 255, 255, 0.55);
-    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 8px;
 }
 
 .dash-dest-features-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 8px;
 }
 
 .dash-dest-feat-item {
     background: rgba(255, 255, 255, 0.035);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    padding: 10px 12px;
+    border-radius: 12px;
+    padding: 8px 10px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .dash-dest-feat-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
     background: rgba(229, 155, 43, 0.12);
     border: 1px solid rgba(229, 155, 43, 0.25);
     color: var(--clr-sun-warm);
@@ -4231,12 +4255,12 @@ html[data-theme="dark"] .dest-spot-time {
 .dash-dest-feat-text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
     min-width: 0;
 }
 
 .dash-dest-feat-label {
-    font-size: 10px;
+    font-size: 9.5px;
     color: rgba(255, 255, 255, 0.45);
     font-weight: 600;
     text-transform: uppercase;
@@ -4244,7 +4268,7 @@ html[data-theme="dark"] .dest-spot-time {
 }
 
 .dash-dest-feat-val {
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 700;
     color: #ffffff;
     white-space: nowrap;
@@ -4256,34 +4280,35 @@ html[data-theme="dark"] .dest-spot-time {
 .dash-dest-desc-and-map {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
-    gap: 16px;
+    gap: 12px;
     align-items: stretch;
+    flex-shrink: 0;
 }
 
 .dash-dest-desc-box {
     background: rgba(255, 255, 255, 0.025);
     border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 16px;
-    padding: 14px 16px;
+    border-radius: 14px;
+    padding: 12px 14px;
     display: flex;
     flex-direction: column;
 }
 
 .dash-dest-desc-text {
-    font-size: 12.5px;
-    line-height: 1.65;
+    font-size: 12px;
+    line-height: 1.6;
     color: rgba(255, 255, 255, 0.78);
     margin: 0;
 }
 
 .dash-dest-map-card {
-    border-radius: 16px;
+    border-radius: 14px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(20, 36, 24, 0.55);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 120px;
+    min-height: 105px;
 }
 
 .dash-dest-map-bg {
@@ -4317,8 +4342,8 @@ html[data-theme="dark"] .dest-spot-time {
 
 .dash-dest-map-pulse {
     position: absolute;
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: rgba(239, 68, 68, 0.4);
     animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
@@ -4332,7 +4357,7 @@ html[data-theme="dark"] .dest-spot-time {
 }
 
 .dash-dest-map-footer {
-    padding: 8px 10px;
+    padding: 7px 10px;
     background: rgba(0, 0, 0, 0.35);
     display: flex;
     justify-content: center;
@@ -4342,7 +4367,7 @@ html[data-theme="dark"] .dest-spot-time {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 700;
     color: #bad1b0;
     text-decoration: none;
@@ -4356,12 +4381,13 @@ html[data-theme="dark"] .dest-spot-time {
 
 /* ===== RIGHT COLUMN: COMMENTS & REVIEWS ===== */
 .dash-dest-right-col {
-    padding: 22px 20px;
+    padding: 20px 18px;
     border-left: 1px solid rgba(255, 255, 255, 0.08);
     background: rgba(255, 255, 255, 0.015);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    min-height: 0;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
