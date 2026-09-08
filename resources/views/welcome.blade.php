@@ -295,7 +295,6 @@
                             loading="lazy"
                         >
                         <div class="cat-card-badge">
-                            <span>💧</span>
                             <span>Waterfall</span>
                         </div>
                         <div class="cat-card-count">15+ Destinasi</div>
@@ -327,7 +326,6 @@
                             loading="lazy"
                         >
                         <div class="cat-card-badge">
-                            <span>🌇</span>
                             <span>Sunset Beach</span>
                         </div>
                         <div class="cat-card-count">18+ Destinasi</div>
@@ -359,7 +357,6 @@
                             loading="lazy"
                         >
                         <div class="cat-card-badge">
-                            <span>🌅</span>
                             <span>Sunrise Beach</span>
                         </div>
                         <div class="cat-card-count">12+ Destinasi</div>
@@ -391,7 +388,6 @@
                             loading="lazy"
                         >
                         <div class="cat-card-badge">
-                            <span>⛰️</span>
                             <span>Mountain</span>
                         </div>
                         <div class="cat-card-count">8+ Destinasi</div>
@@ -493,10 +489,10 @@
                 <div class="footer-col">
                     <h4>4 Kategori Alam</h4>
                     <ul>
-                        <li><a href="javascript:void(0)" onclick="openDestModal('waterfall')">💧 Waterfall</a></li>
-                        <li><a href="javascript:void(0)" onclick="openDestModal('sunset')">🌇 Sunset Beach</a></li>
-                        <li><a href="javascript:void(0)" onclick="openDestModal('sunrise')">🌅 Sunrise Beach</a></li>
-                        <li><a href="javascript:void(0)" onclick="openDestModal('mountain')">⛰️ Mountain</a></li>
+                        <li><a href="javascript:void(0)" onclick="openDestModal('waterfall')">Waterfall</a></li>
+                        <li><a href="javascript:void(0)" onclick="openDestModal('sunset')">Sunset Beach</a></li>
+                        <li><a href="javascript:void(0)" onclick="openDestModal('sunrise')">Sunrise Beach</a></li>
+                        <li><a href="javascript:void(0)" onclick="openDestModal('mountain')">Mountain</a></li>
                     </ul>
                 </div>
 
