@@ -175,7 +175,7 @@
                     <div class="dash-card-header">
                         <div class="dash-widget-title-wrap">
                             <h2 class="dash-widget-title">Riwayat Terakhir Dilihat</h2>
-                            <span class="dash-widget-subtitle">Aktivitas penelusuran Anda (Maks 5)</span>
+                            <span class="dash-widget-subtitle">Aktivitas penelusuran Anda </span>
                         </div>
                         <button type="button" class="dash-see-all-link dash-btn-clear-history" id="btn-clear-history" aria-label="Bersihkan riwayat">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
