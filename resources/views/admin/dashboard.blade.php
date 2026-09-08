@@ -47,7 +47,7 @@
 
             <!-- Navigation Links -->
             <nav class="admin-nav-menu">
-                <a href="javascript:void(0)" class="admin-nav-item active" data-nav="dashboard">
+                <a href="javascript:void(0)" class="admin-nav-item active" data-nav="dashboard" onclick="handleNavClick(this, 'all')">
                     <div class="admin-nav-icon">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                             <rect x="3" y="3" width="7" height="7" rx="2"></rect>
@@ -59,7 +59,7 @@
                     <span class="admin-nav-label">Dashboard</span>
                 </a>
 
-                <a href="javascript:void(0)" class="admin-nav-item" data-nav="destinasi" onclick="filterAdminTable('destinasi')">
+                <a href="javascript:void(0)" class="admin-nav-item" data-nav="destinasi" onclick="handleNavClick(this, 'destinasi')">
                     <div class="admin-nav-icon">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -70,7 +70,7 @@
                     <span class="admin-nav-pill">53</span>
                 </a>
 
-                <a href="javascript:void(0)" class="admin-nav-item" data-nav="author" onclick="filterAdminTable('pending')">
+                <a href="javascript:void(0)" class="admin-nav-item" data-nav="author" onclick="handleNavClick(this, 'pending')">
                     <div class="admin-nav-icon">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -82,7 +82,7 @@
                     <span class="admin-nav-pill pill-alert" id="badge-pending-count">4</span>
                 </a>
 
-                <a href="javascript:void(0)" class="admin-nav-item" data-nav="ulasan" onclick="filterAdminTable('ulasan')">
+                <a href="javascript:void(0)" class="admin-nav-item" data-nav="ulasan" onclick="handleNavClick(this, 'ulasan')">
                     <div class="admin-nav-icon">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -92,7 +92,7 @@
                     <span class="admin-nav-pill">12</span>
                 </a>
 
-                <a href="javascript:void(0)" class="admin-nav-item" data-nav="rencana">
+                <a href="javascript:void(0)" class="admin-nav-item" data-nav="rencana" onclick="handleNavClick(this, 'rencana')">
                     <div class="admin-nav-icon">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
@@ -101,7 +101,7 @@
                     <span class="admin-nav-label">Rencana Wisata</span>
                 </a>
 
-                <a href="javascript:void(0)" class="admin-nav-item" data-nav="kategori">
+                <a href="javascript:void(0)" class="admin-nav-item" data-nav="kategori" onclick="handleNavClick(this, 'kategori')">
                     <div class="admin-nav-icon">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -115,7 +115,7 @@
                     <span class="admin-nav-label">Kategori Alam</span>
                 </a>
 
-                <a href="javascript:void(0)" class="admin-nav-item" data-nav="pengaturan">
+                <a href="javascript:void(0)" class="admin-nav-item" data-nav="pengaturan" onclick="handleNavClick(this, 'pengaturan')">
                     <div class="admin-nav-icon">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="3"></circle>
@@ -191,18 +191,140 @@
                 </div>
                 <div class="admin-hero-illustration" aria-hidden="true">
                     <div class="hero-illustration-art">
-                        <div class="hero-character-circle">
-                            <svg viewBox="0 0 100 100" class="hero-character-svg" width="130" height="130">
-                                <circle cx="50" cy="50" r="46" fill="rgba(245, 184, 66, 0.2)" />
-                                <!-- Stylized Administrator with Bali Nature elements -->
-                                <circle cx="50" cy="38" r="16" fill="#f6d5b0" />
-                                <path d="M42 30 Q50 20 58 30 Q54 23 44 26 Z" fill="#244b2c" />
-                                <path d="M26 82 C26 58 38 52 50 52 C62 52 74 58 74 82 Z" fill="#244b2c" />
-                                <!-- Laptop / Clipboard -->
-                                <rect x="34" y="60" width="32" height="22" rx="3" fill="#ffffff" stroke="#e59b2b" stroke-width="2" />
-                                <line x1="40" y1="67" x2="60" y2="67" stroke="#244b2c" stroke-width="2" stroke-linecap="round" />
-                                <line x1="40" y1="73" x2="54" y2="73" stroke="#e59b2b" stroke-width="2" stroke-linecap="round" />
+                        <svg viewBox="0 0 180 180" class="hero-character-svg" preserveAspectRatio="xMidYMid meet">
+                            <defs>
+                                <linearGradient id="leafGrad1" x1="0%" y1="100%" x2="0%" y2="0%">
+                                    <stop offset="0%" stop-color="rgba(36, 75, 44, 0.45)" />
+                                    <stop offset="100%" stop-color="rgba(74, 222, 128, 0.3)" />
+                                </linearGradient>
+                                <linearGradient id="leafGrad2" x1="0%" y1="100%" x2="0%" y2="0%">
+                                    <stop offset="0%" stop-color="rgba(245, 184, 66, 0.25)" />
+                                    <stop offset="100%" stop-color="rgba(245, 184, 66, 0.5)" />
+                                </linearGradient>
+                                <linearGradient id="laptopScreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#38bdf8" />
+                                    <stop offset="100%" stop-color="#0f172a" />
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Organic Backdrop Petals/Leaves (Matching reference image) -->
+                            <path d="M90 145 C45 125 30 75 55 35 C80 65 90 105 90 145 Z" fill="url(#leafGrad1)" />
+                            <path d="M90 145 C75 90 75 40 90 18 C105 40 105 90 90 145 Z" fill="url(#leafGrad2)" />
+                            <path d="M90 145 C90 105 100 65 125 35 C150 75 135 125 90 145 Z" fill="url(#leafGrad1)" />
+                            <circle cx="90" cy="95" r="55" fill="rgba(245, 184, 66, 0.12)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.2" />
+
+                            <!-- Administrator Figure (Proportionate, elegant character) -->
+                            <!-- Hair Bun -->
+                            <circle cx="90" cy="38" r="10" fill="#122115" />
+                            <circle cx="95" cy="36" r="5.5" fill="#1b3821" />
+                            <!-- Face & Neck -->
+                            <path d="M86 57 L86 67 L94 67 L94 57 Z" fill="#fbd7b5" />
+                            <ellipse cx="90" cy="49" rx="10" ry="12" fill="#fbd7b5" />
+                            <!-- Hair Front / Bangs -->
+                            <path d="M80 47 C80 37 100 37 100 47 C97 43 93 41 90 41 C87 41 83 43 80 47 Z" fill="#122115" />
+                            <!-- Eyes & Smile -->
+                            <ellipse cx="86.5" cy="49" rx="1.2" ry="1.2" fill="#122115" />
+                            <ellipse cx="93.5" cy="49" rx="1.2" ry="1.2" fill="#122115" />
+                            <path d="M88 54 Q90 56 92 54" stroke="#c27847" stroke-width="0.9" fill="none" stroke-linecap="round" />
+
+                            <!-- Raised Left Arm / Greeting Hand (like reference image) -->
+                            <path d="M78 70 C72 63 67 54 68 45 C70 45 74 48 76 54 L78 68 Z" fill="#fbd7b5" />
+                            <circle cx="68" cy="44" r="2.8" fill="#fbd7b5" />
+
+                            <!-- Crisp White Shirt / Blouse -->
+                            <path d="M76 68 C76 64 83 64 90 64 C97 64 104 64 104 68 L107 102 C107 105 101 107 90 107 C79 107 73 105 73 102 Z" fill="#ffffff" />
+                            <path d="M85 64 L90 72 L95 64 Z" fill="#e2e8f0" />
+                            <path d="M84 64 L87 71 L90 74 L93 71 L96 64" stroke="#244b2c" stroke-width="1.2" fill="none" />
+
+                            <!-- Hands Holding Laptop -->
+                            <path d="M73 84 C71 93 73 102 78 103 L82 96 Z" fill="#fbd7b5" />
+                            <path d="M107 84 C109 93 107 102 102 103 L98 96 Z" fill="#fbd7b5" />
+
+                            <!-- Open Laptop with Glowing Nature Stats -->
+                            <polygon points="69,106 111,106 107,112 73,112" fill="#cbd5e1" stroke="#94a3b8" stroke-width="0.8" />
+                            <polygon points="74,89 106,89 108,106 72,106" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+                            <rect x="76" y="91" width="28" height="13" rx="1.5" fill="url(#laptopScreenGrad)" />
+                            <line x1="79" y1="95" x2="88" y2="95" stroke="#f5b842" stroke-width="1" stroke-linecap="round" />
+                            <line x1="79" y1="98" x2="100" y2="98" stroke="#4ade80" stroke-width="1" stroke-linecap="round" />
+                            <line x1="79" y1="101" x2="93" y2="101" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" />
+
+                            <!-- Skirt / Base -->
+                            <path d="M73 110 C73 107 81 107 90 107 C99 107 107 107 107 110 L110 152 C110 156 70 156 70 152 Z" fill="#1b3821" />
+
+                            <!-- Hair Flower Accent -->
+                            <circle cx="79" cy="41" r="2.8" fill="#f5b842" />
+                            <circle cx="79" cy="41" r="1.1" fill="#ffffff" />
+                        </svg>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Status Ringkasan Destinasi (Post, Pending, Draft) -->
+            <section class="admin-status-section" aria-label="Status Ringkasan Destinasi">
+                <div class="admin-status-grid">
+                    <!-- 1. POST (Terbit) -->
+                    <div class="admin-status-card stat-card-post" onclick="filterAdminTable('active'); updateNavActive('destinasi');" role="button" tabindex="0" title="Klik untuk memfilter destinasi aktif yang tayang">
+                        <div class="stat-card-icon-wrap icon-post">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
+                        </div>
+                        <div class="stat-card-content">
+                            <div class="stat-card-header">
+                                <span class="stat-card-title">Post</span>
+                                <span class="stat-pill-badge badge-published">● Terbit</span>
+                            </div>
+                            <div class="stat-card-value-group">
+                                <span class="stat-main-number" id="stat-post-count">53</span>
+                                <span class="stat-unit">Destinasi</span>
+                            </div>
+                            <p class="stat-card-desc">Konten aktif tayang di katalog publik</p>
+                        </div>
+                    </div>
+
+                    <!-- 2. PENDING (Menunggu Verifikasi) -->
+                    <div class="admin-status-card stat-card-pending" onclick="filterAdminTable('pending'); updateNavActive('author');" role="button" tabindex="0" title="Klik untuk memfilter permohonan pending">
+                        <div class="stat-card-icon-wrap icon-pending">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-card-content">
+                            <div class="stat-card-header">
+                                <span class="stat-card-title">Pending</span>
+                                <span class="stat-pill-badge badge-waiting">● Perlu Aksi</span>
+                            </div>
+                            <div class="stat-card-value-group">
+                                <span class="stat-main-number" id="stat-pending-count">4</span>
+                                <span class="stat-unit">Permohonan</span>
+                            </div>
+                            <p class="stat-card-desc">Verifikasi author & konten destinasi</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. DRAFT (Konsep / Siap Rilis) -->
+                    <div class="admin-status-card stat-card-draft" onclick="showAdminToast('Menampilkan 3 draft destinasi siap rilis'); scrollToTable();" role="button" tabindex="0" title="Klik untuk melihat draft">
+                        <div class="stat-card-icon-wrap icon-draft">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-card-content">
+                            <div class="stat-card-header">
+                                <span class="stat-card-title">Draft</span>
+                                <span class="stat-pill-badge badge-draft">● Konsep</span>
+                            </div>
+                            <div class="stat-card-value-group">
+                                <span class="stat-main-number" id="stat-draft-count">3</span>
+                                <span class="stat-unit">Tersimpan</span>
+                            </div>
+                            <p class="stat-card-desc">Destinasi siap uji & rilis ke publik</p>
                         </div>
                     </div>
                 </div>
@@ -492,11 +614,11 @@
 
                 <div class="admin-profile-badge">
                     <div class="admin-profile-meta">
-                        <span class="admin-profile-name">Made Astawa</span>
-                        <span class="admin-profile-role">Super Admin</span>
+                        <span class="admin-profile-name">Erick</span>
+                        <span class="admin-profile-role">Admin</span>
                     </div>
                     <div class="admin-profile-avatar">
-                        <span>MA</span>
+                        <span>ER</span>
                     </div>
                 </div>
             </div>
@@ -692,10 +814,10 @@
                     <div class="admin-form-group">
                         <label for="dest-input-category" class="admin-form-label">Kategori Wisata</label>
                         <select id="dest-input-category" class="admin-form-select" required>
-                            <option value="Waterfall">Air Terjun (Waterfall)</option>
+                            <option value="Waterfall">Waterfall</option>
                             <option value="Sunset Beach">Sunset Beach</option>
                             <option value="Sunrise Beach">Sunrise Beach</option>
-                            <option value="Gunung">Gunung & Trekking</option>
+                            <option value="Mountain">Mountain</option>
                         </select>
                     </div>
                     <div class="admin-form-group">
@@ -733,6 +855,65 @@
 
     <!-- Live Interactive Client Logic for Admin Portal -->
     <script>
+        // Handle Left Navigation Item Click (Lights up active menu in yellow gold)
+        function handleNavClick(element, type) {
+            document.querySelectorAll('.admin-nav-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+
+            if (type === 'destinasi') {
+                filterAdminTable('destinasi');
+                syncTableFilterTab('active');
+                showAdminToast('Menampilkan Kelola Destinasi (Destinasi Aktif)');
+                scrollToTable();
+            } else if (type === 'pending') {
+                filterAdminTable('pending');
+                syncTableFilterTab('pending');
+                showAdminToast('Menampilkan Verifikasi Author');
+                scrollToTable();
+            } else if (type === 'ulasan') {
+                filterAdminTable('review');
+                syncTableFilterTab('review');
+                showAdminToast('Menampilkan Moderasi Ulasan');
+                scrollToTable();
+            } else if (type === 'all') {
+                filterAdminTable('all');
+                syncTableFilterTab('all');
+                showAdminToast('Kembali ke Dashboard Utama');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (type === 'kategori') {
+                scrollToCategories();
+                showAdminToast('Menampilkan Kategori Alam Dewasufa');
+            } else {
+                const label = element.querySelector('.admin-nav-label')?.textContent || type;
+                showAdminToast(`Menu "${label}" aktif`);
+            }
+        }
+
+        // Programmatically update active nav item
+        function updateNavActive(navKey) {
+            const target = document.querySelector(`.admin-nav-item[data-nav="${navKey}"]`);
+            if (target) {
+                document.querySelectorAll('.admin-nav-item').forEach(item => item.classList.remove('active'));
+                target.classList.add('active');
+            }
+        }
+
+        // Synchronize Table Filter Tabs
+        function syncTableFilterTab(tabType) {
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                const onclickAttr = btn.getAttribute('onclick') || '';
+                if (onclickAttr.includes(`'${tabType}'`)) {
+                    document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function scrollToCategories() {
+            const el = document.querySelector('.admin-categories-section');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         // Filter Table Rows
         function filterAdminTable(type, clickedBtn) {
             if (clickedBtn) {
@@ -745,7 +926,11 @@
 
             rows.forEach(row => {
                 const rowType = row.dataset.type;
-                if (type === 'all' || rowType === type) {
+                const isMatch = (type === 'all') || 
+                                (type === 'destinasi' && rowType === 'active') || 
+                                (rowType === type);
+
+                if (isMatch) {
                     row.style.display = '';
                     count++;
                 } else {

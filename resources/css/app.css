@@ -5352,6 +5352,17 @@ html[data-theme="dark"] .dest-spot-time {
     border: 1px solid rgba(245, 184, 66, 0.28);
 }
 
+.admin-nav-item.active .admin-nav-icon,
+.admin-nav-item.active .admin-nav-label {
+    color: #f5b842;
+}
+
+.admin-nav-item.active .admin-nav-pill {
+    background: rgba(245, 184, 66, 0.22);
+    color: #f5b842;
+    border-color: rgba(245, 184, 66, 0.4);
+}
+
 .admin-nav-item.active::before {
     content: '';
     position: absolute;
@@ -5631,14 +5642,172 @@ html[data-theme="dark"] .dest-spot-time {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-right: 12px;
+    padding-right: 16px;
+    flex-shrink: 0;
+    width: 170px;
+    height: 170px;
 }
 
-.hero-character-circle {
+.hero-illustration-art {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+    flex-shrink: 0;
+}
+
+.hero-character-svg {
+    width: 170px;
+    height: 170px;
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+    display: block;
+    filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.45));
+}
+
+/* =========================================
+   STATUS OVERVIEW SECTION (Post, Pending, Draft)
+   ========================================= */
+.admin-status-section {
+    margin-bottom: 4px;
+}
+
+.admin-status-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.admin-status-card {
+    background: rgba(18, 32, 22, 0.55);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-status-card:hover {
+    transform: translateY(-3px);
+    background: rgba(24, 42, 28, 0.72);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38);
+}
+
+.stat-card-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.admin-status-card:hover .stat-card-icon-wrap {
+    transform: scale(1.08);
+}
+
+.stat-card-icon-wrap.icon-post {
+    background: rgba(74, 222, 128, 0.16);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.stat-card-icon-wrap.icon-pending {
+    background: rgba(245, 184, 66, 0.18);
+    color: #f5b842;
+    border: 1px solid rgba(245, 184, 66, 0.35);
+}
+
+.stat-card-icon-wrap.icon-draft {
+    background: rgba(56, 189, 248, 0.16);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.stat-card-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stat-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-pill-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 9999px;
+}
+
+.badge-published {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.badge-waiting {
+    background: rgba(245, 184, 66, 0.2);
+    color: #f5b842;
+    border: 1px solid rgba(245, 184, 66, 0.4);
+}
+
+.badge-draft {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.stat-card-value-group {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.stat-main-number {
+    font-size: 26px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+
+.stat-unit {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.stat-card-desc {
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 2px 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Category Grid ("You Need to Hire" in Reference) with Glass Card Styling */
@@ -6643,6 +6812,10 @@ html[data-theme="dark"] .dest-spot-time {
     .admin-right-sidebar {
         display: none;
     }
+    .admin-status-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -6656,6 +6829,10 @@ html[data-theme="dark"] .dest-spot-time {
     .admin-sidebar {
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .admin-status-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
     }
     .admin-category-grid {
         grid-template-columns: repeat(2, 1fr);
