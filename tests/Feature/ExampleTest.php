@@ -25,6 +25,8 @@ class ExampleTest extends TestCase
         $response->assertSee('Dashboard Pengguna');
         $response->assertSee('Destinasi Baru Rilis');
         $response->assertSee('Riwayat Terakhir Dilihat');
-        $response->assertSee('Buat Destinasi Baru');
+        $response->assertSee('Daftar sebagai Author');
+        $response->assertSee('Pengaturan (Settings)');
+        $response->assertSee('Log Out (Keluar)');
     }
 }

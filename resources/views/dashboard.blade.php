@@ -72,12 +72,12 @@
                     <!-- Dropdown Menu -->
                     <div class="dash-dropdown-menu" id="dash-user-dropdown">
                         <a href="javascript:void(0)" class="dash-dropdown-item text-gold" id="dash-btn-open-create">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" y1="8" x2="12" y2="16"></line>
-                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+                                <line x1="16" y1="8" x2="2" y2="22"></line>
+                                <line x1="17.5" y1="15" x2="9" y2="15"></line>
                             </svg>
-                            <span>Buat Destinasi Baru</span>
+                            <span>Daftar sebagai Author</span>
                         </a>
                         <a href="{{ route('home') }}" class="dash-dropdown-item">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -92,13 +92,12 @@
                             <span>Rencana Tersimpan</span>
                         </a>
                         <hr class="dash-dropdown-divider">
-                        <a href="{{ route('home') }}" class="dash-dropdown-item text-danger" id="dash-btn-logout">
+                        <a href="javascript:void(0)" class="dash-dropdown-item" id="dash-btn-open-settings">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                <polyline points="16 17 21 12 16 7"></polyline>
-                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                             </svg>
-                            <span>Keluar (Logout)</span>
+                            <span>Pengaturan (Settings)</span>
                         </a>
                     </div>
                 </div>
@@ -119,10 +118,11 @@
                             <h2 class="dash-widget-title">Destinasi Baru Rilis</h2>
                             <span class="dash-widget-subtitle">Baru Diunggah & Terverifikasi</span>
                         </div>
-                        <button type="button" class="dash-btn-add-mini" id="btn-quick-create-spot" title="Buat Destinasi Baru" aria-label="Buat Destinasi Baru">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <button type="button" class="dash-btn-add-mini" id="btn-quick-create-spot" title="Daftar sebagai Author" aria-label="Daftar sebagai Author">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+                                <line x1="16" y1="8" x2="2" y2="22"></line>
+                                <line x1="17.5" y1="15" x2="9" y2="15"></line>
                             </svg>
                         </button>
                     </div>
@@ -169,64 +169,68 @@
                     </div>
 
                     <div class="dash-history-list" id="dash-history-container">
-                        <!-- Item 1 -->
-                        <div class="dash-history-item" onclick="openDashSpotDetail('waterfall')">
-                            <div class="dash-history-icon-wrap bg-forest">
-                                <span>💧</span>
+                        <!-- Card 1 -->
+                        <div class="dash-history-mini-card" data-spot-key="waterfall" onclick="openDashSpotDetail('waterfall')">
+                            <img src="/images/waterfall.jpg" alt="Air Terjun Tegenungan" class="dash-mini-img">
+                            <div class="dash-mini-info">
+                                <div class="dash-history-mini-meta">
+                                    <span class="dash-badge-launch">💧 Waterfall</span>
+                                    <span class="dash-history-mini-time">🕒 5 menit lalu</span>
+                                </div>
+                                <span class="dash-mini-title">Air Terjun Tegenungan</span>
                             </div>
-                            <div class="dash-history-info">
-                                <h4>Air Terjun Tegenungan</h4>
-                                <span class="dash-history-time">🕒 Dilihat 5 menit lalu</span>
-                            </div>
-                            <button type="button" class="dash-circle-mini-btn" aria-label="Kunjungi Lagi">
+                            <button type="button" class="dash-circle-btn" aria-label="Kunjungi Lagi">
                                 <svg viewBox="0 0 24 24" fill="currentColor">
                                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                                 </svg>
                             </button>
                         </div>
 
-                        <!-- Item 2 -->
-                        <div class="dash-history-item" onclick="openDashSpotDetail('sunrise')">
-                            <div class="dash-history-icon-wrap bg-warm">
-                                <span>🌅</span>
+                        <!-- Card 2 -->
+                        <div class="dash-history-mini-card" data-spot-key="sunrise" onclick="openDashSpotDetail('sunrise')">
+                            <img src="/images/sunrise-beach.jpg" alt="Pantai Sanur" class="dash-mini-img">
+                            <div class="dash-mini-info">
+                                <div class="dash-history-mini-meta">
+                                    <span class="dash-badge-launch badge-sunrise-h">🌅 Sunrise</span>
+                                    <span class="dash-history-mini-time">🕒 25 menit lalu</span>
+                                </div>
+                                <span class="dash-mini-title">Pantai Sanur Denpasar</span>
                             </div>
-                            <div class="dash-history-info">
-                                <h4>Pantai Sanur Denpasar</h4>
-                                <span class="dash-history-time">🕒 Dilihat 25 menit lalu</span>
-                            </div>
-                            <button type="button" class="dash-circle-mini-btn" aria-label="Kunjungi Lagi">
+                            <button type="button" class="dash-circle-btn" aria-label="Kunjungi Lagi">
                                 <svg viewBox="0 0 24 24" fill="currentColor">
                                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                                 </svg>
                             </button>
                         </div>
 
-                        <!-- Item 3 -->
-                        <div class="dash-history-item" onclick="openDashSpotDetail('mountain')">
-                            <div class="dash-history-icon-wrap bg-emerald">
-                                <span>⛰️</span>
+                        <!-- Card 3 -->
+                        <div class="dash-history-mini-card" data-spot-key="mountain" onclick="openDashSpotDetail('mountain')">
+                            <img src="/images/mountain.jpg" alt="Gunung Batur" class="dash-mini-img">
+                            <div class="dash-mini-info">
+                                <div class="dash-history-mini-meta">
+                                    <span class="dash-badge-launch badge-mountain-h">⛰️ Mountain</span>
+                                    <span class="dash-history-mini-time">🕒 1 jam lalu</span>
+                                </div>
+                                <span class="dash-mini-title">Gunung Batur Kintamani</span>
                             </div>
-                            <div class="dash-history-info">
-                                <h4>Gunung Batur Kintamani</h4>
-                                <span class="dash-history-time">🕒 Dilihat 1 jam lalu</span>
-                            </div>
-                            <button type="button" class="dash-circle-mini-btn" aria-label="Kunjungi Lagi">
+                            <button type="button" class="dash-circle-btn" aria-label="Kunjungi Lagi">
                                 <svg viewBox="0 0 24 24" fill="currentColor">
                                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                                 </svg>
                             </button>
                         </div>
 
-                        <!-- Item 4 -->
-                        <div class="dash-history-item" onclick="openDashSpotDetail('sunset')">
-                            <div class="dash-history-icon-wrap bg-sunset">
-                                <span>🌇</span>
+                        <!-- Card 4 -->
+                        <div class="dash-history-mini-card" data-spot-key="sunset" onclick="openDashSpotDetail('sunset')">
+                            <img src="/images/sunset-beach.jpg" alt="Pura Luhur Uluwatu" class="dash-mini-img">
+                            <div class="dash-mini-info">
+                                <div class="dash-history-mini-meta">
+                                    <span class="dash-badge-launch badge-sunset-h">🌇 Sunset</span>
+                                    <span class="dash-history-mini-time">🕒 Kemarin</span>
+                                </div>
+                                <span class="dash-mini-title">Pura Luhur Uluwatu</span>
                             </div>
-                            <div class="dash-history-info">
-                                <h4>Pura Luhur Uluwatu</h4>
-                                <span class="dash-history-time">🕒 Dilihat kemarin</span>
-                            </div>
-                            <button type="button" class="dash-circle-mini-btn" aria-label="Kunjungi Lagi">
+                            <button type="button" class="dash-circle-btn" aria-label="Kunjungi Lagi">
                                 <svg viewBox="0 0 24 24" fill="currentColor">
                                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                                 </svg>
@@ -405,14 +409,14 @@
         </main>
     </div>
 
-    <!-- ===== MODAL BUAT DESTINASI BARU ===== -->
+    <!-- ===== MODAL DAFTAR SEBAGAI AUTHOR ===== -->
     <div class="dash-modal-backdrop" id="create-dest-modal" role="dialog" aria-modal="true" aria-labelledby="create-dest-title">
         <div class="dash-modal-card">
             <div class="dash-modal-header">
                 <div class="dash-modal-title-wrap">
-                    <span class="dash-modal-badge">✨ Kontribusi Wisatawan</span>
-                    <h3 id="create-dest-title" class="dash-modal-title">Buat Destinasi Wisata Baru</h3>
-                    <p class="dash-modal-subtitle">Tambahkan pesona alam Bali yang belum ada di platform Dewasufa.</p>
+                    <span class="dash-modal-badge">✍️ Komunitas Penulis Dewasufa</span>
+                    <h3 id="create-dest-title" class="dash-modal-title">Daftar sebagai Author</h3>
+                    <p class="dash-modal-subtitle">Bergabunglah sebagai Author resmi untuk menulis dan mempublikasikan rekomendasi destinasi alam Bali.</p>
                 </div>
                 <button type="button" class="dash-modal-close" id="btn-close-create-dest" aria-label="Tutup Modal">&times;</button>
             </div>
@@ -420,12 +424,12 @@
             <form id="create-dest-form" onsubmit="handleCreateDestSubmit(event)">
                 <div class="dash-form-grid">
                     <div class="dash-form-group">
-                        <label for="new-dest-name">Nama Destinasi Wisata <span class="required">*</span></label>
+                        <label for="new-dest-name">Nama Destinasi / Artikel Pertama <span class="required">*</span></label>
                         <input type="text" id="new-dest-name" placeholder="Contoh: Air Terjun Banyumala Twin" required>
                     </div>
 
                     <div class="dash-form-group">
-                        <label for="new-dest-category">Kategori Alam <span class="required">*</span></label>
+                        <label for="new-dest-category">Spesialisasi Kategori <span class="required">*</span></label>
                         <select id="new-dest-category" required>
                             <option value="waterfall">💧 Waterfall (Air Terjun)</option>
                             <option value="sunset">🌇 Sunset Beach (Pantai Senja)</option>
@@ -435,19 +439,19 @@
                     </div>
 
                     <div class="dash-form-group">
-                        <label for="new-dest-location">Wilayah / Kabupaten Bali <span class="required">*</span></label>
+                        <label for="new-dest-location">Wilayah / Kabupaten di Bali <span class="required">*</span></label>
                         <input type="text" id="new-dest-location" placeholder="Contoh: Wanagiri, Buleleng, Bali" required>
                     </div>
 
                     <div class="dash-form-group">
-                        <label for="new-dest-time">Jam Kunjungan Terbaik</label>
+                        <label for="new-dest-time">Waktu Kunjungan Rekomendasi</label>
                         <input type="text" id="new-dest-time" placeholder="Contoh: 07:00 - 17:00 WITA" value="07:00 - 17:00 WITA">
                     </div>
                 </div>
 
                 <div class="dash-form-group">
-                    <label for="new-dest-desc">Deskripsi & Keunikan Spot <span class="required">*</span></label>
-                    <textarea id="new-dest-desc" rows="3" placeholder="Ceritakan keindahan panorama, daya tarik utama, akses trekking, atau tips berkunjung..." required></textarea>
+                    <label for="new-dest-desc">Cerita Singkat / Ulasan Destinasi <span class="required">*</span></label>
+                    <textarea id="new-dest-desc" rows="3" placeholder="Ceritakan keindahan panorama, daya tarik utama, akses trekking, atau tips eksklusif bagi wisatawan..." required></textarea>
                 </div>
 
                 <div class="dash-form-group">
@@ -479,13 +483,129 @@
                 <div class="dash-modal-actions">
                     <button type="button" class="dash-btn-secondary" id="btn-cancel-create-dest">Batal</button>
                     <button type="submit" class="dash-btn-primary">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20 6 9 17 4 12"></polyline>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+                            <line x1="16" y1="8" x2="2" y2="22"></line>
+                            <line x1="17.5" y1="15" x2="9" y2="15"></line>
                         </svg>
-                        <span>Publikasikan Destinasi</span>
+                        <span>Daftar & Publikasikan</span>
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- ===== MODAL PENGATURAN (SETTINGS) ===== -->
+    <div class="dash-modal-backdrop" id="dash-settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+        <div class="dash-modal-card dash-settings-card">
+            <div class="dash-modal-header">
+                <div class="dash-modal-title-wrap">
+                    <span class="dash-modal-badge">⚙️ Pengaturan Akun</span>
+                    <h3 id="settings-modal-title" class="dash-modal-title">Pengaturan & Preferensi</h3>
+                    <p class="dash-modal-subtitle">Kelola informasi profil, preferensi eksplorasi wisata, dan sesi akun Anda.</p>
+                </div>
+                <button type="button" class="dash-modal-close" id="btn-close-settings" aria-label="Tutup Pengaturan">&times;</button>
+            </div>
+
+            <!-- Form Edit Profil Pengguna -->
+            <form id="dash-settings-form" onsubmit="handleSaveSettings(event)">
+                <div class="dash-settings-section">
+                    <h4 class="dash-settings-sec-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Informasi Profil</span>
+                    </h4>
+
+                    <div class="dash-form-grid">
+                        <div class="dash-form-group">
+                            <label for="settings-name">Nama Lengkap</label>
+                            <input type="text" id="settings-name" placeholder="Nama Anda" value="Wisatawan Bali">
+                        </div>
+                        <div class="dash-form-group">
+                            <label for="settings-email">Email Terdaftar</label>
+                            <input type="email" id="settings-email" placeholder="email@example.com" value="user@dewasufa.com">
+                        </div>
+                    </div>
+
+                    <div class="dash-form-grid">
+                        <div class="dash-form-group">
+                            <label for="settings-role">Status Akun</label>
+                            <input type="text" id="settings-role" value="Member Eksklusif Dewasufa" readonly style="opacity: 0.7; cursor: not-allowed;">
+                        </div>
+                        <div class="dash-form-group">
+                            <label for="settings-distance">Satuan Jarak Rute</label>
+                            <select id="settings-distance">
+                                <option value="km" selected>Kilometer (km)</option>
+                                <option value="miles">Mil (miles)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferensi Notifikasi & Eksplorasi -->
+                <div class="dash-settings-section">
+                    <h4 class="dash-settings-sec-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span>Preferensi Aplikasi</span>
+                    </h4>
+
+                    <div class="dash-settings-toggle-row">
+                        <div class="dash-toggle-info">
+                            <span class="dash-toggle-title">Pemberitahuan Rekomendasi Destinasi</span>
+                            <span class="dash-toggle-sub">Terima tips wisata Bali dan spot anyar setiap minggu</span>
+                        </div>
+                        <label class="dash-switch">
+                            <input type="checkbox" id="settings-toggle-notif" checked>
+                            <span class="dash-switch-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="dash-settings-toggle-row">
+                        <div class="dash-toggle-info">
+                            <span class="dash-toggle-title">Mode Tampilan Gelap (Nature Glass)</span>
+                            <span class="dash-toggle-sub">Nuansa hijau hutan dan kaca gelap hemat energi</span>
+                        </div>
+                        <label class="dash-switch">
+                            <input type="checkbox" id="settings-toggle-dark" checked disabled>
+                            <span class="dash-switch-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="dash-modal-actions" style="margin-bottom: 24px;">
+                    <button type="submit" class="dash-btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        <span>Simpan Perubahan</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- ZONA KELUAR / LOG OUT (MASUK DI DALAM FITUR SETTING) -->
+            <div class="dash-settings-danger-zone">
+                <div class="dash-danger-info">
+                    <h4 class="dash-danger-title">Sesi Akun & Log Out</h4>
+                    <p class="dash-danger-desc">
+                        Ingin mengakhiri sesi penjelajahan Anda di Dewasufa? Anda dapat masuk kembali kapan saja.
+                    </p>
+                </div>
+                <button type="button" class="dash-btn-logout-inside" id="dash-btn-logout-inside">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Log Out (Keluar)</span>
+                </button>
+            </div>
         </div>
     </div>
 

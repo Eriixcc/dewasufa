@@ -302,51 +302,72 @@ export function showDashboardSlide(index) {
     }
 }
 
-export function addToRecentlyViewed(name, category = 'waterfall') {
+export function bringHistoryCardToTop(key) {
     const historyContainer = document.getElementById('dash-history-container');
     if (!historyContainer) return;
 
-    const iconMap = {
-        waterfall: { icon: '💧', cls: 'bg-forest' },
-        sunset: { icon: '🌇', cls: 'bg-sunset' },
-        sunrise: { icon: '🌅', cls: 'bg-warm' },
-        mountain: { icon: '⛰️', cls: 'bg-emerald' }
+    // Config map for each spot key
+    const spotConfig = {
+        sekumpul:  { name: 'Air Terjun Sekumpul Buleleng',    cat: 'waterfall', img: '/images/waterfall.jpg',       badge: '💧 Waterfall',  badgeCls: '' },
+        waterfall: { name: 'Air Terjun Tegenungan',            cat: 'waterfall', img: '/images/waterfall.jpg',       badge: '💧 Waterfall',  badgeCls: '' },
+        sunset:    { name: 'Pura Luhur Uluwatu',               cat: 'sunset',    img: '/images/sunset-beach.jpg',    badge: '🌇 Sunset',     badgeCls: 'badge-sunset-h' },
+        sunrise:   { name: 'Pantai Sanur Denpasar',            cat: 'sunrise',   img: '/images/sunrise-beach.jpg',   badge: '🌅 Sunrise',    badgeCls: 'badge-sunrise-h' },
+        mountain:  { name: 'Gunung Batur Kintamani',           cat: 'mountain',  img: '/images/mountain.jpg',        badge: '⛰️ Mountain',  badgeCls: 'badge-mountain-h' }
     };
-    const conf = iconMap[category] || iconMap.waterfall;
+    const conf = spotConfig[key] || spotConfig.waterfall;
 
-    const item = document.createElement('div');
-    item.className = 'dash-history-item';
-    item.innerHTML = `
-        <div class="dash-history-icon-wrap ${conf.cls}">
-            <span>${conf.icon}</span>
+    // Check if card already exists in history
+    const existing = historyContainer.querySelector(`[data-spot-key="${key}"]`);
+    if (existing) {
+        // Move to top without duplicating
+        historyContainer.prepend(existing);
+        // Update the timestamp text
+        const timeEl = existing.querySelector('.dash-history-mini-time');
+        if (timeEl) timeEl.textContent = '🕒 Baru saja dilihat';
+        // Trigger highlight animation
+        existing.classList.remove('dash-history-highlight');
+        void existing.offsetWidth; // reflow
+        existing.classList.add('dash-history-highlight');
+        setTimeout(() => existing.classList.remove('dash-history-highlight'), 1400);
+        return;
+    }
+
+    // Create a new mini-card in the same style as "Destinasi Baru Rilis"
+    const card = document.createElement('div');
+    card.className = 'dash-history-mini-card';
+    card.dataset.spotKey = key;
+    card.innerHTML = `
+        <img src="${conf.img}" alt="${conf.name}" class="dash-mini-img">
+        <div class="dash-mini-info">
+            <div class="dash-history-mini-meta">
+                <span class="dash-badge-launch ${conf.badgeCls}">${conf.badge}</span>
+                <span class="dash-history-mini-time">🕒 Baru saja dilihat</span>
+            </div>
+            <span class="dash-mini-title">${conf.name}</span>
         </div>
-        <div class="dash-history-info">
-            <h4>${name}</h4>
-            <span class="dash-history-time">🕒 Baru saja dilihat</span>
-        </div>
-        <button type="button" class="dash-circle-mini-btn" aria-label="Kunjungi Lagi">
+        <button type="button" class="dash-circle-btn" aria-label="Kunjungi Lagi">
             <svg viewBox="0 0 24 24" fill="currentColor">
                 <polygon points="5 3 19 12 5 21 5 3"></polygon>
             </svg>
         </button>
     `;
-    item.addEventListener('click', () => {
-        showToast(`Membuka riwayat: ${name}`, '📍');
-    });
-
-    historyContainer.prepend(item);
+    card.onclick = () => openDashSpotDetail(key);
+    historyContainer.prepend(card);
+    // Animate newly added card
+    card.classList.add('dash-history-highlight');
+    setTimeout(() => card.classList.remove('dash-history-highlight'), 1400);
 }
 
 export function openDashSpotDetail(key) {
     const spotMap = {
-        sekumpul: { name: 'Air Terjun Sekumpul (Buleleng)', cat: 'waterfall' },
-        waterfall: { name: 'Air Terjun Tegenungan (Gianyar)', cat: 'waterfall' },
-        sunset: { name: 'Pantai Melasti & Tanah Lot (Sunset Point)', cat: 'sunset' },
-        sunrise: { name: 'Pantai Sanur (Sunrise Point)', cat: 'sunrise' },
-        mountain: { name: 'Gunung Batur (Kaldera Kintamani)', cat: 'mountain' }
+        sekumpul:  { name: 'Air Terjun Sekumpul (Buleleng)' },
+        waterfall: { name: 'Air Terjun Tegenungan (Gianyar)' },
+        sunset:    { name: 'Pantai Melasti & Tanah Lot (Sunset Point)' },
+        sunrise:   { name: 'Pantai Sanur (Sunrise Point)' },
+        mountain:  { name: 'Gunung Batur (Kaldera Kintamani)' }
     };
-    const spot = spotMap[key] || { name: key, cat: 'waterfall' };
-    addToRecentlyViewed(spot.name, spot.cat);
+    const spot = spotMap[key] || { name: key };
+    bringHistoryCardToTop(key);
     showToast(`Membuka rute dan panduan: ${spot.name}`, '📍');
 }
 
@@ -397,7 +418,7 @@ export function handleCreateDestSubmit(event) {
         newSpotCard.innerHTML = `
             <img src="${selectedPreset}" alt="${name}" class="dash-mini-img">
             <div class="dash-mini-info">
-                <span class="dash-badge-launch">✨ Baru Dibuat</span>
+                <span class="dash-badge-launch">✨ Karya Author Baru</span>
                 <span class="dash-mini-title">${name} (${location})</span>
             </div>
             <button type="button" class="dash-circle-btn" aria-label="Lihat Rute">
@@ -407,7 +428,7 @@ export function handleCreateDestSubmit(event) {
             </button>
         `;
         newSpotCard.addEventListener('click', () => {
-            showToast(`Membuka spot buatan Anda: ${name}`, '📍');
+            showToast(`Membuka karya Author Anda: ${name}`, '📍');
         });
         newSpotsContainer.prepend(newSpotCard);
     }
@@ -438,7 +459,7 @@ export function handleCreateDestSubmit(event) {
             </div>
         `;
         recomCard.addEventListener('click', () => {
-            showToast(`Membuka spot buatan Anda: ${name}`, '📍');
+            showToast(`Membuka karya Author Anda: ${name}`, '📍');
         });
         recomGrid.prepend(recomCard);
     }
@@ -446,12 +467,53 @@ export function handleCreateDestSubmit(event) {
     // 3. Add to recently viewed history
     addToRecentlyViewed(name, category);
 
+    // Update user role to Author
+    const roleEl = document.querySelector('.dash-user-role');
+    if (roleEl) roleEl.textContent = 'Author Dewasufa ✍️';
+
     // Close & reset
     closeCreateDestModal();
     const form = document.getElementById('create-dest-form');
     if (form) form.reset();
 
-    showToast(`Destinasi "${name}" berhasil dibuat dan ditambahkan ke web!`, '✨');
+    showToast(`Selamat! Pendaftaran Author diterima & artikel "${name}" berhasil dipublikasikan!`, '✍️');
+}
+
+// Modal Pengaturan (Settings)
+export function openSettingsModal() {
+    const modal = document.getElementById('dash-settings-modal');
+    if (!modal) return;
+
+    // Prefill username
+    const nameInput = document.getElementById('settings-name');
+    const currentName = sessionStorage.getItem('dewasufa_user') || document.getElementById('dash-display-name')?.textContent || 'Wisatawan Bali';
+    if (nameInput) nameInput.value = currentName.trim();
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+export function closeSettingsModal() {
+    const modal = document.getElementById('dash-settings-modal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+export function handleSaveSettings(event) {
+    if (event) event.preventDefault();
+
+    const nameInput = document.getElementById('settings-name');
+    const newName = nameInput ? nameInput.value.trim() : 'Wisatawan Bali';
+
+    if (newName) {
+        sessionStorage.setItem('dewasufa_user', newName);
+        const displayName = document.getElementById('dash-display-name');
+        if (displayName) displayName.textContent = newName;
+    }
+
+    closeSettingsModal();
+    showToast('Pengaturan profil dan preferensi berhasil disimpan!', '⚙️');
 }
 
 // Expose functions globally to window
@@ -472,7 +534,10 @@ Object.assign(window, {
     openCreateDestModal,
     closeCreateDestModal,
     handleCreateDestSubmit,
-    addToRecentlyViewed,
+    bringHistoryCardToTop,
+    openSettingsModal,
+    closeSettingsModal,
+    handleSaveSettings,
 });
 
 // Setup DOM Event Listeners
@@ -705,12 +770,46 @@ function initApp() {
         }
     });
 
+    // Open Settings Modal (From Dropdown)
+    const btnOpenSettings = document.getElementById('dash-btn-open-settings');
+    const btnCloseSettings = document.getElementById('btn-close-settings');
+    const settingsModal = document.getElementById('dash-settings-modal');
+
+    if (btnOpenSettings) {
+        btnOpenSettings.addEventListener('click', () => {
+            if (userDropdown) userDropdown.classList.remove('show');
+            openSettingsModal();
+        });
+    }
+
+    if (btnCloseSettings) btnCloseSettings.addEventListener('click', closeSettingsModal);
+
+    if (settingsModal) {
+        settingsModal.addEventListener('click', (e) => {
+            if (e.target === settingsModal) closeSettingsModal();
+        });
+    }
+
+    // Log Out Button INSIDE Settings Modal
+    const btnLogoutInside = document.getElementById('dash-btn-logout-inside');
+    if (btnLogoutInside) {
+        btnLogoutInside.addEventListener('click', () => {
+            sessionStorage.removeItem('dewasufa_user');
+            closeSettingsModal();
+            showToast('Anda telah keluar dari sesi akun. Mengalihkan ke beranda...', '👋');
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 600);
+        });
+    }
+
     // ESC Key Close Modals
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeLoginModal();
             closeDestModal();
             closeCreateDestModal();
+            closeSettingsModal();
             if (userDropdown) userDropdown.classList.remove('show');
         }
     });

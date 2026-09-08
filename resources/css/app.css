@@ -2943,46 +2943,190 @@ html[data-theme="dark"] .dest-spot-time {
     color: #fcd34d;
 }
 
-/* History List Items */
+/* History List - Full Image Mini Cards (like Destinasi Baru Rilis) */
 .dash-history-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.dash-history-item {
+/* New history mini-card: identical visual structure to dash-mini-spot-card */
+.dash-history-mini-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 110px;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    transition: var(--transition-smooth);
+}
+
+.dash-history-mini-card:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.dash-history-mini-card .dash-mini-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: var(--transition-smooth);
+}
+
+.dash-history-mini-card:hover .dash-mini-img {
+    transform: scale(1.05);
+}
+
+/* Reuse dash-mini-info overlay but with extra row for time */
+.dash-history-mini-card .dash-mini-info {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.78) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px 48px 10px 14px;
+    gap: 3px;
+}
+
+.dash-history-mini-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.dash-history-mini-time {
+    font-size: 9.5px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    letter-spacing: 0.1px;
+}
+
+/* Badge colour variants for history */
+.dash-badge-launch.badge-sunrise-h {
+    background: rgba(234, 179, 8, 0.35);
+    border-color: rgba(234, 179, 8, 0.55);
+    color: #fde047;
+}
+
+.dash-badge-launch.badge-sunset-h {
+    background: rgba(223, 106, 62, 0.35);
+    border-color: rgba(223, 106, 62, 0.55);
+    color: #f9a8d4;
+}
+
+.dash-badge-launch.badge-mountain-h {
+    background: rgba(59, 130, 246, 0.35);
+    border-color: rgba(59, 130, 246, 0.55);
+    color: #93c5fd;
+}
+
+/* Circle button on history mini card reuses .dash-circle-btn */
+.dash-history-mini-card:hover .dash-circle-btn {
+    background: #ffffff;
+    color: #122115;
+    transform: scale(1.08);
+}
+
+/* Highlight animation for history mini card */
+.dash-history-mini-card.dash-history-highlight {
+    animation: historyMiniHighlight 1.3s ease-out;
+}
+
+@keyframes historyMiniHighlight {
+    0% {
+        box-shadow: 0 0 0 3px var(--clr-sun-warm), 0 10px 28px rgba(229, 155, 43, 0.5);
+        transform: scale(1.03) translateY(-2px);
+    }
+    100% {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        transform: scale(1) translateY(0);
+    }
+}
+
+
+
+.dash-history-card-item {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 8px 10px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
     cursor: pointer;
+    position: relative;
     transition: var(--transition-fast);
 }
 
-.dash-history-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.12);
-    transform: translateX(2px);
+.dash-history-card-item:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
-.dash-history-icon-wrap {
-    width: 36px;
-    height: 36px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
+.dash-history-card-item.dash-history-highlight {
+    animation: highlightPulse 1.2s ease-out;
+}
+
+@keyframes highlightPulse {
+    0% {
+        background: rgba(229, 155, 43, 0.28);
+        border-color: var(--clr-sun-warm);
+        transform: scale(1.02);
+        box-shadow: 0 0 20px rgba(229, 155, 43, 0.4);
+    }
+    100% {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.07);
+        transform: scale(1);
+        box-shadow: none;
+    }
+}
+
+.dash-history-thumb-wrap {
+    position: relative;
+    width: 62px;
+    height: 50px;
+    border-radius: 11px;
+    overflow: hidden;
     flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.dash-history-icon-wrap.bg-forest { background: rgba(36, 75, 44, 0.6); }
-.dash-history-icon-wrap.bg-warm   { background: rgba(229, 155, 43, 0.3); }
-.dash-history-icon-wrap.bg-emerald{ background: rgba(73, 122, 83, 0.5); }
-.dash-history-icon-wrap.bg-sunset { background: rgba(223, 106, 62, 0.35); }
+.dash-history-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: var(--transition-smooth);
+}
+
+.dash-history-card-item:hover .dash-history-thumb {
+    transform: scale(1.08);
+}
+
+.dash-history-badge {
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 99px;
+    background: rgba(14, 28, 18, 0.85);
+    backdrop-filter: blur(4px);
+    color: #bad1b0;
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    line-height: 1.2;
+}
+
+.dash-history-badge.badge-sunset { color: #f9a8d4; }
+.dash-history-badge.badge-sunrise{ color: #fde047; }
+.dash-history-badge.badge-mountain{ color: #93c5fd; }
 
 .dash-history-info {
     flex: 1;
@@ -2993,7 +3137,7 @@ html[data-theme="dark"] .dest-spot-time {
     font-size: 12.5px;
     font-weight: 700;
     color: #ffffff;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -3001,7 +3145,7 @@ html[data-theme="dark"] .dest-spot-time {
 
 .dash-history-time {
     font-size: 10.5px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.55);
 }
 
 /* ===== MODAL BUAT DESTINASI BARU (GLASSMORPHISM) ===== */
@@ -3225,5 +3369,187 @@ html[data-theme="dark"] .dest-spot-time {
 
     .dash-preset-images {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ===== SETTINGS MODAL & LOG OUT STYLES ===== */
+.dash-settings-card {
+    max-width: 660px;
+}
+
+.dash-settings-section {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.dash-settings-sec-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dash-settings-sec-title svg {
+    width: 16px;
+    height: 16px;
+    color: var(--clr-sun-warm);
+}
+
+.dash-settings-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.dash-settings-toggle-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.dash-toggle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dash-toggle-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.dash-toggle-sub {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Toggle Switch */
+.dash-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.dash-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.dash-switch-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 34px;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dash-switch-slider::before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dash-switch input:checked + .dash-switch-slider {
+    background-color: #3b82f6;
+    border-color: #60a5fa;
+}
+
+.dash-switch input:checked + .dash-switch-slider::before {
+    transform: translateX(20px);
+}
+
+/* Danger Zone for Log Out inside Settings */
+.dash-settings-danger-zone {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: 18px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.dash-danger-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dash-danger-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #fca5a5;
+}
+
+.dash-danger-desc {
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.4;
+    max-width: 380px;
+}
+
+.dash-btn-logout-inside {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition-fast);
+}
+
+.dash-btn-logout-inside svg {
+    width: 15px;
+    height: 15px;
+}
+
+.dash-btn-logout-inside:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+    .dash-settings-danger-zone {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dash-btn-logout-inside {
+        width: 100%;
+        justify-content: center;
     }
 }
