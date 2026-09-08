@@ -624,6 +624,10 @@ body::before {
     gap: 16px;
 }
 
+.welcome-content .section-tag-pill {
+    align-self: flex-start;
+}
+
 .welcome-title {
     font-size: clamp(28px, 3.2vw, 38px);
     font-weight: 800;
@@ -1665,6 +1669,15 @@ html[data-theme="dark"] .dest-spot-time {
     object-fit: cover;
     border-radius: 14px;
     margin-bottom: 14px;
+}
+
+.dest-modal-header {
+    text-align: left;
+    margin-bottom: 12px;
+}
+
+#dest-modal-badge {
+    margin-bottom: 8px;
 }
 
 .dest-spots-list {
