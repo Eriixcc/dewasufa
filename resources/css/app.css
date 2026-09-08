@@ -4612,6 +4612,59 @@ html[data-theme="dark"] .dest-spot-time {
     margin-left: 4px;
 }
 
+.dash-comment-author-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 2px;
+}
+
+.dash-comment-author-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2px;
+}
+
+.dash-comment-author-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.dash-comment-author-lock-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--clr-sun-warm);
+    background: rgba(245, 184, 66, 0.12);
+    border: 1px solid rgba(245, 184, 66, 0.25);
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.2px;
+    user-select: none;
+}
+
+.dash-comment-author-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.dash-comment-author-icon {
+    position: absolute;
+    left: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--clr-sun-warm);
+    pointer-events: none;
+    z-index: 2;
+}
+
 .dash-comment-name-input {
     width: 100%;
     background: rgba(255, 255, 255, 0.05);
@@ -4625,9 +4678,22 @@ html[data-theme="dark"] .dest-spot-time {
     transition: var(--transition-fast);
 }
 
-.dash-comment-name-input:focus {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--clr-sun-warm);
+.dash-comment-name-input.dash-comment-name-locked {
+    padding-left: 32px;
+    padding-right: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    color: #f3f4f6;
+    font-weight: 600;
+    cursor: not-allowed;
+    user-select: none;
+}
+
+.dash-comment-name-input.dash-comment-name-locked:focus {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(245, 184, 66, 0.35);
+    outline: none;
+    box-shadow: none;
 }
 
 .dash-comment-name-input::placeholder {

@@ -63,4 +63,16 @@ class ExampleTest extends TestCase
         $response->assertDontSee('Mode Tampilan Gelap (Nature Glass)');
         $response->assertSee('Logout');
     }
+
+    public function test_comment_author_username_is_locked_and_cannot_be_changed(): void
+    {
+        $response = $this->get('/dashboard');
+
+        $response->assertStatus(200);
+        $response->assertSee('comment-author-name');
+        $response->assertSee('dash-comment-name-locked');
+        $response->assertSee('Mengulas sebagai:');
+        $response->assertSee('Akun Aktif');
+        $response->assertDontSee('Nama Anda (Opsional)');
+    }
 }

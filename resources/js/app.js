@@ -646,8 +646,8 @@ export function openDashSpotDetail(key) {
     if (textarea) textarea.value = '';
     const authorInput = document.getElementById('comment-author-name');
     if (authorInput) {
-        const userName = sessionStorage.getItem('dewasufa_user') || '';
-        authorInput.value = userName;
+        authorInput.value = getCurrentUsername();
+        authorInput.readOnly = true;
     }
 
     // Reset comment photo upload
@@ -1082,6 +1082,19 @@ export function setCommentRating(rating) {
     }
 }
 
+// Get username of currently logged-in account
+export function getCurrentUsername() {
+    const fromSession = sessionStorage.getItem('dewasufa_user');
+    if (fromSession && fromSession.trim()) {
+        return fromSession.trim();
+    }
+    const fromDisplay = document.getElementById('dash-display-name')?.textContent?.trim();
+    if (fromDisplay) {
+        return fromDisplay;
+    }
+    return 'Wisatawan Bali';
+}
+
 export function handleCommentSubmit(event) {
     if (event) event.preventDefault();
 
@@ -1095,10 +1108,13 @@ export function handleCommentSubmit(event) {
         return;
     }
 
+    // Username akun yang sedang digunakan (tidak dapat diubah)
+    const authorName = getCurrentUsername();
     const nameInput = document.getElementById('comment-author-name');
-    const authorName = (nameInput && nameInput.value.trim()) 
-        ? nameInput.value.trim() 
-        : (sessionStorage.getItem('dewasufa_user') || 'Wisatawan Bali');
+    if (nameInput) {
+        nameInput.value = authorName;
+        nameInput.readOnly = true;
+    }
 
     const newComment = {
         name: authorName,
@@ -1257,6 +1273,11 @@ export function handleSaveSettings(event) {
         sessionStorage.setItem('dewasufa_user', newName);
         const displayName = document.getElementById('dash-display-name');
         if (displayName) displayName.textContent = newName;
+        const authorInput = document.getElementById('comment-author-name');
+        if (authorInput) {
+            authorInput.value = newName;
+            authorInput.readOnly = true;
+        }
     }
 
     // Handle Reset Password
@@ -1396,6 +1417,7 @@ Object.assign(window, {
     closeCommentPhotoModal,
     openPhotoModal,
     closePhotoModal,
+    getCurrentUsername,
 });
 
 // Setup DOM Event Listeners
@@ -1471,6 +1493,13 @@ function initApp() {
     if (dashRole) {
         const savedRole = sessionStorage.getItem('dewasufa_role');
         dashRole.textContent = savedRole || 'User';
+    }
+
+    // Initialize locked comment author name with active account
+    const commentAuthorInput = document.getElementById('comment-author-name');
+    if (commentAuthorInput) {
+        commentAuthorInput.value = getCurrentUsername();
+        commentAuthorInput.readOnly = true;
     }
 
     // Initialize Avatar Upload Manager

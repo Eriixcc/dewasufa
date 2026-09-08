@@ -725,7 +725,28 @@
                                 </div>
                             </div>
 
-                            <input type="text" id="comment-author-name" class="dash-comment-name-input" placeholder="Nama Anda (Opsional)" maxlength="40">
+                            <!-- Info Penulis Ulasan (Terkunci Sesuai Akun Aktif) -->
+                            <div class="dash-comment-author-field">
+                                <div class="dash-comment-author-meta">
+                                    <span class="dash-comment-author-title">Mengulas sebagai:</span>
+                                    <span class="dash-comment-author-lock-tag" title="Username sesuai akun aktif dan tidak dapat diubah">
+                                        <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                        </svg>
+                                        Akun Aktif
+                                    </span>
+                                </div>
+                                <div class="dash-comment-author-input-wrap">
+                                    <div class="dash-comment-author-icon">
+                                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                    </div>
+                                    <input type="text" id="comment-author-name" class="dash-comment-name-input dash-comment-name-locked" value="Wisatawan Bali" readonly aria-readonly="true" tabindex="-1" title="Username akun aktif terkunci dan tidak dapat diubah">
+                                </div>
+                            </div>
                             <textarea id="comment-textarea" class="dash-comment-textarea" rows="2" placeholder="Bagikan ulasan atau tips kunjungan..." required></textarea>
 
                             <!-- Photo Upload Area (Maksimal 3 Foto) -->
