@@ -153,13 +153,6 @@
                             <h2 class="dash-widget-title">Destinasi Baru Rilis</h2>
                             <span class="dash-widget-subtitle">Baru Diunggah &amp; Terverifikasi</span>
                         </div>
-                        <button type="button" class="dash-btn-add-mini" id="btn-quick-create-spot" title="Daftar sebagai Author" aria-label="Daftar sebagai Author">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
-                                <line x1="16" y1="8" x2="2" y2="22"></line>
-                                <line x1="17.5" y1="15" x2="9" y2="15"></line>
-                            </svg>
-                        </button>
                     </div>
 
                     <div class="dash-new-spots-list" id="dash-new-spots-container">
@@ -167,7 +160,6 @@
                         <div class="dash-mini-spot-card" onclick="openDashSpotDetail('sekumpul')">
                             <img src="/images/waterfall.jpg" alt="Air Terjun Sekumpul" class="dash-mini-img">
                             <div class="dash-mini-info">
-                                <span class="dash-badge-launch">Rilis Hari Ini</span>
                                 <span class="dash-mini-title">Air Terjun Sekumpul Buleleng</span>
                             </div>
                             <button type="button" class="dash-btn-lihat" aria-label="Lihat Rute">Lihat</button>
@@ -177,7 +169,6 @@
                         <div class="dash-mini-spot-card" onclick="openDashSpotDetail('sunset')">
                             <img src="/images/sunset-beach.jpg" alt="Sunset Melasti" class="dash-mini-img">
                             <div class="dash-mini-info">
-                                <span class="dash-badge-launch badge-warm">Spot Anyar</span>
                                 <span class="dash-mini-title">Tebing Pantai Melasti Ungasan</span>
                             </div>
                             <button type="button" class="dash-btn-lihat" aria-label="Lihat Rute">Lihat</button>
@@ -208,10 +199,6 @@
                         <div class="dash-history-mini-card" data-spot-key="waterfall" onclick="openDashSpotDetail('waterfall')">
                             <img src="/images/waterfall.jpg" alt="Air Terjun Tegenungan" class="dash-mini-img">
                             <div class="dash-mini-info">
-                                <div class="dash-history-mini-meta">
-                                    <span class="dash-badge-launch">Waterfall</span>
-                                    <span class="dash-history-mini-time">5 menit lalu</span>
-                                </div>
                                 <span class="dash-mini-title">Air Terjun Tegenungan</span>
                             </div>
                             <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
@@ -221,10 +208,6 @@
                         <div class="dash-history-mini-card" data-spot-key="sunrise" onclick="openDashSpotDetail('sunrise')">
                             <img src="/images/sunrise-beach.jpg" alt="Pantai Sanur" class="dash-mini-img">
                             <div class="dash-mini-info">
-                                <div class="dash-history-mini-meta">
-                                    <span class="dash-badge-launch badge-sunrise-h">Sunrise</span>
-                                    <span class="dash-history-mini-time">25 menit lalu</span>
-                                </div>
                                 <span class="dash-mini-title">Pantai Sanur Denpasar</span>
                             </div>
                             <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
@@ -234,10 +217,6 @@
                         <div class="dash-history-mini-card" data-spot-key="mountain" onclick="openDashSpotDetail('mountain')">
                             <img src="/images/mountain.jpg" alt="Gunung Batur" class="dash-mini-img">
                             <div class="dash-mini-info">
-                                <div class="dash-history-mini-meta">
-                                    <span class="dash-badge-launch badge-mountain-h">Mountain</span>
-                                    <span class="dash-history-mini-time">1 jam lalu</span>
-                                </div>
                                 <span class="dash-mini-title">Gunung Batur Kintamani</span>
                             </div>
                             <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
@@ -247,10 +226,6 @@
                         <div class="dash-history-mini-card" data-spot-key="sunset" onclick="openDashSpotDetail('sunset')">
                             <img src="/images/sunset-beach.jpg" alt="Pura Luhur Uluwatu" class="dash-mini-img">
                             <div class="dash-mini-info">
-                                <div class="dash-history-mini-meta">
-                                    <span class="dash-badge-launch badge-sunset-h">Sunset</span>
-                                    <span class="dash-history-mini-time">Kemarin</span>
-                                </div>
                                 <span class="dash-mini-title">Pura Luhur Uluwatu</span>
                             </div>
                             <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
