@@ -13,15 +13,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="admin-body">
+<body class="dashboard-body admin-body">
 
-    <!-- Ambient Scenic Canvas (Soft Sage Tint) -->
-    <div class="admin-canvas-bg" aria-hidden="true">
-        <div class="admin-glow admin-glow-1"></div>
-        <div class="admin-glow admin-glow-2"></div>
+    <!-- Scenic Ambient Background (Blurred Glassmorphism Layer) -->
+    <div class="dashboard-scenic-bg" aria-hidden="true">
+        <div class="dashboard-bg-img"></div>
+        <div class="dashboard-bg-overlay"></div>
     </div>
 
-    <!-- MAIN ADMIN APP CONTAINER (Matching Modern Rounded Dashboard Layout) -->
+    <!-- MAIN ADMIN APP CONTAINER (Matching Modern Rounded Dashboard Layout with Dark Luxury Glassmorphism) -->
     <div class="admin-app-shell">
 
         <!-- ============================================== -->
@@ -866,8 +866,9 @@
                 const btn = card.querySelector('.btn-ready-action');
                 if (btn) {
                     btn.textContent = '✓ Terbit';
-                    btn.style.background = '#244b2c';
-                    btn.style.color = '#ffffff';
+                    btn.style.background = 'rgba(74, 222, 128, 0.2)';
+                    btn.style.color = '#4ade80';
+                    btn.style.borderColor = 'rgba(74, 222, 128, 0.4)';
                     btn.disabled = true;
                 }
             }
@@ -930,7 +931,7 @@
                 tr.innerHTML = `
                     <td>
                         <div class="admin-user-cell">
-                            <div class="admin-avatar-mini" style="background: #244b2c; color: #ffffff;">${name.charAt(0).toUpperCase()}</div>
+                            <div class="admin-avatar-mini" style="background: #f5b842; color: #122115;">${name.charAt(0).toUpperCase()}</div>
                             <div>
                                 <div class="admin-cell-title">${name}</div>
                                 <div class="admin-cell-sub">Destinasi Baru Ditambahkan</div>
