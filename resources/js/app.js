@@ -8,7 +8,7 @@ export const categoryData = {
     waterfall: {
         title: "Spot Unggulan Waterfall (Air Terjun) Bali",
         subtitle: "Suara gemuruh air sejuk berpadu dengan ketenangan hutan tropis",
-        badge: "💧 Waterfall Bali",
+        badge: "Waterfall Bali",
         image: "/images/waterfall.jpg",
         spots: [
             { name: "Air Terjun Sekumpul", desc: "Dikenal sebagai air terjun terindah di Buleleng, utara Bali.", time: "07:00 - 16:00 WITA" },
@@ -20,7 +20,7 @@ export const categoryData = {
     sunset: {
         title: "Spot Unggulan Sunset Beach (Pantai Senja) Bali",
         subtitle: "Kilau keemasan senja yang membakar langit barat Pulau Dewata",
-        badge: "🌇 Sunset Beach Bali",
+        badge: "Sunset Beach Bali",
         image: "/images/sunset-beach.jpg",
         spots: [
             { name: "Pantai Tanah Lot", desc: "Pura suci di atas bongkahan karang dengan siluet matahari terbenam spektakuler.", time: "17:00 - 18:45 WITA" },
@@ -32,7 +32,7 @@ export const categoryData = {
     sunrise: {
         title: "Spot Unggulan Sunrise Beach (Pantai Fajar) Bali",
         subtitle: "Ketenangan pagi menyambut cahaya mentari pertama di pesisir timur",
-        badge: "🌅 Sunrise Beach Bali",
+        badge: "Sunrise Beach Bali",
         image: "/images/sunrise-beach.jpg",
         spots: [
             { name: "Pantai Sanur", desc: "Suasana pagi yang tenang dengan gazebo klasik dan jalur sepeda tepi laut.", time: "05:45 - 06:45 WITA" },
@@ -44,7 +44,7 @@ export const categoryData = {
     mountain: {
         title: "Spot Unggulan Mountain (Puncak Gunung) Bali",
         subtitle: "Keagungan kaldera berapi dan panorama samudera awan yang megah",
-        badge: "⛰️ Mountain Bali",
+        badge: "Mountain Bali",
         image: "/images/mountain.jpg",
         spots: [
             { name: "Gunung Batur (1.717 mdpl)", desc: "Sunrise trekking paling populer dengan kaldera luas dan Danau Batur.", time: "03:30 - 09:00 WITA" },
@@ -147,7 +147,7 @@ export function handleLoginSubmit(event) {
     const username = email ? email.split('@')[0] : 'Wisatawan Bali';
     sessionStorage.setItem('dewasufa_user', username);
     closeLoginModal();
-    showToast(`Selamat datang, ${username}! Mengalihkan ke dashboard...`, '🌿');
+    showToast(`Selamat datang, ${username}! Mengalihkan ke dashboard...`, '');
     setTimeout(() => {
         window.location.href = '/dashboard';
     }, 600);
@@ -157,7 +157,7 @@ export function handleLoginSubmit(event) {
 export function simulateGoogleLogin() {
     sessionStorage.setItem('dewasufa_user', 'Arya Wisatawan');
     closeLoginModal();
-    showToast('Login berhasil! Mengalihkan ke dashboard...', '🌿');
+    showToast('Login berhasil! Mengalihkan ke dashboard...', '');
     setTimeout(() => {
         window.location.href = '/dashboard';
     }, 600);
@@ -236,7 +236,7 @@ export function handleSearch(event) {
 export const dashboardSlides = [
     {
         trend: "Trending Destinasi Minggu Ini",
-        tags: ["💧 Waterfall", "Buleleng, Bali"],
+        tags: ["Waterfall", "Buleleng, Bali"],
         title: "Sekumpul Hidden Falls: Mahakarya Tersembunyi Bali Utara",
         desc: "Keanggunan tujuh tingkatan air terjun di lembah tropis yang asri. Nikmati udara murni, pemandangan rimba hijau, serta panduan trekking lengkap bersama pemandu lokal berlisensi.",
         image: "/images/air terjun sekumpul.png",
@@ -244,7 +244,7 @@ export const dashboardSlides = [
     },
     {
         trend: "Sunset Terbaik 2026",
-        tags: ["🌇 Sunset Beach", "Badung, Bali"],
+        tags: ["Sunset Beach", "Badung, Bali"],
         title: "Pantai Melasti Ungasan: Tebing Kapur & Sunset Magis",
         desc: "Pesona tebing kapur putih menjulang tinggi dengan hamparan pasir putih bersih dan panorama matahari terbenam yang memukau di ujung selatan Pulau Dewata.",
         image: "/images/sunset-beach.jpg",
@@ -252,7 +252,7 @@ export const dashboardSlides = [
     },
     {
         trend: "Petualangan Fajar Puncak",
-        tags: ["⛰️ Mountain", "Kintamani, Bali"],
+        tags: ["Mountain", "Kintamani, Bali"],
         title: "Gunung Batur Trekking: Lautan Awan Spektakuler",
         desc: "Sensasi mendaki di keheningan dini hari menyambut mentari terbit di puncak kaldera aktif dengan panorama memukau danau Batur dan siluet Gunung Abang.",
         image: "/images/mountain.jpg",
@@ -260,7 +260,7 @@ export const dashboardSlides = [
     },
     {
         trend: "Ketenangan Pesisir Timur",
-        tags: ["🌅 Sunrise Beach", "Denpasar, Bali"],
+        tags: ["Sunrise Beach", "Denpasar, Bali"],
         title: "Pantai Sanur: Panorama Mentari Pagi nan Teduh",
         desc: "Suasana fajar yang damai ditemani jajaran perahu jukung tradisional dan gazebo klasik tepi laut dengan tiupan angin sejuk yang menenangkan jiwa.",
         image: "/images/sunrise-beach.jpg",
@@ -308,11 +308,11 @@ export function bringHistoryCardToTop(key) {
 
     // Config map for each spot key
     const spotConfig = {
-        sekumpul:  { name: 'Air Terjun Sekumpul Buleleng',    cat: 'waterfall', img: '/images/waterfall.jpg',       badge: '💧 Waterfall',  badgeCls: '' },
-        waterfall: { name: 'Air Terjun Tegenungan',            cat: 'waterfall', img: '/images/waterfall.jpg',       badge: '💧 Waterfall',  badgeCls: '' },
-        sunset:    { name: 'Pura Luhur Uluwatu',               cat: 'sunset',    img: '/images/sunset-beach.jpg',    badge: '🌇 Sunset',     badgeCls: 'badge-sunset-h' },
-        sunrise:   { name: 'Pantai Sanur Denpasar',            cat: 'sunrise',   img: '/images/sunrise-beach.jpg',   badge: '🌅 Sunrise',    badgeCls: 'badge-sunrise-h' },
-        mountain:  { name: 'Gunung Batur Kintamani',           cat: 'mountain',  img: '/images/mountain.jpg',        badge: '⛰️ Mountain',  badgeCls: 'badge-mountain-h' }
+        sekumpul:  { name: 'Air Terjun Sekumpul Buleleng',    cat: 'waterfall', img: '/images/waterfall.jpg',       badge: 'Waterfall',  badgeCls: '' },
+        waterfall: { name: 'Air Terjun Tegenungan',            cat: 'waterfall', img: '/images/waterfall.jpg',       badge: 'Waterfall',  badgeCls: '' },
+        sunset:    { name: 'Pura Luhur Uluwatu',               cat: 'sunset',    img: '/images/sunset-beach.jpg',    badge: 'Sunset',     badgeCls: 'badge-sunset-h' },
+        sunrise:   { name: 'Pantai Sanur Denpasar',            cat: 'sunrise',   img: '/images/sunrise-beach.jpg',   badge: 'Sunrise',    badgeCls: 'badge-sunrise-h' },
+        mountain:  { name: 'Gunung Batur Kintamani',           cat: 'mountain',  img: '/images/mountain.jpg',        badge: 'Mountain',   badgeCls: 'badge-mountain-h' }
     };
     const conf = spotConfig[key] || spotConfig.waterfall;
 
@@ -323,12 +323,16 @@ export function bringHistoryCardToTop(key) {
         historyContainer.prepend(existing);
         // Update the timestamp text
         const timeEl = existing.querySelector('.dash-history-mini-time');
-        if (timeEl) timeEl.textContent = '🕒 Baru saja dilihat';
+        if (timeEl) timeEl.textContent = 'Baru saja dilihat';
         // Trigger highlight animation
         existing.classList.remove('dash-history-highlight');
         void existing.offsetWidth; // reflow
         existing.classList.add('dash-history-highlight');
         setTimeout(() => existing.classList.remove('dash-history-highlight'), 1400);
+        // Enforce max 5 items in history
+        while (historyContainer.children.length > 5) {
+            historyContainer.removeChild(historyContainer.lastElementChild);
+        }
         return;
     }
 
@@ -341,18 +345,22 @@ export function bringHistoryCardToTop(key) {
         <div class="dash-mini-info">
             <div class="dash-history-mini-meta">
                 <span class="dash-badge-launch ${conf.badgeCls}">${conf.badge}</span>
-                <span class="dash-history-mini-time">🕒 Baru saja dilihat</span>
+                <span class="dash-history-mini-time">Baru saja dilihat</span>
             </div>
             <span class="dash-mini-title">${conf.name}</span>
         </div>
-        <button type="button" class="dash-circle-btn" aria-label="Kunjungi Lagi">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
+        <button type="button" class="dash-btn-lihat" aria-label="Lihat">
+            Lihat
         </button>
     `;
     card.onclick = () => openDashSpotDetail(key);
     historyContainer.prepend(card);
+
+    // Enforce max 5 items in history
+    while (historyContainer.children.length > 5) {
+        historyContainer.removeChild(historyContainer.lastElementChild);
+    }
+
     // Animate newly added card
     card.classList.add('dash-history-highlight');
     setTimeout(() => card.classList.remove('dash-history-highlight'), 1400);
@@ -368,18 +376,18 @@ export function openDashSpotDetail(key) {
     };
     const spot = spotMap[key] || { name: key };
     bringHistoryCardToTop(key);
-    showToast(`Membuka rute dan panduan: ${spot.name}`, '📍');
+    showToast(`Membuka rute dan panduan: ${spot.name}`, '');
 }
 
-// Modal Buat Destinasi Baru
+// Modal Daftar sebagai Author
 export function openCreateDestModal() {
     const modal = document.getElementById('create-dest-modal');
     if (!modal) return;
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     setTimeout(() => {
-        const input = document.getElementById('new-dest-name');
-        if (input) input.focus();
+        const input = document.getElementById('author-username');
+        if (input && !input.disabled) input.focus();
     }, 100);
 }
 
@@ -393,90 +401,52 @@ export function closeCreateDestModal() {
 export function handleCreateDestSubmit(event) {
     if (event) event.preventDefault();
 
-    const name = document.getElementById('new-dest-name')?.value.trim() || 'Destinasi Baru';
-    const category = document.getElementById('new-dest-category')?.value || 'waterfall';
-    const location = document.getElementById('new-dest-location')?.value.trim() || 'Bali';
-    const time = document.getElementById('new-dest-time')?.value.trim() || '08:00 - 17:00 WITA';
-    const desc = document.getElementById('new-dest-desc')?.value.trim() || '';
+    const usernameInput = document.getElementById('author-username');
+    const emailInput = document.getElementById('author-email');
+    const passwordInput = document.getElementById('author-password');
 
-    const selectedPreset = document.querySelector('input[name="new-dest-preset-img"]:checked')?.value || '/images/waterfall.jpg';
+    const username = usernameInput ? usernameInput.value.trim() : '';
+    const email = emailInput ? emailInput.value.trim() : '';
+    const password = passwordInput ? passwordInput.value : '';
 
-    const categoryBadges = {
-        waterfall: { label: '💧 Waterfall', cls: '' },
-        sunset: { label: '🌇 Sunset Beach', cls: 'badge-sunset' },
-        sunrise: { label: '🌅 Sunrise Beach', cls: 'badge-sunrise' },
-        mountain: { label: '⛰️ Mountain', cls: 'badge-mountain' }
-    };
-
-    const catInfo = categoryBadges[category] || categoryBadges.waterfall;
-
-    // 1. Prepend to "Destinasi Baru Rilis" widget container
-    const newSpotsContainer = document.getElementById('dash-new-spots-container');
-    if (newSpotsContainer) {
-        const newSpotCard = document.createElement('div');
-        newSpotCard.className = 'dash-mini-spot-card';
-        newSpotCard.innerHTML = `
-            <img src="${selectedPreset}" alt="${name}" class="dash-mini-img">
-            <div class="dash-mini-info">
-                <span class="dash-badge-launch">✨ Karya Author Baru</span>
-                <span class="dash-mini-title">${name} (${location})</span>
-            </div>
-            <button type="button" class="dash-circle-btn" aria-label="Lihat Rute">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                </svg>
-            </button>
-        `;
-        newSpotCard.addEventListener('click', () => {
-            showToast(`Membuka karya Author Anda: ${name}`, '📍');
-        });
-        newSpotsContainer.prepend(newSpotCard);
+    if (!username || !email || !password) {
+        showToast('Mohon lengkapi username, email, dan password Anda.', '⚠️');
+        return;
     }
 
-    // 2. Prepend to "Rekomendasi Untuk Anda" grid
-    const recomGrid = document.getElementById('dash-recom-grid');
-    if (recomGrid) {
-        const recomCard = document.createElement('div');
-        recomCard.className = 'dash-recom-card';
-        recomCard.dataset.category = category;
-        recomCard.innerHTML = `
-            <div class="dash-recom-img-wrap">
-                <img src="${selectedPreset}" alt="${name}" class="dash-recom-img">
-                <span class="dash-recom-badge ${catInfo.cls}">${catInfo.label}</span>
-                <button type="button" class="dash-recom-more-btn" aria-label="Opsi">•••</button>
-            </div>
-            <div class="dash-recom-body">
-                <h3 class="dash-recom-card-title">${name}</h3>
-                <p class="dash-recom-card-desc">${desc || location}</p>
-                <div class="dash-recom-footer">
-                    <span class="dash-recom-time">⏱ ${time}</span>
-                    <button type="button" class="dash-circle-btn" aria-label="Buka Spot">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        `;
-        recomCard.addEventListener('click', () => {
-            showToast(`Membuka karya Author Anda: ${name}`, '📍');
-        });
-        recomGrid.prepend(recomCard);
+    // Tampilkan tulisan sedang diverifikasi oleh admin
+    const statusBox = document.getElementById('author-verification-status');
+    const statusText = document.getElementById('dash-verification-text');
+    if (statusBox) {
+        statusBox.style.display = 'flex';
+    }
+    if (statusText) {
+        statusText.textContent = 'sedang diverifikasi oleh admin';
     }
 
-    // 3. Add to recently viewed history
-    addToRecentlyViewed(name, category);
+    // Ubah teks dan state tombol daftar
+    const submitBtn = document.getElementById('btn-submit-author-reg');
+    const btnText = document.getElementById('btn-author-reg-text');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('btn-pending');
+    }
+    if (btnText) {
+        btnText.textContent = 'sedang diverifikasi oleh admin';
+    }
 
-    // Update user role to Author
+    // Nonaktifkan input selama proses verifikasi
+    if (usernameInput) usernameInput.disabled = true;
+    if (emailInput) emailInput.disabled = true;
+    if (passwordInput) passwordInput.disabled = true;
+
+    // Perbarui status role pengguna di header
     const roleEl = document.querySelector('.dash-user-role');
-    if (roleEl) roleEl.textContent = 'Author Dewasufa ✍️';
+    if (roleEl) {
+        roleEl.textContent = 'Verifikasi Admin';
+    }
 
-    // Close & reset
-    closeCreateDestModal();
-    const form = document.getElementById('create-dest-form');
-    if (form) form.reset();
-
-    showToast(`Selamat! Pendaftaran Author diterima & artikel "${name}" berhasil dipublikasikan!`, '✍️');
+    showToast('Pendaftaran terkirim! sedang diverifikasi oleh admin', '');
 }
 
 // Modal Pengaturan (Settings)
@@ -488,6 +458,34 @@ export function openSettingsModal() {
     const nameInput = document.getElementById('settings-name');
     const currentName = sessionStorage.getItem('dewasufa_user') || document.getElementById('dash-display-name')?.textContent || 'Wisatawan Bali';
     if (nameInput) nameInput.value = currentName.trim();
+
+    // Prefill Status Akun (readonly - cannot be edited manually)
+    const roleInput = document.getElementById('settings-role');
+    const currentRole = sessionStorage.getItem('dewasufa_role') || 'User';
+    if (roleInput) roleInput.value = currentRole;
+
+    // Reset password fields
+    const resetPassInput = document.getElementById('settings-reset-password');
+    const confirmPassInput = document.getElementById('settings-confirm-password');
+    if (resetPassInput) resetPassInput.value = '';
+    if (confirmPassInput) confirmPassInput.value = '';
+
+    // Prefill avatar preview
+    const savedAvatar = localStorage.getItem('dewasufa_avatar') || sessionStorage.getItem('dewasufa_avatar');
+    const previewImg = document.getElementById('settings-avatar-preview');
+    const fallbackSpan = document.getElementById('settings-avatar-fallback');
+    const removeBtn = document.getElementById('btn-remove-avatar');
+    if (savedAvatar && previewImg && fallbackSpan) {
+        previewImg.src = savedAvatar;
+        previewImg.style.display = 'block';
+        fallbackSpan.style.display = 'none';
+        if (removeBtn) removeBtn.style.display = 'inline-flex';
+    } else if (previewImg && fallbackSpan) {
+        previewImg.src = '';
+        previewImg.style.display = 'none';
+        fallbackSpan.style.display = 'block';
+        if (removeBtn) removeBtn.style.display = 'none';
+    }
 
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -512,8 +510,102 @@ export function handleSaveSettings(event) {
         if (displayName) displayName.textContent = newName;
     }
 
+    // Handle Reset Password
+    const resetPassInput = document.getElementById('settings-reset-password');
+    const confirmPassInput = document.getElementById('settings-confirm-password');
+    const newPassword = resetPassInput ? resetPassInput.value : '';
+    const confirmPassword = confirmPassInput ? confirmPassInput.value : '';
+
+    if (newPassword || confirmPassword) {
+        if (newPassword.length < 6) {
+            showToast('Password baru minimal 6 karakter.', '⚠️');
+            return;
+        }
+        if (newPassword !== confirmPassword) {
+            showToast('Konfirmasi password tidak cocok.', '⚠️');
+            return;
+        }
+        showToast('Password berhasil direset & pengaturan profil disimpan!', '🔒');
+    } else {
+        showToast('Pengaturan profil dan preferensi berhasil disimpan!', '⚙️');
+    }
+
     closeSettingsModal();
-    showToast('Pengaturan profil dan preferensi berhasil disimpan!', '⚙️');
+}
+
+// Manager Unggah Foto Profil Sendiri
+export function initAvatarManager() {
+    const avatarInput = document.getElementById('settings-avatar-input');
+    const previewImg = document.getElementById('settings-avatar-preview');
+    const fallbackSpan = document.getElementById('settings-avatar-fallback');
+    const removeBtn = document.getElementById('btn-remove-avatar');
+    const headerAvatar = document.getElementById('dash-header-avatar');
+
+    function applyAvatar(dataUrl) {
+        if (dataUrl) {
+            if (previewImg) {
+                previewImg.src = dataUrl;
+                previewImg.style.display = 'block';
+            }
+            if (fallbackSpan) fallbackSpan.style.display = 'none';
+            if (removeBtn) removeBtn.style.display = 'inline-flex';
+
+            if (headerAvatar) {
+                headerAvatar.innerHTML = `<img src="${dataUrl}" alt="Foto Profil" class="dash-avatar-img">`;
+            }
+        } else {
+            if (previewImg) {
+                previewImg.src = '';
+                previewImg.style.display = 'none';
+            }
+            if (fallbackSpan) fallbackSpan.style.display = 'block';
+            if (removeBtn) removeBtn.style.display = 'none';
+
+            if (headerAvatar) {
+                headerAvatar.innerHTML = `<span class="dash-avatar-initials">W</span>`;
+            }
+        }
+    }
+
+    const savedAvatar = localStorage.getItem('dewasufa_avatar') || sessionStorage.getItem('dewasufa_avatar');
+    if (savedAvatar) {
+        applyAvatar(savedAvatar);
+    }
+
+    if (avatarInput) {
+        avatarInput.addEventListener('change', (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                showToast('Ukuran gambar maksimal 2MB.', '⚠️');
+                avatarInput.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const base64 = event.target?.result;
+                if (base64) {
+                    localStorage.setItem('dewasufa_avatar', base64);
+                    sessionStorage.setItem('dewasufa_avatar', base64);
+                    applyAvatar(base64);
+                    showToast('Foto profil berhasil diperbarui!', '📷');
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    if (removeBtn) {
+        removeBtn.addEventListener('click', () => {
+            localStorage.removeItem('dewasufa_avatar');
+            sessionStorage.removeItem('dewasufa_avatar');
+            if (avatarInput) avatarInput.value = '';
+            applyAvatar(null);
+            showToast('Foto profil dihapus.', 'ℹ');
+        });
+    }
 }
 
 // Expose functions globally to window
@@ -609,6 +701,22 @@ function initApp() {
             dashDisplayName.textContent = savedUser;
         }
     }
+    const dashRole = document.querySelector('.dash-user-role');
+    if (dashRole) {
+        const savedRole = sessionStorage.getItem('dewasufa_role');
+        dashRole.textContent = savedRole || 'User';
+    }
+
+    // Initialize Avatar Upload Manager
+    initAvatarManager();
+
+    // Enforce max 5 history cards on startup
+    const initialHistContainer = document.getElementById('dash-history-container');
+    if (initialHistContainer) {
+        while (initialHistContainer.children.length > 5) {
+            initialHistContainer.removeChild(initialHistContainer.lastElementChild);
+        }
+    }
 
     // User Dropdown Menu
     const userMenuBtn = document.getElementById('dash-user-menu-btn');
@@ -649,9 +757,9 @@ function initApp() {
             const isBookmarked = btnBookmark.classList.toggle('active');
             const currentTitle = dashboardSlides[currentSlideIndex]?.title || 'Destinasi';
             if (isBookmarked) {
-                showToast(`"${currentTitle}" disimpan ke favorit Anda!`, '⭐');
+                showToast(`"${currentTitle}" disimpan ke favorit Anda!`, '');
             } else {
-                showToast('Dihapus dari daftar favorit.', 'ℹ');
+                showToast('Dihapus dari daftar favorit.', '');
             }
         });
     }
@@ -662,13 +770,13 @@ function initApp() {
     if (btnStart) {
         btnStart.addEventListener('click', () => {
             const currentTitle = dashboardSlides[currentSlideIndex]?.title || 'Destinasi';
-            showToast(`Memulai panduan navigasi rute: ${currentTitle}`, '🧭');
+            showToast(`Memulai panduan navigasi rute: ${currentTitle}`, '');
         });
     }
     if (btnGuide) {
         btnGuide.addEventListener('click', () => {
             const currentTitle = dashboardSlides[currentSlideIndex]?.title || 'Destinasi';
-            showToast(`Membuka buku panduan lengkap: ${currentTitle}`, '📖');
+            showToast(`Membuka buku panduan lengkap: ${currentTitle}`, '');
         });
     }
 
@@ -694,7 +802,7 @@ function initApp() {
                 });
 
                 if (filter !== 'all') {
-                    showToast(`Menampilkan rekomendasi kategori: ${pill.textContent}`, '🔍');
+                    showToast(`Menampilkan rekomendasi kategori: ${pill.textContent}`, '');
                 }
             });
         });
@@ -713,11 +821,34 @@ function initApp() {
         });
     }
 
-    // Notification button
+    // Notification button & Popover
     const btnNotif = document.getElementById('btn-dash-notif');
-    if (btnNotif) {
-        btnNotif.addEventListener('click', () => {
-            showToast('Anda memiliki 3 pembaruan rute dan tips wisata baru hari ini!', '🔔');
+    const notifPopover = document.getElementById('dash-notif-popover');
+    const btnMarkNotif = document.getElementById('btn-mark-notif-read');
+    const notifBadge = document.getElementById('dash-notif-badge');
+
+    if (btnNotif && notifPopover) {
+        btnNotif.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (userDropdown) userDropdown.classList.remove('show');
+            const isOpen = notifPopover.classList.toggle('show');
+            btnNotif.setAttribute('aria-expanded', isOpen);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#dash-notif-wrap')) {
+                notifPopover.classList.remove('show');
+                btnNotif.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    if (btnMarkNotif) {
+        btnMarkNotif.addEventListener('click', () => {
+            const unreadItems = document.querySelectorAll('.dash-notif-pop-item.unread');
+            unreadItems.forEach(item => item.classList.remove('unread'));
+            if (notifBadge) notifBadge.style.display = 'none';
+            showToast('Semua notifikasi telah ditandai dibaca.', '');
         });
     }
 
@@ -727,7 +858,7 @@ function initApp() {
         btnClearHistory.addEventListener('click', () => {
             const histContainer = document.getElementById('dash-history-container');
             if (histContainer) histContainer.innerHTML = '';
-            showToast('Riwayat penelusuran berhasil dibersihkan.', '🧹');
+            showToast('Riwayat penelusuran berhasil dibersihkan.', '');
         });
     }
 
@@ -795,8 +926,9 @@ function initApp() {
     if (btnLogoutInside) {
         btnLogoutInside.addEventListener('click', () => {
             sessionStorage.removeItem('dewasufa_user');
+            sessionStorage.removeItem('dewasufa_role');
             closeSettingsModal();
-            showToast('Anda telah keluar dari sesi akun. Mengalihkan ke beranda...', '👋');
+            showToast('Anda telah logout. Mengalihkan ke beranda...', '');
             setTimeout(() => {
                 window.location.href = '/';
             }, 600);
@@ -811,6 +943,7 @@ function initApp() {
             closeCreateDestModal();
             closeSettingsModal();
             if (userDropdown) userDropdown.classList.remove('show');
+            if (notifPopover) notifPopover.classList.remove('show');
         }
     });
 }
