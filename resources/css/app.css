@@ -4978,3 +4978,167 @@ html[data-theme="dark"] .dest-spot-time {
     line-height: 1.5;
     margin: 0;
 }
+
+/* ===== UPLOAD FOTO ULASAN (MAKSIMAL 3 FOTO) ===== */
+.dash-comment-photo-upload-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: -2px;
+}
+
+.dash-comment-photo-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.dash-comment-photo-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px dashed rgba(255, 255, 255, 0.22);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.dash-comment-photo-btn:hover {
+    background: rgba(245, 184, 66, 0.15);
+    border-color: var(--clr-sun-warm);
+    color: var(--clr-sun-warm);
+}
+
+.dash-comment-photo-count {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.dash-comment-photos-preview {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-height: 0;
+}
+
+.dash-comment-photo-preview-item {
+    position: relative;
+    width: 54px;
+    height: 54px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.dash-comment-photo-preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.dash-comment-photo-remove-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.75);
+    color: #ffffff;
+    border: none;
+    font-size: 12px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.dash-comment-photo-remove-btn:hover {
+    background: #ef4444;
+}
+
+/* Grid Foto pada Ulasan yang Ditampilkan */
+.dash-comment-photos-grid {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.dash-comment-photo-thumb {
+    width: 62px;
+    height: 62px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.dash-comment-photo-thumb:hover {
+    transform: scale(1.06);
+    border-color: var(--clr-sun-warm);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.dash-comment-photo-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Modal Lightbox Foto Ulasan */
+.dash-lightbox-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dash-lightbox-img {
+    max-width: 85vw;
+    max-height: 80vh;
+    border-radius: 14px;
+    object-fit: contain;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.dash-lightbox-close {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    z-index: 20;
+}
+
+.dash-lightbox-close:hover {
+    background: #ef4444;
+    transform: scale(1.08);
+}

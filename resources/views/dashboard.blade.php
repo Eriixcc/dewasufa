@@ -728,6 +728,23 @@
                             <input type="text" id="comment-author-name" class="dash-comment-name-input" placeholder="Nama Anda (Opsional)" maxlength="40">
                             <textarea id="comment-textarea" class="dash-comment-textarea" rows="2" placeholder="Bagikan ulasan atau tips kunjungan..." required></textarea>
 
+                            <!-- Photo Upload Area (Maksimal 3 Foto) -->
+                            <div class="dash-comment-photo-upload-wrap">
+                                <div class="dash-comment-photo-actions">
+                                    <label for="comment-photo-input" class="dash-comment-photo-btn" id="label-comment-photo">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                            <polyline points="21 15 16 10 5 21"></polyline>
+                                        </svg>
+                                        <span>Tambah Foto (Maks. 3)</span>
+                                    </label>
+                                    <input type="file" id="comment-photo-input" accept="image/*" multiple style="display: none;">
+                                    <span class="dash-comment-photo-count" id="comment-photo-count">0/3 Foto</span>
+                                </div>
+                                <div class="dash-comment-photos-preview" id="comment-photos-preview"></div>
+                            </div>
+
                             <button type="submit" class="dash-btn-submit-comment" id="btn-submit-comment">
                                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -766,6 +783,14 @@
             <div class="dash-saved-plans-content" id="dash-saved-plans-list">
                 <!-- Diisi secara dinamis oleh JavaScript -->
             </div>
+        </div>
+    </div>
+
+    <!-- ===== LIGHTBOX MODAL PREVIEW FOTO ULASAN ===== -->
+    <div class="dash-modal-backdrop" id="comment-photo-lightbox" role="dialog" aria-modal="true" aria-label="Lihat Foto Ulasan">
+        <div class="dash-lightbox-content">
+            <button type="button" class="dash-lightbox-close" id="btn-close-lightbox" aria-label="Tutup Foto">&times;</button>
+            <img id="lightbox-img" src="" alt="Pratinjau Foto Ulasan" class="dash-lightbox-img">
         </div>
     </div>
 

@@ -650,6 +650,9 @@ export function openDashSpotDetail(key) {
         authorInput.value = userName;
     }
 
+    // Reset comment photo upload
+    resetCommentPhotoUpload();
+
     // Render Comments
     renderDestinationComments(key);
 
@@ -863,6 +866,140 @@ function saveStoredComments(key, comments) {
     }
 }
 
+// State Foto Komentar (Maksimal 3 Foto)
+let currentCommentPhotos = [];
+
+function compressImageFile(file, maxWidth = 600, quality = 0.7) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                if (width > maxWidth) {
+                    height = Math.round((height * maxWidth) / width);
+                    width = maxWidth;
+                }
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.onerror = () => resolve(e.target.result);
+            img.src = e.target.result;
+        };
+        reader.onerror = () => resolve('');
+        reader.readAsDataURL(file);
+    });
+}
+
+export async function handleCommentPhotoSelect(event) {
+    const input = event.target;
+    if (!input || !input.files || input.files.length === 0) return;
+
+    const files = Array.from(input.files);
+    const availableSlots = 3 - currentCommentPhotos.length;
+
+    if (availableSlots <= 0) {
+        showToast('Maksimal 3 foto per ulasan.', '');
+        input.value = '';
+        return;
+    }
+
+    if (files.length > availableSlots) {
+        showToast(`Hanya dapat menambahkan ${availableSlots} foto lagi (Maksimal 3 foto).`, '');
+    }
+
+    const filesToProcess = files.slice(0, availableSlots);
+
+    for (const file of filesToProcess) {
+        if (!file.type.startsWith('image/')) {
+            showToast('Hanya format gambar yang diperbolehkan.', '');
+            continue;
+        }
+        try {
+            const compressed = await compressImageFile(file, 600, 0.7);
+            if (compressed && currentCommentPhotos.length < 3) {
+                currentCommentPhotos.push(compressed);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    input.value = '';
+    renderCommentPhotoPreviews();
+}
+
+export function removeCommentPhoto(index) {
+    if (index >= 0 && index < currentCommentPhotos.length) {
+        currentCommentPhotos.splice(index, 1);
+        renderCommentPhotoPreviews();
+    }
+}
+
+export function renderCommentPhotoPreviews() {
+    const previewContainer = document.getElementById('comment-photos-preview');
+    const counterEl = document.getElementById('comment-photo-count');
+    const labelBtn = document.getElementById('label-comment-photo');
+
+    if (counterEl) {
+        counterEl.textContent = `${currentCommentPhotos.length}/3 Foto`;
+    }
+
+    if (labelBtn) {
+        if (currentCommentPhotos.length >= 3) {
+            labelBtn.style.opacity = '0.5';
+            labelBtn.style.pointerEvents = 'none';
+        } else {
+            labelBtn.style.opacity = '1';
+            labelBtn.style.pointerEvents = 'auto';
+        }
+    }
+
+    if (!previewContainer) return;
+
+    if (currentCommentPhotos.length === 0) {
+        previewContainer.innerHTML = '';
+        return;
+    }
+
+    previewContainer.innerHTML = currentCommentPhotos.map((photoData, idx) => `
+        <div class="dash-comment-photo-preview-item">
+            <img src="${photoData}" alt="Foto ${idx + 1}">
+            <button type="button" class="dash-comment-photo-remove-btn" aria-label="Hapus foto" onclick="removeCommentPhoto(${idx})">&times;</button>
+        </div>
+    `).join('');
+}
+
+export function resetCommentPhotoUpload() {
+    currentCommentPhotos = [];
+    renderCommentPhotoPreviews();
+    const input = document.getElementById('comment-photo-input');
+    if (input) input.value = '';
+}
+
+export function openCommentPhotoModal(imgSrc) {
+    const modal = document.getElementById('comment-photo-lightbox');
+    const img = document.getElementById('lightbox-img');
+    if (!modal || !img) return;
+
+    img.src = imgSrc;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+export function closeCommentPhotoModal() {
+    const modal = document.getElementById('comment-photo-lightbox');
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
 export function renderDestinationComments(key) {
     const commentsList = document.getElementById('dest-comments-list');
     const counterEl = document.getElementById('dest-comments-counter');
@@ -881,6 +1018,18 @@ export function renderDestinationComments(key) {
 
     commentsList.innerHTML = comments.map(c => {
         const initial = (c.name || 'W').charAt(0).toUpperCase();
+        const photosHtml = (c.photos && Array.isArray(c.photos) && c.photos.length > 0)
+            ? `
+                <div class="dash-comment-photos-grid">
+                    ${c.photos.map((photoUrl, idx) => `
+                        <div class="dash-comment-photo-thumb" onclick="openCommentPhotoModal('${photoUrl}')" title="Klik untuk memperbesar foto">
+                            <img src="${photoUrl}" alt="Foto ulasan ${idx + 1}" loading="lazy">
+                        </div>
+                    `).join('')}
+                </div>
+            `
+            : '';
+
         return `
             <div class="dash-comment-card">
                 <div class="dash-comment-top">
@@ -899,6 +1048,7 @@ export function renderDestinationComments(key) {
                     </div>
                 </div>
                 <p class="dash-comment-text">${c.comment}</p>
+                ${photosHtml}
             </div>
         `;
     }).join('');
@@ -948,12 +1098,16 @@ export function handleCommentSubmit(event) {
         name: authorName,
         date: 'Baru saja',
         rating: currentCommentRating,
-        comment: commentText
+        comment: commentText,
+        photos: [...currentCommentPhotos]
     };
 
     const comments = getStoredComments(currentDetailSpotKey);
     comments.unshift(newComment);
     saveStoredComments(currentDetailSpotKey, comments);
+
+    // Reset photo uploads
+    resetCommentPhotoUpload();
 
     // Re-render
     renderDestinationComments(currentDetailSpotKey);
@@ -1230,6 +1384,10 @@ Object.assign(window, {
     closeSavedPlansModal,
     removeSavedPlan,
     getSavedPlans,
+    handleCommentPhotoSelect,
+    removeCommentPhoto,
+    openCommentPhotoModal,
+    closeCommentPhotoModal,
 });
 
 // Setup DOM Event Listeners
@@ -1580,6 +1738,24 @@ function initApp() {
         });
     }
 
+    // Comment Photo Upload Listener
+    const commentPhotoInput = document.getElementById('comment-photo-input');
+    if (commentPhotoInput) {
+        commentPhotoInput.addEventListener('change', handleCommentPhotoSelect);
+    }
+
+    // Comment Photo Lightbox Modal
+    const btnCloseLightbox = document.getElementById('btn-close-lightbox');
+    const lightboxModal = document.getElementById('comment-photo-lightbox');
+    if (btnCloseLightbox) {
+        btnCloseLightbox.addEventListener('click', closeCommentPhotoModal);
+    }
+    if (lightboxModal) {
+        lightboxModal.addEventListener('click', (e) => {
+            if (e.target === lightboxModal) closeCommentPhotoModal();
+        });
+    }
+
     // ESC Key Close Modals
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -1589,6 +1765,7 @@ function initApp() {
             closeSettingsModal();
             closeDestDetailModal();
             closeSavedPlansModal();
+            closeCommentPhotoModal();
             if (userDropdown) userDropdown.classList.remove('show');
             if (notifPopover) notifPopover.classList.remove('show');
         }
