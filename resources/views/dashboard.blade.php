@@ -594,7 +594,7 @@
                     <div class="dash-dest-header-info">
                         <div class="dash-dest-title-row">
                             <h2 class="dash-dest-detail-title" id="dest-detail-title">Air Terjun Sekumpul</h2>
-                            <button type="button" class="dash-dest-save-btn" id="btn-save-dest-plan" aria-label="Simpan ke Rencana Tersimpan" title="Simpan ke Rencana" onclick="toggleSaveCurrentPlan()">
+                            <button type="button" class="dash-dest-save-btn" id="btn-save-dest-plan" aria-label="Simpan ke Rencana Tersimpan" title="Simpan ke Rencana">
                                 <svg id="dash-dest-save-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                                 </svg>

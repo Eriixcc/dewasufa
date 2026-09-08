@@ -683,6 +683,8 @@ export function isSpotSaved(key) {
     return plans.includes(key);
 }
 
+let isTogglingPlan = false;
+
 export function updateDestModalSaveButtonState(key) {
     const isSaved = isSpotSaved(key);
     const saveBtn = document.getElementById('btn-save-dest-plan');
@@ -691,12 +693,30 @@ export function updateDestModalSaveButtonState(key) {
 
     if (saveBtn) {
         saveBtn.classList.toggle('is-saved', isSaved);
+        saveBtn.classList.toggle('active', isSaved);
+        if (isSaved) {
+            saveBtn.style.setProperty('background', '#f5b842', 'important');
+            saveBtn.style.setProperty('background-color', '#f5b842', 'important');
+            saveBtn.style.setProperty('border-color', '#f5b842', 'important');
+            saveBtn.style.setProperty('color', '#122115', 'important');
+        } else {
+            saveBtn.style.removeProperty('background');
+            saveBtn.style.removeProperty('background-color');
+            saveBtn.style.removeProperty('border-color');
+            saveBtn.style.removeProperty('color');
+        }
     }
     if (saveText) {
         saveText.textContent = isSaved ? 'Tersimpan di Rencana' : 'Simpan ke Rencana';
+        if (isSaved) {
+            saveText.style.setProperty('color', '#122115', 'important');
+        } else {
+            saveText.style.removeProperty('color');
+        }
     }
     if (saveIcon) {
-        saveIcon.setAttribute('fill', isSaved ? 'currentColor' : 'none');
+        saveIcon.setAttribute('fill', isSaved ? '#122115' : 'none');
+        saveIcon.setAttribute('stroke', isSaved ? '#122115' : 'currentColor');
     }
 }
 
@@ -713,6 +733,10 @@ export function updateHeroBookmarkState() {
 }
 
 export function toggleSavePlanByKey(key) {
+    if (isTogglingPlan) return;
+    isTogglingPlan = true;
+    setTimeout(() => { isTogglingPlan = false; }, 200);
+
     let plans = getSavedPlans();
     const data = spotDetailsData[key] || spotDetailsData.waterfall;
     const title = data.title || 'Destinasi';

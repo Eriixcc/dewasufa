@@ -4172,7 +4172,7 @@ html[data-theme="dark"] .dest-spot-time {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    padding: 6px 14px;
+    padding: 6px 15px;
     border-radius: var(--radius-pill);
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -4187,20 +4187,40 @@ html[data-theme="dark"] .dest-spot-time {
 }
 
 .dash-dest-save-btn:hover {
-    background: rgba(229, 155, 43, 0.2);
-    border-color: rgba(229, 155, 43, 0.45);
+    background: rgba(245, 184, 66, 0.2);
+    border-color: var(--clr-sun-warm);
     color: var(--clr-sun-warm);
     transform: translateY(-1px);
 }
 
-.dash-dest-save-btn.is-saved {
-    background: rgba(229, 155, 43, 0.25);
-    border-color: var(--clr-sun-warm);
-    color: var(--clr-sun-warm);
+.dash-dest-save-btn.is-saved,
+.dash-dest-save-btn.active {
+    background: #f5b842 !important;
+    background-color: #f5b842 !important;
+    border-color: #f5b842 !important;
+    color: #122115 !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 14px rgba(245, 184, 66, 0.45);
 }
 
-.dash-dest-save-btn.is-saved svg {
-    fill: var(--clr-sun-warm);
+.dash-dest-save-btn.is-saved span,
+.dash-dest-save-btn.active span {
+    color: #122115 !important;
+}
+
+.dash-dest-save-btn.is-saved:hover,
+.dash-dest-save-btn.active:hover {
+    background: #f7c35f !important;
+    background-color: #f7c35f !important;
+    border-color: #f7c35f !important;
+    color: #122115 !important;
+}
+
+.dash-dest-save-btn.is-saved svg,
+.dash-dest-save-btn.active svg {
+    fill: #122115 !important;
+    stroke: #122115 !important;
+    color: #122115 !important;
 }
 
 .dash-dest-location-row {
