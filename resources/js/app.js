@@ -1,6 +1,6 @@
 /**
  * Dewasufa - Eksplorasi Keindahan Alam Bali
- * JavaScript Logic & Interactions
+ * JavaScript Logic & Interactions (Public Site & User Dashboard)
  */
 
 // Data 4 Kategori Wisata Alam Bali
@@ -55,7 +55,10 @@ export const categoryData = {
     }
 };
 
-// Modal Login
+// ==========================================
+// PUBLIC SITE: MODAL & INTERACTION
+// ==========================================
+
 export function openLoginModal() {
     const loginModal = document.getElementById('login-modal');
     if (!loginModal) return;
@@ -74,7 +77,6 @@ export function closeLoginModal() {
     document.body.style.overflow = '';
 }
 
-// Destination Modal
 export function openDestModal(categoryKey) {
     const data = categoryData[categoryKey];
     if (!data) return;
@@ -120,7 +122,7 @@ export function closeDestModal() {
     document.body.style.overflow = '';
 }
 
-// Toast Notification
+// Global Toast Notification
 export function showToast(message, icon = '✓') {
     const toast = document.getElementById('toast-alert');
     const toastText = document.getElementById('toast-text');
@@ -137,25 +139,32 @@ export function showToast(message, icon = '✓') {
     }, 3500);
 }
 
-// Form Login Submit
+// Form Login Submit: Simulates Auth and redirects to /dashboard
 export function handleLoginSubmit(event) {
     if (event) event.preventDefault();
     const emailEl = document.getElementById('login-email');
     const email = emailEl ? emailEl.value : '';
+    const username = email ? email.split('@')[0] : 'Wisatawan Bali';
+    sessionStorage.setItem('dewasufa_user', username);
     closeLoginModal();
-    const username = email ? email.split('@')[0] : 'Pengguna';
-    showToast(`Selamat datang kembali, ${username}! Anda berhasil masuk.`);
+    showToast(`Selamat datang, ${username}! Mengalihkan ke dashboard...`, '🌿');
+    setTimeout(() => {
+        window.location.href = '/dashboard';
+    }, 600);
 }
 
-// Social Login Simulation
+// Social Google Login Simulation
 export function simulateGoogleLogin() {
+    sessionStorage.setItem('dewasufa_user', 'Arya Wisatawan');
     closeLoginModal();
-    showToast('Login dengan akun Google berhasil disimulasikan!');
+    showToast('Login berhasil! Mengalihkan ke dashboard...', '🌿');
+    setTimeout(() => {
+        window.location.href = '/dashboard';
+    }, 600);
 }
 
-// Filter Category Cards
+// Filter Category Cards on Public Page
 export function filterCards(category, clickedButton) {
-    // Update active tab buttons
     document.querySelectorAll('.filter-tab-btn').forEach(btn => btn.classList.remove('active'));
     if (clickedButton) {
         clickedButton.classList.add('active');
@@ -164,7 +173,6 @@ export function filterCards(category, clickedButton) {
         if (targetBtn) targetBtn.classList.add('active');
     }
 
-    // Update pagination dots
     const dots = document.querySelectorAll('.pagination-dot');
     dots.forEach(d => d.classList.remove('active'));
     const catIndex = ['all', 'waterfall', 'sunset', 'sunrise', 'mountain'].indexOf(category);
@@ -172,7 +180,6 @@ export function filterCards(category, clickedButton) {
         dots[catIndex].classList.add('active');
     }
 
-    // Filter cards display
     const cards = document.querySelectorAll('.cat-card');
     cards.forEach(card => {
         if (category === 'all' || card.dataset.category === category) {
@@ -185,7 +192,7 @@ export function filterCards(category, clickedButton) {
     });
 }
 
-// Floating Pill Search Handler
+// Floating Pill Search Handler on Public Page
 export function handleSearch(event) {
     if (event) event.preventDefault();
     const keywordEl = document.getElementById('search-keyword');
@@ -193,7 +200,6 @@ export function handleSearch(event) {
     const keyword = keywordEl ? keywordEl.value.toLowerCase().trim() : '';
     const category = categoryEl ? categoryEl.value : 'all';
 
-    // Scroll to categories section
     const catSection = document.getElementById('categories');
     if (catSection) catSection.scrollIntoView({ behavior: 'smooth' });
 
@@ -223,9 +229,235 @@ export function handleSearch(event) {
     }
 }
 
-// Expose functions globally to window for any inline Blade onclick/onsubmit attributes
+// ==========================================
+// USER DASHBOARD LOGIC & SLIDER
+// ==========================================
+
+export const dashboardSlides = [
+    {
+        trend: "Trending Destinasi Minggu Ini",
+        tags: ["💧 Waterfall", "Buleleng, Bali"],
+        title: "Sekumpul Hidden Falls: Mahakarya Tersembunyi Bali Utara",
+        desc: "Keanggunan tujuh tingkatan air terjun di lembah tropis yang asri. Nikmati udara murni, pemandangan rimba hijau, serta panduan trekking lengkap bersama pemandu lokal berlisensi.",
+        image: "/images/air terjun sekumpul.png",
+        fallback: "/images/waterfall.jpg"
+    },
+    {
+        trend: "Sunset Terbaik 2026",
+        tags: ["🌇 Sunset Beach", "Badung, Bali"],
+        title: "Pantai Melasti Ungasan: Tebing Kapur & Sunset Magis",
+        desc: "Pesona tebing kapur putih menjulang tinggi dengan hamparan pasir putih bersih dan panorama matahari terbenam yang memukau di ujung selatan Pulau Dewata.",
+        image: "/images/sunset-beach.jpg",
+        fallback: "/images/sunset-beach.jpg"
+    },
+    {
+        trend: "Petualangan Fajar Puncak",
+        tags: ["⛰️ Mountain", "Kintamani, Bali"],
+        title: "Gunung Batur Trekking: Lautan Awan Spektakuler",
+        desc: "Sensasi mendaki di keheningan dini hari menyambut mentari terbit di puncak kaldera aktif dengan panorama memukau danau Batur dan siluet Gunung Abang.",
+        image: "/images/mountain.jpg",
+        fallback: "/images/mountain.jpg"
+    },
+    {
+        trend: "Ketenangan Pesisir Timur",
+        tags: ["🌅 Sunrise Beach", "Denpasar, Bali"],
+        title: "Pantai Sanur: Panorama Mentari Pagi nan Teduh",
+        desc: "Suasana fajar yang damai ditemani jajaran perahu jukung tradisional dan gazebo klasik tepi laut dengan tiupan angin sejuk yang menenangkan jiwa.",
+        image: "/images/sunrise-beach.jpg",
+        fallback: "/images/sunrise-beach.jpg"
+    }
+];
+
+let currentSlideIndex = 0;
+
+export function showDashboardSlide(index) {
+    const banner = document.getElementById('dash-featured-banner');
+    if (!banner) return;
+
+    if (index < 0) {
+        currentSlideIndex = dashboardSlides.length - 1;
+    } else if (index >= dashboardSlides.length) {
+        currentSlideIndex = 0;
+    } else {
+        currentSlideIndex = index;
+    }
+
+    const slide = dashboardSlides[currentSlideIndex];
+    const trendEl = document.getElementById('dash-featured-trend');
+    const tagsEl = document.getElementById('dash-featured-tags');
+    const titleEl = document.getElementById('dash-featured-title');
+    const descEl = document.getElementById('dash-featured-desc');
+    const imgEl = document.getElementById('dash-featured-img');
+
+    if (trendEl) trendEl.textContent = slide.trend;
+    if (titleEl) titleEl.textContent = slide.title;
+    if (descEl) descEl.textContent = slide.desc;
+
+    if (tagsEl) {
+        tagsEl.innerHTML = slide.tags.map(t => `<span class="dash-hero-tag">${t}</span>`).join('');
+    }
+
+    if (imgEl) {
+        imgEl.style.backgroundImage = `url('${slide.image}'), url('${slide.fallback || slide.image}')`;
+    }
+}
+
+export function addToRecentlyViewed(name, category = 'waterfall') {
+    const historyContainer = document.getElementById('dash-history-container');
+    if (!historyContainer) return;
+
+    const iconMap = {
+        waterfall: { icon: '💧', cls: 'bg-forest' },
+        sunset: { icon: '🌇', cls: 'bg-sunset' },
+        sunrise: { icon: '🌅', cls: 'bg-warm' },
+        mountain: { icon: '⛰️', cls: 'bg-emerald' }
+    };
+    const conf = iconMap[category] || iconMap.waterfall;
+
+    const item = document.createElement('div');
+    item.className = 'dash-history-item';
+    item.innerHTML = `
+        <div class="dash-history-icon-wrap ${conf.cls}">
+            <span>${conf.icon}</span>
+        </div>
+        <div class="dash-history-info">
+            <h4>${name}</h4>
+            <span class="dash-history-time">🕒 Baru saja dilihat</span>
+        </div>
+        <button type="button" class="dash-circle-mini-btn" aria-label="Kunjungi Lagi">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+        </button>
+    `;
+    item.addEventListener('click', () => {
+        showToast(`Membuka riwayat: ${name}`, '📍');
+    });
+
+    historyContainer.prepend(item);
+}
+
+export function openDashSpotDetail(key) {
+    const spotMap = {
+        sekumpul: { name: 'Air Terjun Sekumpul (Buleleng)', cat: 'waterfall' },
+        waterfall: { name: 'Air Terjun Tegenungan (Gianyar)', cat: 'waterfall' },
+        sunset: { name: 'Pantai Melasti & Tanah Lot (Sunset Point)', cat: 'sunset' },
+        sunrise: { name: 'Pantai Sanur (Sunrise Point)', cat: 'sunrise' },
+        mountain: { name: 'Gunung Batur (Kaldera Kintamani)', cat: 'mountain' }
+    };
+    const spot = spotMap[key] || { name: key, cat: 'waterfall' };
+    addToRecentlyViewed(spot.name, spot.cat);
+    showToast(`Membuka rute dan panduan: ${spot.name}`, '📍');
+}
+
+// Modal Buat Destinasi Baru
+export function openCreateDestModal() {
+    const modal = document.getElementById('create-dest-modal');
+    if (!modal) return;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+        const input = document.getElementById('new-dest-name');
+        if (input) input.focus();
+    }, 100);
+}
+
+export function closeCreateDestModal() {
+    const modal = document.getElementById('create-dest-modal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+export function handleCreateDestSubmit(event) {
+    if (event) event.preventDefault();
+
+    const name = document.getElementById('new-dest-name')?.value.trim() || 'Destinasi Baru';
+    const category = document.getElementById('new-dest-category')?.value || 'waterfall';
+    const location = document.getElementById('new-dest-location')?.value.trim() || 'Bali';
+    const time = document.getElementById('new-dest-time')?.value.trim() || '08:00 - 17:00 WITA';
+    const desc = document.getElementById('new-dest-desc')?.value.trim() || '';
+
+    const selectedPreset = document.querySelector('input[name="new-dest-preset-img"]:checked')?.value || '/images/waterfall.jpg';
+
+    const categoryBadges = {
+        waterfall: { label: '💧 Waterfall', cls: '' },
+        sunset: { label: '🌇 Sunset Beach', cls: 'badge-sunset' },
+        sunrise: { label: '🌅 Sunrise Beach', cls: 'badge-sunrise' },
+        mountain: { label: '⛰️ Mountain', cls: 'badge-mountain' }
+    };
+
+    const catInfo = categoryBadges[category] || categoryBadges.waterfall;
+
+    // 1. Prepend to "Destinasi Baru Rilis" widget container
+    const newSpotsContainer = document.getElementById('dash-new-spots-container');
+    if (newSpotsContainer) {
+        const newSpotCard = document.createElement('div');
+        newSpotCard.className = 'dash-mini-spot-card';
+        newSpotCard.innerHTML = `
+            <img src="${selectedPreset}" alt="${name}" class="dash-mini-img">
+            <div class="dash-mini-info">
+                <span class="dash-badge-launch">✨ Baru Dibuat</span>
+                <span class="dash-mini-title">${name} (${location})</span>
+            </div>
+            <button type="button" class="dash-circle-btn" aria-label="Lihat Rute">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            </button>
+        `;
+        newSpotCard.addEventListener('click', () => {
+            showToast(`Membuka spot buatan Anda: ${name}`, '📍');
+        });
+        newSpotsContainer.prepend(newSpotCard);
+    }
+
+    // 2. Prepend to "Rekomendasi Untuk Anda" grid
+    const recomGrid = document.getElementById('dash-recom-grid');
+    if (recomGrid) {
+        const recomCard = document.createElement('div');
+        recomCard.className = 'dash-recom-card';
+        recomCard.dataset.category = category;
+        recomCard.innerHTML = `
+            <div class="dash-recom-img-wrap">
+                <img src="${selectedPreset}" alt="${name}" class="dash-recom-img">
+                <span class="dash-recom-badge ${catInfo.cls}">${catInfo.label}</span>
+                <button type="button" class="dash-recom-more-btn" aria-label="Opsi">•••</button>
+            </div>
+            <div class="dash-recom-body">
+                <h3 class="dash-recom-card-title">${name}</h3>
+                <p class="dash-recom-card-desc">${desc || location}</p>
+                <div class="dash-recom-footer">
+                    <span class="dash-recom-time">⏱ ${time}</span>
+                    <button type="button" class="dash-circle-btn" aria-label="Buka Spot">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `;
+        recomCard.addEventListener('click', () => {
+            showToast(`Membuka spot buatan Anda: ${name}`, '📍');
+        });
+        recomGrid.prepend(recomCard);
+    }
+
+    // 3. Add to recently viewed history
+    addToRecentlyViewed(name, category);
+
+    // Close & reset
+    closeCreateDestModal();
+    const form = document.getElementById('create-dest-form');
+    if (form) form.reset();
+
+    showToast(`Destinasi "${name}" berhasil dibuat dan ditambahkan ke web!`, '✨');
+}
+
+// Expose functions globally to window
 Object.assign(window, {
     categoryData,
+    dashboardSlides,
     openLoginModal,
     closeLoginModal,
     openDestModal,
@@ -235,10 +467,17 @@ Object.assign(window, {
     simulateGoogleLogin,
     filterCards,
     handleSearch,
+    showDashboardSlide,
+    openDashSpotDetail,
+    openCreateDestModal,
+    closeCreateDestModal,
+    handleCreateDestSubmit,
+    addToRecentlyViewed,
 });
 
 // Setup DOM Event Listeners
 function initApp() {
+    // 1. PUBLIC LANDING PAGE LISTENERS
     const btnOpenLogin = document.getElementById('btn-open-login');
     const btnCloseLogin = document.getElementById('btn-close-login');
     const loginModal = document.getElementById('login-modal');
@@ -287,7 +526,6 @@ function initApp() {
         });
     }
 
-    // Navbar scrolled shadow
     if (navbar) {
         window.addEventListener('scroll', () => {
             if (window.scrollY > 40) {
@@ -298,11 +536,182 @@ function initApp() {
         }, { passive: true });
     }
 
+    // 2. USER DASHBOARD LISTENERS
+    const dashDisplayName = document.getElementById('dash-display-name');
+    if (dashDisplayName) {
+        const savedUser = sessionStorage.getItem('dewasufa_user');
+        if (savedUser) {
+            dashDisplayName.textContent = savedUser;
+        }
+    }
+
+    // User Dropdown Menu
+    const userMenuBtn = document.getElementById('dash-user-menu-btn');
+    const userDropdown = document.getElementById('dash-user-dropdown');
+    if (userMenuBtn && userDropdown) {
+        userMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = userDropdown.classList.toggle('show');
+            userMenuBtn.setAttribute('aria-expanded', isOpen);
+        });
+
+        document.addEventListener('click', () => {
+            userDropdown.classList.remove('show');
+            userMenuBtn.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    // Dashboard Logout Button
+    const btnLogout = document.getElementById('dash-btn-logout');
+    if (btnLogout) {
+        btnLogout.addEventListener('click', () => {
+            sessionStorage.removeItem('dewasufa_user');
+        });
+    }
+
+    // Slider Controls
+    const btnPrev = document.getElementById('dash-slider-prev');
+    const btnNext = document.getElementById('dash-slider-next');
+    if (btnPrev && btnNext) {
+        btnPrev.addEventListener('click', () => showDashboardSlide(currentSlideIndex - 1));
+        btnNext.addEventListener('click', () => showDashboardSlide(currentSlideIndex + 1));
+    }
+
+    // Bookmark Action
+    const btnBookmark = document.getElementById('dash-hero-btn-bookmark');
+    if (btnBookmark) {
+        btnBookmark.addEventListener('click', () => {
+            const isBookmarked = btnBookmark.classList.toggle('active');
+            const currentTitle = dashboardSlides[currentSlideIndex]?.title || 'Destinasi';
+            if (isBookmarked) {
+                showToast(`"${currentTitle}" disimpan ke favorit Anda!`, '⭐');
+            } else {
+                showToast('Dihapus dari daftar favorit.', 'ℹ');
+            }
+        });
+    }
+
+    // Hero Action Buttons
+    const btnStart = document.getElementById('dash-hero-btn-start');
+    const btnGuide = document.getElementById('dash-hero-btn-guide');
+    if (btnStart) {
+        btnStart.addEventListener('click', () => {
+            const currentTitle = dashboardSlides[currentSlideIndex]?.title || 'Destinasi';
+            showToast(`Memulai panduan navigasi rute: ${currentTitle}`, '🧭');
+        });
+    }
+    if (btnGuide) {
+        btnGuide.addEventListener('click', () => {
+            const currentTitle = dashboardSlides[currentSlideIndex]?.title || 'Destinasi';
+            showToast(`Membuka buku panduan lengkap: ${currentTitle}`, '📖');
+        });
+    }
+
+    // Dashboard Category Filter Pills
+    const dashCatPills = document.querySelectorAll('.dash-cat-pill');
+    if (dashCatPills.length > 0) {
+        dashCatPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                dashCatPills.forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+
+                const filter = pill.dataset.filter;
+                const cards = document.querySelectorAll('.dash-recom-card');
+                let count = 0;
+
+                cards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'flex';
+                        count++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                if (filter !== 'all') {
+                    showToast(`Menampilkan rekomendasi kategori: ${pill.textContent}`, '🔍');
+                }
+            });
+        });
+    }
+
+    // Dashboard Search Input
+    const dashSearchInput = document.getElementById('dash-search-input');
+    if (dashSearchInput) {
+        dashSearchInput.addEventListener('input', (e) => {
+            const q = e.target.value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.dash-recom-card');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = (!q || text.includes(q)) ? 'flex' : 'none';
+            });
+        });
+    }
+
+    // Notification button
+    const btnNotif = document.getElementById('btn-dash-notif');
+    if (btnNotif) {
+        btnNotif.addEventListener('click', () => {
+            showToast('Anda memiliki 3 pembaruan rute dan tips wisata baru hari ini!', '🔔');
+        });
+    }
+
+    // Clear History button
+    const btnClearHistory = document.getElementById('btn-clear-history');
+    if (btnClearHistory) {
+        btnClearHistory.addEventListener('click', () => {
+            const histContainer = document.getElementById('dash-history-container');
+            if (histContainer) histContainer.innerHTML = '';
+            showToast('Riwayat penelusuran berhasil dibersihkan.', '🧹');
+        });
+    }
+
+    // Open Create Destination Modal (From Dropdown & Sidebar)
+    const btnOpenCreate = document.getElementById('dash-btn-open-create');
+    const btnQuickCreate = document.getElementById('btn-quick-create-spot');
+    const btnCloseCreate = document.getElementById('btn-close-create-dest');
+    const btnCancelCreate = document.getElementById('btn-cancel-create-dest');
+    const createModal = document.getElementById('create-dest-modal');
+
+    if (btnOpenCreate) {
+        btnOpenCreate.addEventListener('click', () => {
+            if (userDropdown) userDropdown.classList.remove('show');
+            openCreateDestModal();
+        });
+    }
+
+    if (btnQuickCreate) {
+        btnQuickCreate.addEventListener('click', openCreateDestModal);
+    }
+
+    if (btnCloseCreate) btnCloseCreate.addEventListener('click', closeCreateDestModal);
+    if (btnCancelCreate) btnCancelCreate.addEventListener('click', closeCreateDestModal);
+
+    if (createModal) {
+        createModal.addEventListener('click', (e) => {
+            if (e.target === createModal) closeCreateDestModal();
+        });
+    }
+
+    // Preset Image Selector in Modal
+    const presetLabels = document.querySelectorAll('.dash-preset-label');
+    presetLabels.forEach(label => {
+        const radio = label.querySelector('input[type="radio"]');
+        if (radio) {
+            radio.addEventListener('change', () => {
+                presetLabels.forEach(l => l.classList.remove('active'));
+                if (radio.checked) label.classList.add('active');
+            });
+        }
+    });
+
     // ESC Key Close Modals
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeLoginModal();
             closeDestModal();
+            closeCreateDestModal();
+            if (userDropdown) userDropdown.classList.remove('show');
         }
     });
 }
