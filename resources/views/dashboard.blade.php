@@ -259,22 +259,11 @@
 
                         <!-- Action Buttons Row -->
                         <div class="dash-hero-actions">
-                            <button type="button" class="dash-btn-primary" id="dash-hero-btn-start">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                                </svg>
-                                <span>Mulai Eksplorasi</span>
+                            <button type="button" class="dash-btn-primary" id="dash-hero-btn-start" aria-label="Lihat Destinasi" onclick="handleHeroLihatClick()">
+                                <span>Lihat</span>
                             </button>
 
-                            <button type="button" class="dash-btn-secondary" id="dash-hero-btn-guide">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                                </svg>
-                                <span>Panduan Rute</span>
-                            </button>
-
-                            <button type="button" class="dash-btn-bookmark" id="dash-hero-btn-bookmark" aria-label="Simpan ke Favorit">
+                            <button type="button" class="dash-btn-bookmark" id="dash-hero-btn-bookmark" aria-label="Simpan ke Rencana Tersimpan" title="Simpan ke Rencana Tersimpan">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                                 </svg>
@@ -603,7 +592,15 @@
 
                     <!-- Destination Header: Title & Badges -->
                     <div class="dash-dest-header-info">
-                        <h2 class="dash-dest-detail-title" id="dest-detail-title">Air Terjun Sekumpul</h2>
+                        <div class="dash-dest-title-row">
+                            <h2 class="dash-dest-detail-title" id="dest-detail-title">Air Terjun Sekumpul</h2>
+                            <button type="button" class="dash-dest-save-btn" id="btn-save-dest-plan" aria-label="Simpan ke Rencana Tersimpan" title="Simpan ke Rencana" onclick="toggleSaveCurrentPlan()">
+                                <svg id="dash-dest-save-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                <span id="dash-dest-save-text">Simpan ke Rencana</span>
+                            </button>
+                        </div>
                         <div class="dash-dest-location-row">
                             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -751,6 +748,24 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL RENCANA TERSIMPAN ===== -->
+    <div class="dash-modal-backdrop" id="dash-saved-plans-modal" role="dialog" aria-modal="true" aria-labelledby="saved-plans-title">
+        <div class="dash-modal-card dash-saved-plans-card">
+            <div class="dash-modal-header">
+                <div class="dash-modal-title-wrap">
+                    <span class="dash-modal-badge">Koleksi Wisata Anda</span>
+                    <h3 id="saved-plans-title" class="dash-modal-title">Rencana Tersimpan</h3>
+                    <p class="dash-modal-subtitle">Daftar destinasi wisata alam Bali yang Anda simpan untuk rencana perjalanan.</p>
+                </div>
+                <button type="button" class="dash-modal-close" id="btn-close-saved-plans" aria-label="Tutup Rencana Tersimpan">&times;</button>
+            </div>
+
+            <div class="dash-saved-plans-content" id="dash-saved-plans-list">
+                <!-- Diisi secara dinamis oleh JavaScript -->
             </div>
         </div>
     </div>

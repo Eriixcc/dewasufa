@@ -235,6 +235,7 @@ export function handleSearch(event) {
 
 export const dashboardSlides = [
     {
+        key: "sekumpul",
         trend: "Trending Destinasi Minggu Ini",
         tags: ["Waterfall", "Buleleng, Bali"],
         title: "Sekumpul Hidden Falls: Mahakarya Tersembunyi Bali Utara",
@@ -243,6 +244,7 @@ export const dashboardSlides = [
         fallback: "/images/waterfall.jpg"
     },
     {
+        key: "sunset",
         trend: "Sunset Terbaik 2026",
         tags: ["Sunset Beach", "Badung, Bali"],
         title: "Pantai Melasti Ungasan: Tebing Kapur & Sunset Magis",
@@ -251,6 +253,7 @@ export const dashboardSlides = [
         fallback: "/images/sunset-beach.jpg"
     },
     {
+        key: "mountain",
         trend: "Petualangan Fajar Puncak",
         tags: ["Mountain", "Kintamani, Bali"],
         title: "Gunung Batur Trekking: Lautan Awan Spektakuler",
@@ -259,6 +262,7 @@ export const dashboardSlides = [
         fallback: "/images/mountain.jpg"
     },
     {
+        key: "sunrise",
         trend: "Ketenangan Pesisir Timur",
         tags: ["Sunrise Beach", "Denpasar, Bali"],
         title: "Pantai Sanur: Panorama Mentari Pagi nan Teduh",
@@ -300,6 +304,8 @@ export function showDashboardSlide(index) {
     if (imgEl) {
         imgEl.style.backgroundImage = `url('${slide.image}'), url('${slide.fallback || slide.image}')`;
     }
+
+    updateHeroBookmarkState();
 }
 
 export function bringHistoryCardToTop(key) {
@@ -647,6 +653,9 @@ export function openDashSpotDetail(key) {
     // Render Comments
     renderDestinationComments(key);
 
+    // Update Save/Bookmark button state
+    updateDestModalSaveButtonState(key);
+
     // Open modal
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -657,6 +666,158 @@ export function closeDestDetailModal() {
     if (!modal) return;
     modal.classList.remove('active');
     document.body.style.overflow = '';
+}
+
+// ===== RENCANA TERSIMPAN (SAVED PLANS) =====
+export function getSavedPlans() {
+    try {
+        const saved = localStorage.getItem('dewasufa_saved_plans');
+        return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+export function isSpotSaved(key) {
+    const plans = getSavedPlans();
+    return plans.includes(key);
+}
+
+export function updateDestModalSaveButtonState(key) {
+    const isSaved = isSpotSaved(key);
+    const saveBtn = document.getElementById('btn-save-dest-plan');
+    const saveText = document.getElementById('dash-dest-save-text');
+    const saveIcon = document.getElementById('dash-dest-save-icon');
+
+    if (saveBtn) {
+        saveBtn.classList.toggle('is-saved', isSaved);
+    }
+    if (saveText) {
+        saveText.textContent = isSaved ? 'Tersimpan di Rencana' : 'Simpan ke Rencana';
+    }
+    if (saveIcon) {
+        saveIcon.setAttribute('fill', isSaved ? 'currentColor' : 'none');
+    }
+}
+
+export function updateHeroBookmarkState() {
+    const btnBookmark = document.getElementById('dash-hero-btn-bookmark');
+    if (!btnBookmark) return;
+    const currentKey = dashboardSlides[currentSlideIndex]?.key || 'sekumpul';
+    const isSaved = isSpotSaved(currentKey);
+    btnBookmark.classList.toggle('active', isSaved);
+    const svg = btnBookmark.querySelector('svg');
+    if (svg) {
+        svg.setAttribute('fill', isSaved ? 'currentColor' : 'none');
+    }
+}
+
+export function toggleSavePlanByKey(key) {
+    let plans = getSavedPlans();
+    const data = spotDetailsData[key] || spotDetailsData.waterfall;
+    const title = data.title || 'Destinasi';
+
+    if (plans.includes(key)) {
+        plans = plans.filter(k => k !== key);
+        localStorage.setItem('dewasufa_saved_plans', JSON.stringify(plans));
+        if (currentDetailSpotKey === key) {
+            updateDestModalSaveButtonState(key);
+        }
+        updateHeroBookmarkState();
+        showToast(`"${title}" dihapus dari Rencana Tersimpan.`, '');
+    } else {
+        plans.push(key);
+        localStorage.setItem('dewasufa_saved_plans', JSON.stringify(plans));
+        if (currentDetailSpotKey === key) {
+            updateDestModalSaveButtonState(key);
+        }
+        updateHeroBookmarkState();
+        showToast(`"${title}" berhasil disimpan ke Rencana Tersimpan!`, '');
+    }
+    renderSavedPlansList();
+}
+
+export function toggleSaveCurrentPlan() {
+    if (!currentDetailSpotKey) return;
+    toggleSavePlanByKey(currentDetailSpotKey);
+}
+
+export function handleHeroLihatClick() {
+    const slide = dashboardSlides[currentSlideIndex];
+    const key = slide?.key || 'sekumpul';
+    openDashSpotDetail(key);
+}
+
+export function openSavedPlansModal() {
+    renderSavedPlansList();
+    const modal = document.getElementById('dash-saved-plans-modal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+export function closeSavedPlansModal() {
+    const modal = document.getElementById('dash-saved-plans-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+export function removeSavedPlan(key, event) {
+    if (event) event.stopPropagation();
+    let plans = getSavedPlans();
+    const data = spotDetailsData[key] || spotDetailsData.waterfall;
+    const title = data.title || 'Destinasi';
+    plans = plans.filter(k => k !== key);
+    localStorage.setItem('dewasufa_saved_plans', JSON.stringify(plans));
+    if (currentDetailSpotKey === key) {
+        updateDestModalSaveButtonState(key);
+    }
+    updateHeroBookmarkState();
+    renderSavedPlansList();
+    showToast(`"${title}" dihapus dari Rencana Tersimpan.`, '');
+}
+
+export function renderSavedPlansList() {
+    const listEl = document.getElementById('dash-saved-plans-list');
+    if (!listEl) return;
+    const plans = getSavedPlans();
+
+    if (plans.length === 0) {
+        listEl.innerHTML = `
+            <div class="dash-saved-plans-empty">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <p>Belum ada destinasi di Rencana Tersimpan Anda.<br>Buka destinasi dan klik ikon simpan untuk menyimpannya.</p>
+            </div>
+        `;
+        return;
+    }
+
+    listEl.innerHTML = plans.map(key => {
+        const item = spotDetailsData[key] || spotDetailsData.waterfall;
+        return `
+            <div class="dash-saved-plan-item" onclick="closeSavedPlansModal(); openDashSpotDetail('${key}')">
+                <img src="${item.image}" alt="${item.title}" class="dash-saved-plan-img">
+                <div class="dash-saved-plan-info">
+                    <span class="dash-saved-plan-title">${item.title}</span>
+                    <span class="dash-saved-plan-loc">${item.location} &bull; ${item.category}</span>
+                </div>
+                <div class="dash-saved-plan-actions">
+                    <button type="button" class="dash-btn-lihat" onclick="event.stopPropagation(); closeSavedPlansModal(); openDashSpotDetail('${key}')">Lihat</button>
+                    <button type="button" class="dash-saved-plan-remove" aria-label="Hapus dari Rencana" title="Hapus dari Rencana" onclick="removeSavedPlan('${key}', event)">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 function getStoredComments(key) {
@@ -1007,7 +1168,7 @@ export function initAvatarManager() {
             sessionStorage.removeItem('dewasufa_avatar');
             if (avatarInput) avatarInput.value = '';
             applyAvatar(null);
-            showToast('Foto profil dihapus.', 'ℹ');
+            showToast('Foto profil dihapus.', '');
         });
     }
 }
@@ -1038,6 +1199,13 @@ Object.assign(window, {
     openSettingsModal,
     closeSettingsModal,
     handleSaveSettings,
+    toggleSaveCurrentPlan,
+    toggleSavePlanByKey,
+    handleHeroLihatClick,
+    openSavedPlansModal,
+    closeSavedPlansModal,
+    removeSavedPlan,
+    getSavedPlans,
 });
 
 // Setup DOM Event Listeners
@@ -1158,33 +1326,21 @@ function initApp() {
         btnNext.addEventListener('click', () => showDashboardSlide(currentSlideIndex + 1));
     }
 
-    // Bookmark Action
+    // Bookmark Action (Trending Topic / Hero Banner)
     const btnBookmark = document.getElementById('dash-hero-btn-bookmark');
     if (btnBookmark) {
         btnBookmark.addEventListener('click', () => {
-            const isBookmarked = btnBookmark.classList.toggle('active');
-            const currentTitle = dashboardSlides[currentSlideIndex]?.title || 'Destinasi';
-            if (isBookmarked) {
-                showToast(`"${currentTitle}" disimpan ke favorit Anda!`, '');
-            } else {
-                showToast('Dihapus dari daftar favorit.', '');
-            }
+            const currentSlide = dashboardSlides[currentSlideIndex];
+            const currentKey = currentSlide?.key || 'sekumpul';
+            toggleSavePlanByKey(currentKey);
         });
     }
 
-    // Hero Action Buttons
+    // Hero Action Buttons (Lihat Modal Detail Destinasi)
     const btnStart = document.getElementById('dash-hero-btn-start');
-    const btnGuide = document.getElementById('dash-hero-btn-guide');
     if (btnStart) {
         btnStart.addEventListener('click', () => {
-            const currentTitle = dashboardSlides[currentSlideIndex]?.title || 'Destinasi';
-            showToast(`Memulai panduan navigasi rute: ${currentTitle}`, '');
-        });
-    }
-    if (btnGuide) {
-        btnGuide.addEventListener('click', () => {
-            const currentTitle = dashboardSlides[currentSlideIndex]?.title || 'Destinasi';
-            showToast(`Membuka buku panduan lengkap: ${currentTitle}`, '');
+            handleHeroLihatClick();
         });
     }
 
@@ -1357,6 +1513,37 @@ function initApp() {
         });
     }
 
+    // Save button in Destination Detail Modal
+    const btnSaveDest = document.getElementById('btn-save-dest-plan');
+    if (btnSaveDest) {
+        btnSaveDest.addEventListener('click', toggleSaveCurrentPlan);
+    }
+
+    // Saved Plans (Rencana Tersimpan) Modal Listeners
+    const btnMyPlan = document.getElementById('dash-btn-my-plan');
+    const btnCloseSavedPlans = document.getElementById('btn-close-saved-plans');
+    const savedPlansModal = document.getElementById('dash-saved-plans-modal');
+
+    if (btnMyPlan) {
+        btnMyPlan.addEventListener('click', () => {
+            if (userDropdown) userDropdown.classList.remove('show');
+            openSavedPlansModal();
+        });
+    }
+
+    if (btnCloseSavedPlans) {
+        btnCloseSavedPlans.addEventListener('click', closeSavedPlansModal);
+    }
+
+    if (savedPlansModal) {
+        savedPlansModal.addEventListener('click', (e) => {
+            if (e.target === savedPlansModal) closeSavedPlansModal();
+        });
+    }
+
+    // Initialize Hero Bookmark State
+    updateHeroBookmarkState();
+
     // Star Picker in Comment Form
     const starPicker = document.getElementById('comment-star-picker');
     if (starPicker) {
@@ -1377,6 +1564,7 @@ function initApp() {
             closeCreateDestModal();
             closeSettingsModal();
             closeDestDetailModal();
+            closeSavedPlansModal();
             if (userDropdown) userDropdown.classList.remove('show');
             if (notifPopover) notifPopover.classList.remove('show');
         }
