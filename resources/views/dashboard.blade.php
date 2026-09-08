@@ -291,7 +291,6 @@
                 <section class="dash-recom-section" aria-label="Rekomendasi Untuk Anda">
                     <div class="dash-section-header">
                         <h2 class="dash-section-title">Rekomendasi Untuk Anda</h2>
-                        <a href="{{ route('home') }}#categories" class="dash-see-all-pill">Lihat Semua</a>
                     </div>
 
                     <div class="dash-recom-grid" id="dash-recom-grid">
