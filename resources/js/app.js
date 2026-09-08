@@ -343,10 +343,6 @@ export function bringHistoryCardToTop(key) {
     card.innerHTML = `
         <img src="${conf.img}" alt="${conf.name}" class="dash-mini-img">
         <div class="dash-mini-info">
-            <div class="dash-history-mini-meta">
-                <span class="dash-badge-launch ${conf.badgeCls}">${conf.badge}</span>
-                <span class="dash-history-mini-time">Baru saja dilihat</span>
-            </div>
             <span class="dash-mini-title">${conf.name}</span>
         </div>
         <button type="button" class="dash-btn-lihat" aria-label="Lihat">
