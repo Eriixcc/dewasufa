@@ -618,7 +618,7 @@
                         </div>
                     </div>
 
-                    <!-- Features & Info Strip (Like "Hotel Features") -->
+                    <!-- Features & Info Strip (Rating, Jam Buka, Tiket Masuk) -->
                     <div class="dash-dest-features-section">
                         <h4 class="dash-dest-subheading">Informasi & Fasilitas Destinasi</h4>
                         <div class="dash-dest-features-grid">
@@ -649,14 +649,24 @@
                                     <span class="dash-dest-feat-val" id="dest-detail-ticket">Rp 20.000</span>
                                 </div>
                             </div>
-                            <div class="dash-dest-feat-item">
-                                <div class="dash-dest-feat-icon">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
-                                </div>
-                                <div class="dash-dest-feat-text">
-                                    <span class="dash-dest-feat-label">Waktu Terbaik</span>
-                                    <span class="dash-dest-feat-val" id="dest-detail-best-visit">Pagi Hari</span>
-                                </div>
+                        </div>
+
+                        <!-- Waktu Terbaik ditaruh di bawah agar tidak ada scroll ke samping -->
+                        <div class="dash-dest-best-time-banner">
+                            <div class="dash-dest-best-time-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="5"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div class="dash-dest-best-time-content">
+                                <span class="dash-dest-best-time-label">Waktu Terbaik:</span>
+                                <span class="dash-dest-best-time-val" id="dest-detail-best-visit">Pagi Hari</span>
                             </div>
                         </div>
                     </div>

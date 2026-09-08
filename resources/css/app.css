@@ -4043,6 +4043,7 @@ html[data-theme="dark"] .dest-spot-time {
 .dash-dest-left-col {
     padding: 20px 24px 26px;
     overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -4225,7 +4226,7 @@ html[data-theme="dark"] .dest-spot-time {
 
 .dash-dest-features-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
 }
 
@@ -4274,6 +4275,56 @@ html[data-theme="dark"] .dest-spot-time {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* Waktu Terbaik Banner Below Row 1 */
+.dash-dest-best-time-banner {
+    margin-top: 8px;
+    background: rgba(229, 155, 43, 0.08);
+    border: 1px solid rgba(229, 155, 43, 0.22);
+    border-radius: 12px;
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dash-dest-best-time-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(229, 155, 43, 0.16);
+    border: 1px solid rgba(229, 155, 43, 0.3);
+    color: var(--clr-sun-warm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.dash-dest-best-time-content {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+.dash-dest-best-time-label {
+    font-size: 10px;
+    color: var(--clr-sun-warm);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+}
+
+.dash-dest-best-time-val {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.4;
+    word-break: break-word;
 }
 
 /* Description & Mini Map Preview Section */
