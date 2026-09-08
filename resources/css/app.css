@@ -319,16 +319,16 @@ body::before {
     background-position: center 38%;
 }
 
-/* Hero Overlay (Soft warm directional gradient) */
+/* Hero Overlay (Dark forest directional gradient) */
 .hero-overlay {
     position: absolute;
     inset: 0;
     background: linear-gradient(
         105deg,
-        rgba(15, 33, 19, 0.82) 0%,
-        rgba(20, 43, 25, 0.65) 45%,
-        rgba(26, 54, 32, 0.25) 80%,
-        rgba(255, 230, 180, 0.15) 100%
+        rgba(8, 22, 12, 0.88) 0%,
+        rgba(14, 34, 18, 0.70) 45%,
+        rgba(20, 48, 27, 0.30) 80%,
+        rgba(30, 68, 38, 0.12) 100%
     );
     z-index: 1;
 }
@@ -1909,8 +1909,8 @@ html[data-theme="dark"] .dest-spot-time {
     position: absolute;
     inset: 0;
     background: radial-gradient(circle at 80% 20%, rgba(36, 75, 44, 0.45) 0%, transparent 60%),
-                radial-gradient(circle at 10% 80%, rgba(229, 155, 43, 0.20) 0%, transparent 50%),
-                linear-gradient(180deg, rgba(11, 20, 14, 0.82) 0%, rgba(11, 20, 14, 0.95) 100%);
+                radial-gradient(circle at 10% 80%, rgba(16, 52, 26, 0.40) 0%, transparent 50%),
+                linear-gradient(180deg, rgba(8, 18, 11, 0.88) 0%, rgba(10, 20, 13, 0.97) 100%);
 }
 
 .dashboard-container {
@@ -2399,7 +2399,7 @@ html[data-theme="dark"] .dest-spot-time {
 
 .dash-progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #4ade80 0%, #e59b2b 100%);
+    background: linear-gradient(90deg, #4ade80 0%, #22c55e 100%);
     border-radius: 99px;
     transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -2474,10 +2474,10 @@ html[data-theme="dark"] .dest-spot-time {
     inset: 0;
     background: linear-gradient(
         105deg,
-        rgba(10, 20, 13, 0.90) 0%,
-        rgba(14, 28, 18, 0.75) 45%,
-        rgba(20, 38, 25, 0.45) 80%,
-        rgba(229, 155, 43, 0.20) 100%
+        rgba(8, 18, 11, 0.92) 0%,
+        rgba(12, 26, 16, 0.78) 45%,
+        rgba(18, 42, 23, 0.48) 80%,
+        rgba(26, 62, 34, 0.18) 100%
     );
     z-index: 1;
 }
