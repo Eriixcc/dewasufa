@@ -429,25 +429,63 @@
             <!-- <div class="stats-header-tag">Eksplorasi Keajaiban Alam Bali</div> -->
             <div class="stats-grid">
                 <div class="stat-item">
-                    <span class="stat-icon" aria-hidden="true">💧</span>
+                    <span class="stat-icon" aria-hidden="true">
+                        <svg class="stat-svg-icon stat-icon-waterfall" viewBox="0 0 54 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M 8 8 C 14 8, 16 10, 16 15 L 16 33" />
+                            <path d="M 21 8 C 22.5 8, 23 9.5, 23 13 L 23 33" />
+                            <path d="M 33 8 C 31.5 8, 31 9.5, 31 13 L 31 33" />
+                            <path d="M 46 8 C 40 8, 38 10, 38 15 L 38 33" />
+                            <path d="M 6 39 Q 11.25 36.5, 16.5 39 T 27 39 T 37.5 39 T 48 39" />
+                        </svg>
+                    </span>
                     <div class="stat-number">50+</div>
                     <div class="stat-label">Air Terjun Alami</div>
                     <div class="stat-sublabel">Surga tersembunyi asri</div>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-icon" aria-hidden="true">🌇</span>
+                    <span class="stat-icon" aria-hidden="true">
+                        <svg class="stat-svg-icon stat-icon-sunset" viewBox="0 0 54 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="27" y1="5" x2="27" y2="10" />
+                            <line x1="14" y1="10.5" x2="18" y2="14.5" />
+                            <line x1="40" y1="10.5" x2="36" y2="14.5" />
+                            <line x1="7" y1="23" x2="12" y2="23" />
+                            <line x1="42" y1="23" x2="47" y2="23" />
+                            <path d="M 17 26 A 10 10 0 0 1 37 26" />
+                            <path d="M 6 32 Q 11.25 29.5, 16.5 32 T 27 32 T 37.5 32 T 48 32" />
+                            <path d="M 8 39 Q 13.25 36.5, 18.5 39 T 29 39 T 39.5 39 T 48 39" />
+                        </svg>
+                    </span>
                     <div class="stat-number">30+</div>
                     <div class="stat-label">Pantai Sunset Menawan</div>
                     <div class="stat-sublabel">Panorama senja eksotis</div>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-icon" aria-hidden="true">🌅</span>
+                    <span class="stat-icon" aria-hidden="true">
+                        <svg class="stat-svg-icon stat-icon-sunrise" viewBox="0 0 54 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="27" y1="4" x2="27" y2="9" />
+                            <line x1="14" y1="9.5" x2="18" y2="13.5" />
+                            <line x1="40" y1="9.5" x2="36" y2="13.5" />
+                            <line x1="7" y1="23" x2="12" y2="23" />
+                            <line x1="42" y1="23" x2="47" y2="23" />
+                            <path d="M 18.5 27 A 9.5 9.5 0 1 1 35.5 27" />
+                            <path d="M 6 32 Q 11.25 29.5, 16.5 32 T 27 32 T 37.5 32 T 48 32" />
+                            <path d="M 8 39 Q 13.25 36.5, 18.5 39 T 29 39 T 39.5 39 T 48 39" />
+                        </svg>
+                    </span>
                     <div class="stat-number">25+</div>
                     <div class="stat-label">Pantai Sunrise Syahdu</div>
                     <div class="stat-sublabel">Kedamaian fajar timur</div>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-icon" aria-hidden="true">⛰️</span>
+                    <span class="stat-icon" aria-hidden="true">
+                        <svg class="stat-svg-icon stat-icon-mountain" viewBox="0 0 54 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M 7 34 L 17 21 L 27 10 L 36 19 L 47 34" />
+                            <path d="M 17 21 L 23 29" />
+                            <path d="M 27 10 L 26 17 L 29 23 L 27 31" />
+                            <path d="M 36 19 L 40 29" />
+                            <path d="M 5 39 Q 11 36.5, 17 39 T 29 39 T 41 39 T 49 39" />
+                        </svg>
+                    </span>
                     <div class="stat-number">10+</div>
                     <div class="stat-label">Puncak & Jalur Trekking</div>
                     <div class="stat-sublabel">Kaldera & jalur pendakian</div>
