@@ -586,7 +586,13 @@
             <button type="button" class="modal-close-btn" id="btn-close-login" aria-label="Tutup Login Modal">&times;</button>
 
             <div class="modal-header">
-                <div class="modal-logo-leaf" aria-hidden="true">🌿</div>
+                <div class="modal-logo-leaf" aria-hidden="true">
+                    @if($logoFile)
+                        <img src="{{ asset($logoFile) }}" alt="Dewasufa Logo" class="modal-logo-img">
+                    @else
+                        🌿
+                    @endif
+                </div>
                 <h3 class="modal-title" id="login-title">Masuk ke Dewasufa</h3>
                 <p class="modal-subtitle">Akses panduan eksklusif dan simpan destinasi favorit Anda</p>
             </div>
@@ -643,7 +649,13 @@
             <button type="button" class="modal-close-btn" id="btn-close-signup" aria-label="Tutup Sign Up Modal">&times;</button>
 
             <div class="modal-header">
-                <div class="modal-logo-leaf" aria-hidden="true">🌿</div>
+                <div class="modal-logo-leaf" aria-hidden="true">
+                    @if($logoFile)
+                        <img src="{{ asset($logoFile) }}" alt="Dewasufa Logo" class="modal-logo-img">
+                    @else
+                        🌿
+                    @endif
+                </div>
                 <h3 class="modal-title" id="signup-title">Buat Akun Dewasufa</h3>
                 <p class="modal-subtitle">Bergabung dan mulai jelajahi keindahan alam Bali</p>
             </div>
