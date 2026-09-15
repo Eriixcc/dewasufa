@@ -426,26 +426,31 @@
     <!-- ===== STATS STRIP ===== -->
     <section id="stats" class="container">
         <div class="stats-strip">
+            <!-- <div class="stats-header-tag">Eksplorasi Keajaiban Alam Bali</div> -->
             <div class="stats-grid">
                 <div class="stat-item">
                     <span class="stat-icon" aria-hidden="true">💧</span>
                     <div class="stat-number">50+</div>
                     <div class="stat-label">Air Terjun Alami</div>
+                    <div class="stat-sublabel">Surga tersembunyi asri</div>
                 </div>
                 <div class="stat-item">
                     <span class="stat-icon" aria-hidden="true">🌇</span>
                     <div class="stat-number">30+</div>
                     <div class="stat-label">Pantai Sunset Menawan</div>
+                    <div class="stat-sublabel">Panorama senja eksotis</div>
                 </div>
                 <div class="stat-item">
                     <span class="stat-icon" aria-hidden="true">🌅</span>
                     <div class="stat-number">25+</div>
                     <div class="stat-label">Pantai Sunrise Syahdu</div>
+                    <div class="stat-sublabel">Kedamaian fajar timur</div>
                 </div>
                 <div class="stat-item">
                     <span class="stat-icon" aria-hidden="true">⛰️</span>
                     <div class="stat-number">10+</div>
                     <div class="stat-label">Puncak & Jalur Trekking</div>
+                    <div class="stat-sublabel">Kaldera & jalur pendakian</div>
                 </div>
             </div>
         </div>
