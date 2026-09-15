@@ -143,9 +143,14 @@ export function showToast(message, icon = '✓') {
 export function handleLoginSubmit(event) {
     if (event) event.preventDefault();
     const emailEl = document.getElementById('login-email');
-    const email = emailEl ? emailEl.value : '';
+    const email = emailEl ? emailEl.value.trim() : '';
     const username = email ? email.split('@')[0] : 'Wisatawan Bali';
     sessionStorage.setItem('dewasufa_user', username);
+    localStorage.setItem('dewasufa_user', username);
+    if (email) {
+        sessionStorage.setItem('dewasufa_email', email);
+        localStorage.setItem('dewasufa_email', email);
+    }
     closeLoginModal();
     showToast(`Selamat datang, ${username}! Mengalihkan ke dashboard...`, '');
     setTimeout(() => {
@@ -156,6 +161,9 @@ export function handleLoginSubmit(event) {
 // Social Google Login Simulation
 export function simulateGoogleLogin() {
     sessionStorage.setItem('dewasufa_user', 'Arya Wisatawan');
+    localStorage.setItem('dewasufa_user', 'Arya Wisatawan');
+    sessionStorage.setItem('dewasufa_email', 'arya.wisatawan@gmail.com');
+    localStorage.setItem('dewasufa_email', 'arya.wisatawan@gmail.com');
     closeLoginModal();
     showToast('Login berhasil! Mengalihkan ke dashboard...', '');
     setTimeout(() => {
@@ -1084,7 +1092,7 @@ export function setCommentRating(rating) {
 
 // Get username of currently logged-in account
 export function getCurrentUsername() {
-    const fromSession = sessionStorage.getItem('dewasufa_user');
+    const fromSession = sessionStorage.getItem('dewasufa_user') || localStorage.getItem('dewasufa_user');
     if (fromSession && fromSession.trim()) {
         return fromSession.trim();
     }
@@ -1221,8 +1229,16 @@ export function openSettingsModal() {
 
     // Prefill username
     const nameInput = document.getElementById('settings-name');
-    const currentName = sessionStorage.getItem('dewasufa_user') || document.getElementById('dash-display-name')?.textContent || 'Wisatawan Bali';
+    const currentName = sessionStorage.getItem('dewasufa_user') || localStorage.getItem('dewasufa_user') || document.getElementById('dash-display-name')?.textContent || 'Wisatawan Bali';
     if (nameInput) nameInput.value = currentName.trim();
+
+    // Prefill & lock Email (locked to initial login email)
+    const emailInput = document.getElementById('settings-email');
+    const currentEmail = sessionStorage.getItem('dewasufa_email') || localStorage.getItem('dewasufa_email') || 'user@dewasufa.com';
+    if (emailInput) {
+        emailInput.value = currentEmail;
+        emailInput.readOnly = true;
+    }
 
     // Prefill Status Akun (readonly - cannot be edited manually)
     const roleInput = document.getElementById('settings-role');
@@ -1484,7 +1500,7 @@ function initApp() {
     // 2. USER DASHBOARD LISTENERS
     const dashDisplayName = document.getElementById('dash-display-name');
     if (dashDisplayName) {
-        const savedUser = sessionStorage.getItem('dewasufa_user');
+        const savedUser = sessionStorage.getItem('dewasufa_user') || localStorage.getItem('dewasufa_user');
         if (savedUser) {
             dashDisplayName.textContent = savedUser;
         }
@@ -1493,6 +1509,16 @@ function initApp() {
     if (dashRole) {
         const savedRole = sessionStorage.getItem('dewasufa_role');
         dashRole.textContent = savedRole || 'User';
+    }
+
+    // Initialize locked registered email with active account
+    const settingsEmailInput = document.getElementById('settings-email');
+    if (settingsEmailInput) {
+        const savedEmail = sessionStorage.getItem('dewasufa_email') || localStorage.getItem('dewasufa_email');
+        if (savedEmail) {
+            settingsEmailInput.value = savedEmail;
+        }
+        settingsEmailInput.readOnly = true;
     }
 
     // Initialize locked comment author name with active account
@@ -1529,11 +1555,28 @@ function initApp() {
         });
     }
 
-    // Dashboard Logout Button
+    // Shared Logout Handler
+    function performLogout() {
+        sessionStorage.removeItem('dewasufa_user');
+        sessionStorage.removeItem('dewasufa_role');
+        sessionStorage.removeItem('dewasufa_email');
+        localStorage.removeItem('dewasufa_user');
+        localStorage.removeItem('dewasufa_role');
+        localStorage.removeItem('dewasufa_email');
+        if (userDropdown) userDropdown.classList.remove('show');
+        closeSettingsModal();
+        showToast('Anda telah logout. Mengalihkan ke beranda...', '');
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 600);
+    }
+
+    // Dashboard Logout Button (Dropdown Menu)
     const btnLogout = document.getElementById('dash-btn-logout');
     if (btnLogout) {
-        btnLogout.addEventListener('click', () => {
-            sessionStorage.removeItem('dewasufa_user');
+        btnLogout.addEventListener('click', (e) => {
+            e.preventDefault();
+            performLogout();
         });
     }
 
@@ -1707,14 +1750,9 @@ function initApp() {
     // Log Out Button INSIDE Settings Modal
     const btnLogoutInside = document.getElementById('dash-btn-logout-inside');
     if (btnLogoutInside) {
-        btnLogoutInside.addEventListener('click', () => {
-            sessionStorage.removeItem('dewasufa_user');
-            sessionStorage.removeItem('dewasufa_role');
-            closeSettingsModal();
-            showToast('Anda telah logout. Mengalihkan ke beranda...', '');
-            setTimeout(() => {
-                window.location.href = '/';
-            }, 600);
+        btnLogoutInside.addEventListener('click', (e) => {
+            e.preventDefault();
+            performLogout();
         });
     }
 

@@ -106,27 +106,27 @@
 
                     <!-- Dropdown Menu -->
                     <div class="dash-dropdown-menu" id="dash-user-dropdown">
-                        <a href="javascript:void(0)" class="dash-dropdown-item text-gold" id="dash-btn-open-create">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
-                                <line x1="16" y1="8" x2="2" y2="22"></line>
-                                <line x1="17.5" y1="15" x2="9" y2="15"></line>
-                            </svg>
-                            <span>Daftar sebagai Author</span>
-                        </a>
                         <a href="javascript:void(0)" class="dash-dropdown-item" id="dash-btn-my-plan">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                             </svg>
                             <span>Rencana Tersimpan</span>
                         </a>
-                        <hr class="dash-dropdown-divider">
                         <a href="javascript:void(0)" class="dash-dropdown-item" id="dash-btn-open-settings">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="3"></circle>
                                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                             </svg>
                             <span>Pengaturan</span>
+                        </a>
+                        <hr class="dash-dropdown-divider">
+                        <a href="javascript:void(0)" class="dash-dropdown-item text-danger" id="dash-btn-logout">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            <span>Logout</span>
                         </a>
                     </div>
                 </div>
@@ -468,8 +468,17 @@
                             <input type="text" id="settings-name" placeholder="Nama Anda" value="Wisatawan Bali">
                         </div>
                         <div class="dash-form-group">
-                            <label for="settings-email">Email Terdaftar</label>
-                            <input type="email" id="settings-email" placeholder="email@example.com" value="user@dewasufa.com">
+                            <label for="settings-email">
+                                <span>Email Terdaftar</span>
+                                <span class="dash-comment-author-lock-tag" title="Email akun terkunci sesuai saat login dan tidak dapat diubah">
+                                    <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    Terkunci
+                                </span>
+                            </label>
+                            <input type="email" id="settings-email" class="dash-input-readonly" value="user@dewasufa.com" readonly aria-readonly="true" tabindex="-1" title="Email akun aktif terkunci dan tidak dapat diubah">
                         </div>
                     </div>
 
@@ -477,7 +486,6 @@
                         <div class="dash-form-group">
                             <label for="settings-role">Status Akun</label>
                             <input type="text" id="settings-role" value="User" readonly class="dash-input-readonly" title="Status akun hanya dapat diubah oleh sistem atau persetujuan Admin">
-                            <span class="dash-field-hint">Hanya dapat diubah oleh sistem atau persetujuan Admin.</span>
                         </div>
                         <div class="dash-form-group">
                             <label for="settings-distance">Satuan Jarak Rute</label>
