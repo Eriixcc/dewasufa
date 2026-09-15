@@ -627,6 +627,56 @@
                     </svg>
                     <span>Masuk dengan Google</span>
                 </button>
+
+                <p class="modal-register-row">
+                    Belum punya akun?
+                    <a href="javascript:void(0)" class="modal-register-link" id="btn-open-signup">Daftar Sekarang</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ===== MODAL: SIGN UP (DAFTAR AKUN BARU) ===== -->
+    <div class="modal-overlay" id="signup-modal" role="dialog" aria-modal="true" aria-labelledby="signup-title">
+        <div class="modal-box">
+            <button type="button" class="modal-close-btn" id="btn-close-signup" aria-label="Tutup Sign Up Modal">&times;</button>
+
+            <div class="modal-header">
+                <div class="modal-logo-leaf" aria-hidden="true">🌿</div>
+                <h3 class="modal-title" id="signup-title">Buat Akun Dewasufa</h3>
+                <p class="modal-subtitle">Bergabung dan mulai jelajahi keindahan alam Bali</p>
+            </div>
+
+            <form id="signup-form" onsubmit="handleSignupSubmit(event)">
+                <div class="form-group">
+                    <label for="signup-email" class="form-label">Email</label>
+                    <input type="email" id="signup-email" class="form-input" placeholder="nama@email.com" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-username" class="form-label">Username</label>
+                    <input type="text" id="signup-username" class="form-input" placeholder="Nama pengguna Anda" required autocomplete="username" minlength="3">
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-password" class="form-label">Kata Sandi</label>
+                    <input type="password" id="signup-password" class="form-input" placeholder="Min. 8 karakter" required autocomplete="new-password" minlength="8">
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-confirm-password" class="form-label">Konfirmasi Kata Sandi</label>
+                    <input type="password" id="signup-confirm-password" class="form-input" placeholder="Ulangi kata sandi" required autocomplete="new-password" minlength="8">
+                </div>
+
+                <button type="submit" class="btn-modal-submit" id="btn-signup-submit">
+                    <span>Daftar Sekarang</span>
+                </button>
+
+                <p class="modal-register-row" style="margin-top: 14px;">
+                    Sudah punya akun?
+                    <a href="javascript:void(0)" class="modal-register-link" id="btn-back-to-login">Masuk Sekarang</a>
+                </p>
             </form>
         </div>
     </div>

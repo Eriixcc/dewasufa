@@ -77,6 +77,61 @@ export function closeLoginModal() {
     document.body.style.overflow = '';
 }
 
+export function openSignupModal() {
+    closeLoginModal();
+    const signupModal = document.getElementById('signup-modal');
+    if (!signupModal) return;
+    signupModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+        const input = document.getElementById('signup-email');
+        if (input) input.focus();
+    }, 100);
+}
+
+export function closeSignupModal() {
+    const signupModal = document.getElementById('signup-modal');
+    if (!signupModal) return;
+    signupModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+export function handleSignupSubmit(event) {
+    if (event) event.preventDefault();
+
+    const emailEl = document.getElementById('signup-email');
+    const usernameEl = document.getElementById('signup-username');
+    const passwordEl = document.getElementById('signup-password');
+    const confirmEl = document.getElementById('signup-confirm-password');
+
+    const email = emailEl ? emailEl.value.trim() : '';
+    const username = usernameEl ? usernameEl.value.trim() : '';
+    const password = passwordEl ? passwordEl.value : '';
+    const confirm = confirmEl ? confirmEl.value : '';
+
+    if (password !== confirm) {
+        showToast('Kata sandi tidak cocok. Periksa kembali!', '⚠');
+        if (confirmEl) confirmEl.focus();
+        return;
+    }
+
+    // Clear fields after success
+    if (emailEl) emailEl.value = '';
+    if (usernameEl) usernameEl.value = '';
+    if (passwordEl) passwordEl.value = '';
+    if (confirmEl) confirmEl.value = '';
+
+    closeSignupModal();
+    showToast(`Akun berhasil dibuat! Silakan masuk, ${username}.`, '✓');
+
+    // Pre-fill login email and switch to login modal
+    setTimeout(() => {
+        const loginEmail = document.getElementById('login-email');
+        if (loginEmail && email) loginEmail.value = email;
+        openLoginModal();
+    }, 400);
+}
+
 export function openDestModal(categoryKey) {
     const data = categoryData[categoryKey];
     if (!data) return;
@@ -1457,6 +1512,27 @@ function initApp() {
         });
     }
 
+    // Signup modal listeners
+    const signupModal = document.getElementById('signup-modal');
+    const btnOpenSignup = document.getElementById('btn-open-signup');
+    const btnCloseSignup = document.getElementById('btn-close-signup');
+    const btnBackToLogin = document.getElementById('btn-back-to-login');
+
+    if (btnOpenSignup) btnOpenSignup.addEventListener('click', openSignupModal);
+    if (btnCloseSignup) btnCloseSignup.addEventListener('click', closeSignupModal);
+    if (btnBackToLogin) {
+        btnBackToLogin.addEventListener('click', () => {
+            closeSignupModal();
+            setTimeout(openLoginModal, 50);
+        });
+    }
+
+    if (signupModal) {
+        signupModal.addEventListener('click', (e) => {
+            if (e.target === signupModal) closeSignupModal();
+        });
+    }
+
     if (destModal) {
         destModal.addEventListener('click', (e) => {
             if (e.target === destModal) closeDestModal();
@@ -1840,6 +1916,7 @@ function initApp() {
                 return;
             }
             closeLoginModal();
+            closeSignupModal();
             closeDestModal();
             closeCreateDestModal();
             closeSettingsModal();
@@ -1857,3 +1934,10 @@ if (document.readyState === 'loading') {
 } else {
     initApp();
 }
+
+// Expose functions needed by inline onsubmit/onclick attributes in Blade templates
+window.openLoginModal = openLoginModal;
+window.closeLoginModal = closeLoginModal;
+window.openSignupModal = openSignupModal;
+window.closeSignupModal = closeSignupModal;
+window.handleSignupSubmit = handleSignupSubmit;
