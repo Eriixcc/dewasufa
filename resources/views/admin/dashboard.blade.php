@@ -379,22 +379,6 @@
                             <span class="admin-cat-count">(8 Destinasi)</span>
                         </div>
                     </div>
-
-                    <!-- Culture / Heritage -->
-                    <div class="admin-cat-card" onclick="filterByCategory('all')">
-                        <div class="admin-cat-icon-box cat-all">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="14" width="7" height="7"></rect>
-                                <rect x="3" y="14" width="7" height="7"></rect>
-                            </svg>
-                        </div>
-                        <div class="admin-cat-info">
-                            <h3 class="admin-cat-name">Semua Wisata</h3>
-                            <span class="admin-cat-count">(53 Destinasi)</span>
-                        </div>
-                    </div>
                 </div>
             </section>
 
@@ -739,6 +723,7 @@
                                     <td style="text-align: right;">
                                         <div class="admin-row-actions">
                                             <button type="button" class="btn-action-view" onclick="viewDestination('sekumpul')">Detail</button>
+                                            <button type="button" class="btn-action-reject" onclick="rejectReview(1)">Hapus</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -759,7 +744,7 @@
                                     <td><span class="admin-location-cell">Air Terjun Tegenungan</span></td>
                                     <td style="text-align: right;">
                                         <div class="admin-row-actions">
-                                            <button type="button" class="btn-action-approve" onclick="approveReview(3)">Terbitkan</button>
+                                            <button type="button" class="btn-action-view" onclick="viewDestination('tegenungan')">Detail</button>
                                             <button type="button" class="btn-action-reject" onclick="rejectReview(3)">Hapus</button>
                                         </div>
                                     </td>
@@ -782,6 +767,7 @@
                                     <td style="text-align: right;">
                                         <div class="admin-row-actions">
                                             <button type="button" class="btn-action-view" onclick="viewDestination('sunset')">Detail</button>
+                                            <button type="button" class="btn-action-reject" onclick="rejectReview(2)">Hapus</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -1053,14 +1039,28 @@
             showAdminToast('Ulasan berhasil disetujui dan kini tampil publik!');
         }
 
-        // Reject Review
+        // Reject / Delete Review or Item
         function rejectReview(id) {
-            const statusEl = document.getElementById(`status-${id}`);
-            if (statusEl) {
-                statusEl.className = 'admin-status-dot dot-rejected';
-                statusEl.textContent = '● Ulasan Disembunyikan';
+            const targetRow = window.event?.target?.closest('tr');
+            if (targetRow) {
+                targetRow.style.transition = 'all 0.3s ease';
+                targetRow.style.opacity = '0';
+                targetRow.style.transform = 'scale(0.96)';
+                setTimeout(() => {
+                    targetRow.remove();
+                    const badge = document.getElementById('admin-table-count');
+                    const remaining = document.querySelectorAll('#admin-main-table tbody tr').length;
+                    if (badge) badge.textContent = `${remaining} Data Terpilih`;
+                    showAdminToast('Data/ulasan berhasil dihapus.');
+                }, 300);
+            } else {
+                const statusEl = document.getElementById(`status-${id}`);
+                if (statusEl) {
+                    statusEl.className = 'admin-status-dot dot-rejected';
+                    statusEl.textContent = '● Dihapus';
+                }
+                showAdminToast('Data/ulasan berhasil dihapus.');
             }
-            showAdminToast('Ulasan disembunyikan/dihapus.', '⚠️');
         }
 
         // View Destination helper

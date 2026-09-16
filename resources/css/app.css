@@ -5470,7 +5470,7 @@ html[data-theme="dark"] .dest-spot-time {
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 1420px;
+    max-width: 1560px;
     background: rgba(14, 26, 17, 0.70);
     backdrop-filter: blur(32px);
     -webkit-backdrop-filter: blur(32px);
@@ -6087,7 +6087,7 @@ html[data-theme="dark"] .dest-spot-time {
 
 .admin-category-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
 }
 
@@ -7141,7 +7141,7 @@ html[data-theme="dark"] .dest-spot-time {
     }
 
     .admin-category-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 }
 
