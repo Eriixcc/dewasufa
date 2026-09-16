@@ -229,10 +229,10 @@
                 </div>
             </section>
 
-            <!-- Kategori Destinasi Dewasufa (3 Kategori Unggulan) -->
+            <!-- Kategori Destinasi Wisata (4 Kategori Unggulan) -->
             <section class="admin-categories-section" id="admin-categories-section">
                 <div class="admin-section-header">
-                    <h2 class="admin-section-title">Kategori Destinasi Dewasufa</h2>
+                    <h2 class="admin-section-title">Kategori Destinasi Wisata</h2>
                 </div>
 
                 <div class="admin-category-grid">
@@ -244,7 +244,7 @@
                             </svg>
                         </div>
                         <div class="admin-cat-info">
-                            <h3 class="admin-cat-name">Air Terjun</h3>
+                            <h3 class="admin-cat-name">Waterfall</h3>
                             <span class="admin-cat-count">(15 Destinasi)</span>
                         </div>
                     </div>
@@ -288,24 +288,35 @@
                             <span class="admin-cat-count">(12 Destinasi)</span>
                         </div>
                     </div>
+
+                    <!-- Mountain -->
+                    <div class="admin-cat-card" onclick="filterByCategory('Mountain')">
+                        <div class="admin-cat-icon-box cat-mountain">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="3 20 9 7 13 14 17 9 21 20 3 20"></polygon>
+                            </svg>
+                        </div>
+                        <div class="admin-cat-info">
+                            <h3 class="admin-cat-name">Mountain</h3>
+                            <span class="admin-cat-count">(8 Destinasi)</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <!-- ============================================== -->
-            <!-- 3. KOLEKSI DESTINASI DEWASUFA (KELOLA DESTINASI) -->
+            <!-- 3. DESTINASI WISATA (KELOLA DESTINASI)         -->
             <!-- ============================================== -->
-            <section class="dash-recom-section admin-dest-section" id="admin-destinasi-section" aria-label="Koleksi Destinasi Dewasufa">
+            <section class="dash-recom-section admin-dest-section" id="admin-destinasi-section" aria-label="Destinasi Wisata">
                 <div class="dash-section-header">
                     <div class="admin-table-title-group">
-                        <h2 class="dash-section-title">Koleksi Destinasi Dewasufa</h2>
-                        <span class="admin-table-count-badge" id="admin-dest-count-badge">16 Destinasi (13 Post • 3 Draft)</span>
+                        <h2 class="dash-section-title">Destinasi Wisata</h2>
+                        <span class="admin-table-count-badge" id="admin-dest-count-badge">16 Destinasi</span>
                     </div>
 
-                    <!-- Category & Status Filter Pills -->
+                    <!-- Category Filter Pills -->
                     <nav class="dash-category-nav" aria-label="Filter Kategori Destinasi">
                         <button type="button" class="dash-cat-pill active" onclick="filterDestCards('all', this)">Semua</button>
-                        <button type="button" class="dash-cat-pill pill-status-post" onclick="filterDestCards('status-post', this)">● Post (13)</button>
-                        <button type="button" class="dash-cat-pill pill-status-draft" onclick="filterDestCards('status-draft', this)">● Draft (3)</button>
                         <button type="button" class="dash-cat-pill" onclick="filterDestCards('waterfall', this)">Waterfall</button>
                         <button type="button" class="dash-cat-pill" onclick="filterDestCards('sunset', this)">Sunset Beach</button>
                         <button type="button" class="dash-cat-pill" onclick="filterDestCards('sunrise', this)">Sunrise Beach</button>
@@ -1461,7 +1472,7 @@
             const navPill = document.querySelector('.admin-nav-item[data-nav="destinasi"] .admin-nav-pill');
             if (navPill) navPill.textContent = allCards.length;
             const badge = document.getElementById('admin-dest-count-badge');
-            if (badge) badge.textContent = `${allCards.length} Destinasi (${postCount} Post • ${draftCount} Draft)`;
+            if (badge) badge.textContent = `${allCards.length} Destinasi`;
         }
 
         // ===== REVIEW MODERATION DETAIL MODAL =====
@@ -1579,8 +1590,8 @@
                 filterCommentsTable('all');
                 showAdminToast('Dashboard: Menampilkan seluruh ringkasan panel');
             } else if (type === 'destinasi') {
-                // Kelola Destinasi: Hanya munculkan seluruh destinasi, sembunyikan yang lain
-                if (secStatus)     secStatus.classList.add('admin-section-hidden');
+                // Kelola Destinasi: Tampilkan kotak post & draft di atas, dan seluruh destinasi
+                if (secStatus)     secStatus.classList.remove('admin-section-hidden');
                 if (secCategories) secCategories.classList.add('admin-section-hidden');
                 if (secUlasan)     secUlasan.classList.add('admin-section-hidden');
                 if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
@@ -1590,7 +1601,7 @@
                 } else {
                     filterDestCards('all');
                 }
-                showAdminToast('Kelola Destinasi: Menampilkan katalog destinasi (Post & Draft)');
+                showAdminToast('Kelola Destinasi: Menampilkan katalog destinasi');
             } else if (type === 'ulasan') {
                 // Moderasi Ulasan: Hanya menampilkan komentar-komentar tanpa menampilkan yang lain
                 if (secStatus)     secStatus.classList.add('admin-section-hidden');
@@ -1670,13 +1681,13 @@
             const badge = document.getElementById('admin-dest-count-badge');
             if (badge) {
                 if (filter === 'all') {
-                    badge.textContent = `${count} Destinasi (${postCount} Post • ${draftCount} Draft)`;
+                    badge.textContent = `${count} Destinasi`;
                 } else if (filter === 'status-post') {
-                    badge.textContent = `${count} Destinasi Publik (Post)`;
+                    badge.textContent = `${count} Destinasi (Post)`;
                 } else if (filter === 'status-draft') {
-                    badge.textContent = `${count} Destinasi Tersimpan (Draft)`;
+                    badge.textContent = `${count} Destinasi (Draft)`;
                 } else {
-                    badge.textContent = `${count} Destinasi Ditampilkan`;
+                    badge.textContent = `${count} Destinasi`;
                 }
             }
         }
@@ -1684,9 +1695,10 @@
         // Filter by Category from Category Grid
         function filterByCategory(cat) {
             let filterKey = 'all';
-            if (cat === 'Waterfall') filterKey = 'waterfall';
+            if (cat === 'Waterfall' || cat === 'Air Terjun') filterKey = 'waterfall';
             else if (cat === 'Sunset Beach') filterKey = 'sunset';
             else if (cat === 'Sunrise Beach') filterKey = 'sunrise';
+            else if (cat === 'Mountain' || cat === 'Pegunungan') filterKey = 'mountain';
 
             // Ensure destination section is visible
             const secDestinasi = document.getElementById('admin-destinasi-section');
