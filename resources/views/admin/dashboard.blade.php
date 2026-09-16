@@ -1099,6 +1099,187 @@
     </div>
 
 
+    <!-- ===== MODAL DETAIL DESTINASI (TANPA REDIRECT KE PORTAL USER) ===== -->
+    <div class="dash-modal-backdrop" id="dest-detail-modal" role="dialog" aria-modal="true" aria-labelledby="dest-detail-title" style="z-index:12000;">
+        <div class="dash-modal-card" style="max-width:900px;width:100%;max-height:90vh;overflow-y:auto;border-radius:28px;padding:28px;position:relative;">
+            <button type="button" onclick="closeAdminSpotDetail()" aria-label="Tutup" style="position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.8);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;">✕</button>
+
+            <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:24px;">
+                <!-- Left -->
+                <div>
+                    <img id="dest-detail-img" src="/images/waterfall.jpg" alt="Destinasi" style="width:100%;height:220px;object-fit:cover;border-radius:18px;display:block;margin-bottom:16px;">
+                    <h2 id="dest-detail-title" style="font-size:22px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-0.02em;">Air Terjun Sekumpul</h2>
+                    <div style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:12px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span id="dest-detail-location-text">Buleleng, Bali</span>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+                        <span id="dest-detail-category" style="display:inline-block;padding:4px 12px;border-radius:20px;background:rgba(94,234,212,0.15);color:#5eead4;font-size:12px;font-weight:600;border:1px solid rgba(94,234,212,0.25);">Waterfall</span>
+                        <span style="display:inline-block;padding:4px 12px;border-radius:20px;background:rgba(36,75,44,0.5);color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,0.1);">● Terbit Aktif</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+                        <div style="padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;text-align:center;">
+                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">★ Rating</div>
+                            <div style="font-size:16px;font-weight:700;color:#f5b842;" id="dest-detail-score">4.9</div>
+                        </div>
+                        <div style="padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;text-align:center;">
+                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">Jam Buka</div>
+                            <div style="font-size:12px;font-weight:600;color:#fff;" id="dest-detail-time">07:00 - 16:00</div>
+                        </div>
+                        <div style="padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;text-align:center;">
+                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">Tiket Masuk</div>
+                            <div style="font-size:12px;font-weight:600;color:#fff;" id="dest-detail-ticket">Rp 20.000</div>
+                        </div>
+                    </div>
+                    <h4 style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Tentang Destinasi</h4>
+                    <p id="dest-detail-desc" style="font-size:14px;line-height:1.65;color:rgba(255,255,255,0.8);margin:0;">Deskripsi destinasi wisata ini.</p>
+                </div>
+                <!-- Right -->
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                    <div style="padding:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;">
+                        <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 4px;">Ulasan Wisatawan</h3>
+                        <p style="font-size:12px;color:rgba(255,255,255,0.5);margin:0 0 12px;">Komentar dari pengunjung destinasi</p>
+                        <div style="display:flex;flex-direction:column;gap:10px;">
+                            <div style="padding:12px;background:rgba(0,0,0,0.2);border-radius:12px;">
+                                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                                    <div style="width:32px;height:32px;border-radius:50%;background:#244b2c;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">KD</div>
+                                    <div><div style="font-size:13px;font-weight:600;color:#fff;">Ketut Dharmayana</div><div style="font-size:11px;color:rgba(255,255,255,0.5);">2 jam lalu · ★ 5.0</div></div>
+                                </div>
+                                <p style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.75);margin:0;">Air terjunnya sangat megah dan asri! Pemandu lokal sangat ramah.</p>
+                            </div>
+                            <div style="padding:12px;background:rgba(0,0,0,0.2);border-radius:12px;">
+                                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                                    <div style="width:32px;height:32px;border-radius:50%;background:#3b82f6;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">WS</div>
+                                    <div><div style="font-size:13px;font-weight:600;color:#fff;">Wayan Surya</div><div style="font-size:11px;color:rgba(255,255,255,0.5);">1 hari lalu · ★ 5.0</div></div>
+                                </div>
+                                <p style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.75);margin:0;">Sangat direkomendasikan dikunjungi saat pagi hari!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeAdminSpotDetail()" style="padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.8);font-size:14px;font-weight:600;cursor:pointer;margin-top:auto;">Tutup Rincian</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL EDIT DESTINASI (IKON PENSIL) ===== -->
+    <div class="admin-modal-backdrop" id="admin-edit-dest-modal" role="dialog" aria-modal="true" aria-labelledby="edit-dest-modal-title">
+        <div class="admin-modal-card">
+            <div class="admin-modal-header">
+                <div><span class="admin-modal-badge">Kelola Konten Admin</span><h3 id="edit-dest-modal-title" class="admin-modal-title">Edit Destinasi Wisata</h3></div>
+                <button type="button" class="admin-modal-close" onclick="closeEditDestModal()" aria-label="Tutup">&times;</button>
+            </div>
+            <form id="admin-edit-dest-form" onsubmit="handleEditDestSubmit(event)">
+                <div class="admin-form-group">
+                    <label for="edit-dest-title" class="admin-form-label">Nama Destinasi Wisata</label>
+                    <input type="text" id="edit-dest-title" class="admin-form-input" required>
+                </div>
+                <div class="admin-form-row-2">
+                    <div class="admin-form-group">
+                        <label for="edit-dest-category" class="admin-form-label">Kategori Wisata</label>
+                        <select id="edit-dest-category" class="admin-form-select" required>
+                            <option value="waterfall">Waterfall</option>
+                            <option value="sunset">Sunset Beach</option>
+                            <option value="sunrise">Sunrise Beach</option>
+                            <option value="mountain">Mountain</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="edit-dest-ticket" class="admin-form-label">Harga Tiket Masuk</label>
+                        <input type="text" id="edit-dest-ticket" class="admin-form-input" required>
+                    </div>
+                </div>
+                <div class="admin-form-row-2">
+                    <div class="admin-form-group">
+                        <label for="edit-dest-time" class="admin-form-label">Jam Operasional</label>
+                        <input type="text" id="edit-dest-time" class="admin-form-input" required>
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="edit-dest-loc" class="admin-form-label">Lokasi di Bali</label>
+                        <input type="text" id="edit-dest-loc" class="admin-form-input" required>
+                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label for="edit-dest-desc" class="admin-form-label">Deskripsi Singkat Destinasi</label>
+                    <textarea id="edit-dest-desc" class="admin-form-textarea" rows="3" required></textarea>
+                </div>
+                <div class="admin-modal-actions">
+                    <button type="button" class="btn-admin-cancel" onclick="closeEditDestModal()">Batal</button>
+                    <button type="submit" class="btn-admin-submit-save">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== MODAL TINJAU ULASAN (MODERASI) ===== -->
+    <div class="admin-modal-backdrop" id="admin-review-detail-modal" role="dialog" aria-modal="true" aria-labelledby="review-modal-title">
+        <div class="admin-modal-card">
+            <div class="admin-modal-header">
+                <div><span class="admin-modal-badge">Moderasi Ulasan Wisata</span><h3 id="review-modal-title" class="admin-modal-title">Tinjau Komentar Wisatawan</h3></div>
+                <button type="button" class="admin-modal-close" onclick="closeReviewDetailModal()" aria-label="Tutup">&times;</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;margin:16px 0;">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div id="review-detail-avatar" style="width:44px;height:44px;border-radius:50%;background:#244b2c;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;">KD</div>
+                        <div>
+                            <div id="review-detail-user" style="font-size:15px;font-weight:700;color:#fff;">Ketut Dharmayana</div>
+                            <div id="review-detail-time" style="font-size:12px;color:rgba(255,255,255,0.5);">2 jam lalu</div>
+                        </div>
+                    </div>
+                    <span id="review-detail-rating" style="padding:4px 12px;border-radius:20px;background:rgba(245,184,66,0.15);color:#f5b842;font-weight:700;font-size:13px;">★ 5.0 / 5.0</span>
+                </div>
+                <div style="padding:12px 14px;background:rgba(36,75,44,0.14);border:1px solid rgba(36,75,44,0.3);border-radius:12px;display:flex;align-items:center;gap:8px;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#5eead4" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span style="font-size:12px;color:rgba(255,255,255,0.6);">Destinasi:</span>
+                    <strong id="review-detail-dest" style="font-size:13px;color:#5eead4;">Air Terjun Sekumpul</strong>
+                </div>
+                <div style="padding:16px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.08);border-radius:14px;">
+                    <label style="display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:rgba(255,255,255,0.5);margin-bottom:8px;">Isi Ulasan:</label>
+                    <p id="review-detail-comment" style="font-size:14px;line-height:1.6;color:#f1f5f9;margin:0;font-style:italic;"></p>
+                </div>
+            </div>
+            <div class="admin-modal-actions" style="justify-content:space-between;">
+                <button type="button" class="btn-action-reject" style="padding:10px 18px;border-radius:12px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;" onclick="deleteCurrentReviewFromModal()">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    Hapus Komentar
+                </button>
+                <button type="button" class="btn-admin-cancel" onclick="closeReviewDetailModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL PENGATURAN PROFIL ADMIN ===== -->
+    <div class="admin-modal-backdrop" id="admin-settings-modal" role="dialog" aria-modal="true" aria-labelledby="admin-settings-modal-title">
+        <div class="admin-modal-card">
+            <div class="admin-modal-header">
+                <div><span class="admin-modal-badge">Panel Administrator</span><h3 id="admin-settings-modal-title" class="admin-modal-title">Pengaturan Akun &amp; Sistem</h3></div>
+                <button type="button" class="admin-modal-close" onclick="closeAdminSettingsModal()" aria-label="Tutup">&times;</button>
+            </div>
+            <form id="admin-settings-form" onsubmit="saveAdminSettings(event)">
+                <div style="display:flex;align-items:center;gap:16px;margin:16px 0;padding:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;">
+                    <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1b3821,#244b2c);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;">ER</div>
+                    <div>
+                        <h4 style="font-size:16px;font-weight:700;color:#fff;margin:0 0 4px;">Erick</h4>
+                        <span class="admin-role-tag role-admin" style="font-size:11px;">Super Administrator</span>
+                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label for="admin-settings-email" class="admin-form-label">Email Administrator</label>
+                    <input type="email" id="admin-settings-email" class="admin-form-input" value="admin@dewasufa.com" required>
+                </div>
+                <div class="admin-form-group">
+                    <label for="admin-settings-role" class="admin-form-label">Hak Akses Sistem</label>
+                    <input type="text" id="admin-settings-role" class="admin-form-input" value="Full System Administrator" readonly style="opacity:0.7;cursor:not-allowed;">
+                </div>
+                <div class="admin-modal-actions">
+                    <button type="button" class="btn-admin-cancel" onclick="closeAdminSettingsModal()">Batal</button>
+                    <button type="submit" class="btn-admin-submit-save">Simpan Pengaturan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ============================================== -->
     <!-- TOAST NOTIFICATION                            -->
     <!-- ============================================== -->
@@ -1109,6 +1290,235 @@
 
     <!-- Live Interactive Client Logic for Admin Portal -->
     <script>
+        // ===== PROFILE DROPDOWN TOGGLE =====
+        function toggleAdminUserMenu(e) {
+            if (e) e.stopPropagation();
+            const dropdown = document.getElementById('admin-user-dropdown');
+            const btn = document.getElementById('admin-user-menu-btn');
+            if (dropdown) {
+                const isOpen = dropdown.classList.contains('show');
+                dropdown.classList.toggle('show', !isOpen);
+                if (btn) btn.setAttribute('aria-expanded', String(!isOpen));
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const wrap = document.querySelector('.admin-user-dropdown-wrap');
+            const dropdown = document.getElementById('admin-user-dropdown');
+            if (dropdown && wrap && !wrap.contains(e.target)) {
+                dropdown.classList.remove('show');
+                const btn = document.getElementById('admin-user-menu-btn');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // ===== ADMIN SETTINGS MODAL =====
+        function openAdminSettingsModal() {
+            const modal = document.getElementById('admin-settings-modal');
+            if (modal) { modal.classList.add('show'); document.body.style.overflow = 'hidden'; }
+            const dropdown = document.getElementById('admin-user-dropdown');
+            if (dropdown) dropdown.classList.remove('show');
+        }
+        function closeAdminSettingsModal() {
+            const modal = document.getElementById('admin-settings-modal');
+            if (modal) { modal.classList.remove('show'); document.body.style.overflow = ''; }
+        }
+        function saveAdminSettings(e) {
+            e.preventDefault();
+            closeAdminSettingsModal();
+            showAdminToast('Pengaturan profil admin berhasil diperbarui!');
+        }
+
+        // ===== DESTINATION DETAIL MODAL (NO PORTAL REDIRECT) =====
+        function openAdminSpotDetail(key, btn) {
+            const card = btn ? btn.closest('.dash-recom-card') : document.querySelector('.dash-recom-card[data-key="' + key + '"]');
+            const modal = document.getElementById('dest-detail-modal');
+            if (!modal) return;
+            let title = 'Air Terjun Sekumpul', desc = 'Keindahan alam Bali yang memukau.',
+                time = '07:00 - 16:00 WITA', ticket = 'Rp 20.000', loc = 'Buleleng, Bali',
+                cat = 'Waterfall', imgSrc = '/images/waterfall.jpg';
+            if (card) {
+                title  = card.dataset.title  || card.querySelector('.dash-recom-card-title')?.textContent  || title;
+                desc   = card.dataset.desc   || card.querySelector('.dash-recom-card-desc')?.textContent   || desc;
+                time   = card.dataset.time   || time;
+                ticket = card.dataset.ticket || ticket;
+                loc    = card.dataset.loc    || loc;
+                cat    = card.dataset.category || cat;
+                const img = card.querySelector('.dash-recom-img');
+                if (img) imgSrc = img.src;
+            }
+            const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+            set('dest-detail-title', title);
+            set('dest-detail-desc', desc);
+            set('dest-detail-time', time);
+            set('dest-detail-ticket', ticket);
+            set('dest-detail-location-text', loc);
+            set('dest-detail-category', cat.charAt(0).toUpperCase() + cat.slice(1));
+            ['dest-detail-img','dest-detail-img-thumb-1','dest-detail-img-thumb-2','dest-detail-img-thumb-3'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.src = imgSrc;
+            });
+            modal.classList.add('active', 'show');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeAdminSpotDetail() {
+            const modal = document.getElementById('dest-detail-modal');
+            if (modal) { modal.classList.remove('active', 'show'); document.body.style.overflow = ''; }
+        }
+
+        // ===== EDIT DESTINATION MODAL (PENCIL ICON) =====
+        let currentEditingCard = null;
+        function openEditDestModal(btn, e) {
+            if (e) e.stopPropagation();
+            const card = btn.closest('.dash-recom-card');
+            if (!card) return;
+            currentEditingCard = card;
+            const get = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+            get('edit-dest-title',    card.dataset.title    || card.querySelector('.dash-recom-card-title')?.textContent || '');
+            get('edit-dest-category', card.dataset.category || 'waterfall');
+            get('edit-dest-ticket',   card.dataset.ticket   || 'Rp 20.000 / orang');
+            get('edit-dest-time',     card.dataset.time     || '08:00 - 17:00');
+            get('edit-dest-loc',      card.dataset.loc      || 'Bali, Indonesia');
+            get('edit-dest-desc',     card.dataset.desc     || card.querySelector('.dash-recom-card-desc')?.textContent || '');
+            const modal = document.getElementById('admin-edit-dest-modal');
+            if (modal) { modal.classList.add('show'); document.body.style.overflow = 'hidden'; }
+        }
+        function closeEditDestModal() {
+            const modal = document.getElementById('admin-edit-dest-modal');
+            if (modal) { modal.classList.remove('show'); document.body.style.overflow = ''; }
+            currentEditingCard = null;
+        }
+        function handleEditDestSubmit(e) {
+            e.preventDefault();
+            if (!currentEditingCard) return;
+            const val = id => document.getElementById(id)?.value || '';
+            const newTitle = val('edit-dest-title'), newCat = val('edit-dest-category'),
+                  newTicket = val('edit-dest-ticket'), newTime = val('edit-dest-time'),
+                  newLoc = val('edit-dest-loc'), newDesc = val('edit-dest-desc');
+            currentEditingCard.dataset.title   = newTitle;
+            currentEditingCard.dataset.category = newCat;
+            currentEditingCard.dataset.ticket  = newTicket;
+            currentEditingCard.dataset.time    = newTime;
+            currentEditingCard.dataset.loc     = newLoc;
+            currentEditingCard.dataset.desc    = newDesc;
+            const t = currentEditingCard.querySelector('.dash-recom-card-title');
+            if (t) t.textContent = newTitle;
+            const d = currentEditingCard.querySelector('.dash-recom-card-desc');
+            if (d) d.textContent = newDesc;
+            const b = currentEditingCard.querySelector('.dash-recom-badge');
+            if (b) b.textContent = newCat.charAt(0).toUpperCase() + newCat.slice(1);
+            closeEditDestModal();
+            showAdminToast('Destinasi "' + newTitle + '" berhasil diperbarui! ✨');
+        }
+
+        // ===== DELETE DESTINATION CARD (TRASH ICON) =====
+        function confirmDeleteCard(btn, e) {
+            if (e) e.stopPropagation();
+            const card = btn.closest('.dash-recom-card');
+            if (!card) return;
+            const title = card.dataset.title || card.querySelector('.dash-recom-card-title')?.textContent || 'Destinasi';
+            if (confirm('Hapus "' + title + '" dari katalog destinasi?')) {
+                card.style.transition = 'all 0.35s ease';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.88)';
+                setTimeout(() => {
+                    card.remove();
+                    const count = document.querySelectorAll('#admin-cards-container .dash-recom-card').length;
+                    const badge = document.getElementById('admin-dest-count-badge');
+                    if (badge) badge.textContent = count + ' Destinasi Aktif';
+                    const stat = document.getElementById('stat-post-count');
+                    if (stat) stat.textContent = count;
+                    showAdminToast('Destinasi "' + title + '" berhasil dihapus.');
+                }, 350);
+            }
+        }
+
+        // ===== REVIEW MODERATION DETAIL MODAL =====
+        let currentCommentRow = null;
+        function openReviewDetailModal(btn) {
+            const row = btn.closest('tr');
+            if (!row) return;
+            currentCommentRow = row;
+            const user    = row.dataset.user    || row.querySelector('.admin-cell-title')?.textContent || 'Pengguna';
+            const dest    = row.dataset.dest    || row.querySelector('.admin-role-tag')?.textContent   || 'Destinasi';
+            const rating  = row.dataset.rating  || '5.0';
+            const time    = row.dataset.time    || 'Baru saja';
+            const comment = row.dataset.comment || row.querySelector('.admin-comment-snippet')?.textContent?.replace(/"/g,'').trim() || '';
+            const avatarMini = row.querySelector('.admin-avatar-mini');
+            const avatarText = avatarMini ? avatarMini.textContent : user.slice(0,2).toUpperCase();
+            const avatarBg   = avatarMini ? (avatarMini.style.background || '#244b2c') : '#244b2c';
+            const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+            set('review-detail-user',    user);
+            set('review-detail-dest',    dest);
+            set('review-detail-rating',  '★ ' + rating + ' / 5.0');
+            set('review-detail-time',    time);
+            set('review-detail-comment', '"' + comment + '"');
+            const av = document.getElementById('review-detail-avatar');
+            if (av) { av.textContent = avatarText; av.style.background = avatarBg; }
+            const modal = document.getElementById('admin-review-detail-modal');
+            if (modal) { modal.classList.add('show'); document.body.style.overflow = 'hidden'; }
+        }
+        function closeReviewDetailModal() {
+            const modal = document.getElementById('admin-review-detail-modal');
+            if (modal) { modal.classList.remove('show'); document.body.style.overflow = ''; }
+            currentCommentRow = null;
+        }
+        function deleteCurrentReviewFromModal() {
+            if (!currentCommentRow) return;
+            const user = currentCommentRow.dataset.user || 'Ulasan';
+            currentCommentRow.style.transition = 'all 0.3s ease';
+            currentCommentRow.style.opacity = '0';
+            setTimeout(() => {
+                if (currentCommentRow) currentCommentRow.remove();
+                updateCommentsCount();
+                closeReviewDetailModal();
+                showAdminToast('Ulasan dari ' + user + ' berhasil dihapus.');
+            }, 300);
+        }
+        function deleteCommentRow(btn, e) {
+            if (e) e.stopPropagation();
+            const row = btn.closest('tr');
+            if (!row) return;
+            const user = row.dataset.user || 'Pengguna';
+            if (confirm('Hapus komentar dari "' + user + '"?')) {
+                row.style.transition = 'all 0.3s ease';
+                row.style.opacity = '0';
+                setTimeout(() => { row.remove(); updateCommentsCount(); showAdminToast('Ulasan dari ' + user + ' dihapus.'); }, 300);
+            }
+        }
+        function updateCommentsCount() {
+            const count = document.querySelectorAll('#admin-comments-tbody tr').length;
+            const badge = document.getElementById('admin-table-count');
+            if (badge) badge.textContent = count + ' Ulasan Aktif';
+            const pill = document.querySelector('.admin-nav-item[data-nav="ulasan"] .admin-nav-pill');
+            if (pill) pill.textContent = count;
+        }
+
+        // ===== CLOSE MODALS ON BACKDROP CLICK =====
+        document.addEventListener('DOMContentLoaded', () => {
+            ['dest-detail-modal','admin-edit-dest-modal','admin-review-detail-modal','admin-settings-modal','admin-create-dest-modal'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('click', (e) => {
+                    if (e.target === el) {
+                        el.classList.remove('show','active');
+                        document.body.style.overflow = '';
+                        currentEditingCard = null;
+                        currentCommentRow = null;
+                    }
+                });
+            });
+        });
+
+        // ===== ESC KEY CLOSES ALL ADMIN MODALS =====
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            ['dest-detail-modal','admin-edit-dest-modal','admin-review-detail-modal','admin-settings-modal','admin-create-dest-modal'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) { el.classList.remove('show','active'); document.body.style.overflow = ''; }
+            });
+            currentEditingCard = null; currentCommentRow = null;
+        });
+
         // Handle Left Navigation Item Click
         function handleNavClick(element, type) {
             document.querySelectorAll('.admin-nav-item').forEach(item => item.classList.remove('active'));
