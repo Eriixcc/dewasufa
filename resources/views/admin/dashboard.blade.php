@@ -67,19 +67,7 @@
                         </svg>
                     </div>
                     <span class="admin-nav-label">Kelola Destinasi</span>
-                    <span class="admin-nav-pill">53</span>
-                </a>
-
-                <a href="javascript:void(0)" class="admin-nav-item" data-nav="author" onclick="handleNavClick(this, 'pending')">
-                    <div class="admin-nav-icon">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="8.5" cy="7" r="4"></circle>
-                            <polyline points="17 11 19 13 23 9"></polyline>
-                        </svg>
-                    </div>
-                    <span class="admin-nav-label">Verifikasi Author</span>
-                    <span class="admin-nav-pill pill-alert" id="badge-pending-count">4</span>
+                    <span class="admin-nav-pill">16</span>
                 </a>
 
                 <a href="javascript:void(0)" class="admin-nav-item" data-nav="ulasan" onclick="handleNavClick(this, 'ulasan')">
@@ -90,15 +78,6 @@
                     </div>
                     <span class="admin-nav-label">Moderasi Ulasan</span>
                     <span class="admin-nav-pill">12</span>
-                </a>
-
-                <a href="javascript:void(0)" class="admin-nav-item" data-nav="rencana" onclick="handleNavClick(this, 'rencana')">
-                    <div class="admin-nav-icon">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                        </svg>
-                    </div>
-                    <span class="admin-nav-label">Rencana Wisata</span>
                 </a>
 
                 <a href="javascript:void(0)" class="admin-nav-item" data-nav="kategori" onclick="handleNavClick(this, 'kategori')">
@@ -161,7 +140,7 @@
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    <input type="text" id="admin-search-input" placeholder="Cari destinasi, author, pemohon, ulasan..." aria-label="Cari data admin">
+                    <input type="text" id="admin-search-input" placeholder="Cari destinasi wisata Bali, ulasan, wilayah..." aria-label="Cari data admin">
                 </div>
 
                 <div class="admin-topbar-actions">
@@ -171,21 +150,40 @@
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                         </svg>
                         <span>Tambah Baru</span>
-                        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
                     </button>
+
+                    <!-- Icon Tools -->
+                    <div class="admin-icon-tools">
+                        <button type="button" class="admin-tool-icon-btn admin-notif-btn" title="Notifikasi Admin" onclick="showAdminToast('Tidak ada notifikasi baru.')">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                            <span class="admin-notif-indicator"></span>
+                        </button>
+                    </div>
+
+                    <!-- Profile Badge -->
+                    <div class="admin-profile-badge">
+                        <div class="admin-profile-meta">
+                            <span class="admin-profile-name">Erick</span>
+                            <span class="admin-profile-role">Admin</span>
+                        </div>
+                        <div class="admin-profile-avatar">
+                            <span>ER</span>
+                        </div>
+                    </div>
                 </div>
             </header>
 
-            <!-- Big Welcome Banner (Like Reference Image's Hero Banner) -->
+            <!-- Big Welcome Banner -->
             <section class="admin-hero-banner">
                 <div class="admin-hero-text">
                     <span class="admin-hero-badge">🌿 Portal Pengelola Dewasufa</span>
                     <h1 class="admin-hero-title">Selamat Pagi, Admin Dewasufa!</h1>
-                    <p class="admin-hero-subtitle">Ada <strong id="hero-pending-text">4 permohonan author baru</strong> dan <strong>12 ulasan wisatawan</strong> yang menunggu verifikasi Anda hari ini. Kelola keindahan wisata alam Bali dengan prima.</p>
+                    <p class="admin-hero-subtitle">Pantau dan kelola seluruh destinasi wisata alam Bali, ulasan wisatawan, dan publikasi katalog Dewasufa dengan prima.</p>
                     <div class="admin-hero-actions">
-                        <button type="button" class="btn-hero-review" onclick="filterAdminTable('pending'); scrollToTable();">Tinjau Sekarang</button>
+                        <button type="button" class="btn-hero-review" onclick="handleNavClick(document.querySelector('.admin-nav-item[data-nav=destinasi]'), 'destinasi')">Kelola Destinasi</button>
                         <button type="button" class="btn-hero-outline" onclick="openAdminCreateModal()">+ Tambah Destinasi</button>
                     </div>
                 </div>
@@ -259,11 +257,11 @@
                 </div>
             </section>
 
-            <!-- Status Ringkasan Destinasi (Post, Pending, Draft) -->
+            <!-- Status Ringkasan Destinasi (Post & Draft - Equal Width) -->
             <section class="admin-status-section" aria-label="Status Ringkasan Destinasi">
                 <div class="admin-status-grid">
                     <!-- 1. POST (Terbit) -->
-                    <div class="admin-status-card stat-card-post" onclick="filterAdminTable('active'); updateNavActive('destinasi');" role="button" tabindex="0" title="Klik untuk memfilter destinasi aktif yang tayang">
+                    <div class="admin-status-card stat-card-post" onclick="handleNavClick(document.querySelector('.admin-nav-item[data-nav=destinasi]'), 'destinasi')" role="button" tabindex="0" title="Klik untuk mengelola destinasi aktif yang tayang">
                         <div class="stat-card-icon-wrap icon-post">
                             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
@@ -276,36 +274,15 @@
                                 <span class="stat-pill-badge badge-published">● Terbit</span>
                             </div>
                             <div class="stat-card-value-group">
-                                <span class="stat-main-number" id="stat-post-count">53</span>
+                                <span class="stat-main-number" id="stat-post-count">16</span>
                                 <span class="stat-unit">Destinasi</span>
                             </div>
-                            <p class="stat-card-desc">Konten aktif tayang di katalog publik</p>
+                            <p class="stat-card-desc">Konten aktif tayang di katalog publik Dewasufa</p>
                         </div>
                     </div>
 
-                    <!-- 2. PENDING (Menunggu Verifikasi) -->
-                    <div class="admin-status-card stat-card-pending" onclick="filterAdminTable('pending'); updateNavActive('author');" role="button" tabindex="0" title="Klik untuk memfilter permohonan pending">
-                        <div class="stat-card-icon-wrap icon-pending">
-                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                        </div>
-                        <div class="stat-card-content">
-                            <div class="stat-card-header">
-                                <span class="stat-card-title">Pending</span>
-                                <span class="stat-pill-badge badge-waiting">● Perlu Aksi</span>
-                            </div>
-                            <div class="stat-card-value-group">
-                                <span class="stat-main-number" id="stat-pending-count">4</span>
-                                <span class="stat-unit">Permohonan</span>
-                            </div>
-                            <p class="stat-card-desc">Verifikasi author & konten destinasi</p>
-                        </div>
-                    </div>
-
-                    <!-- 3. DRAFT (Konsep / Siap Rilis) -->
-                    <div class="admin-status-card stat-card-draft" onclick="showAdminToast('Menampilkan 3 draft destinasi siap rilis'); scrollToTable();" role="button" tabindex="0" title="Klik untuk melihat draft">
+                    <!-- 2. DRAFT (Konsep / Siap Rilis) -->
+                    <div class="admin-status-card stat-card-draft" onclick="showAdminToast('Menampilkan draft destinasi siap rilis'); scrollToDestCards();" role="button" tabindex="0" title="Klik untuk melihat draft destinasi">
                         <div class="stat-card-icon-wrap icon-draft">
                             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -324,17 +301,16 @@
                                 <span class="stat-main-number" id="stat-draft-count">3</span>
                                 <span class="stat-unit">Tersimpan</span>
                             </div>
-                            <p class="stat-card-desc">Destinasi siap uji & rilis ke publik</p>
+                            <p class="stat-card-desc">Destinasi siap uji &amp; rilis ke publik</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Kategori Destinasi Dewasufa ("You Need to hire" Section in Reference) -->
+            <!-- Kategori Destinasi Dewasufa -->
             <section class="admin-categories-section">
                 <div class="admin-section-header">
                     <h2 class="admin-section-title">Kategori Destinasi Dewasufa</h2>
-                    <a href="javascript:void(0)" class="admin-link-view-all" onclick="filterAdminTable('all')">Lihat Semua</a>
                 </div>
 
                 <div class="admin-category-grid">
@@ -422,18 +398,312 @@
                 </div>
             </section>
 
-            <!-- Tabel Verifikasi & Destinasi ("Recruitment Progress" Section in Reference) -->
+            <!-- ============================================== -->
+            <!-- 3. KOLEKSI DESTINASI DEWASUFA (KELOLA DESTINASI) -->
+            <!-- ============================================== -->
+            <section class="dash-recom-section admin-dest-section" id="admin-destinasi-section" aria-label="Koleksi Destinasi Dewasufa">
+                <div class="dash-section-header">
+                    <div class="admin-table-title-group">
+                        <h2 class="dash-section-title">Koleksi Destinasi Dewasufa</h2>
+                        <span class="admin-table-count-badge" id="admin-dest-count-badge">16 Destinasi Aktif</span>
+                    </div>
+
+                    <!-- Category Filter Pills (Matching User Dashboard) -->
+                    <nav class="dash-category-nav" aria-label="Filter Kategori Destinasi">
+                        <button type="button" class="dash-cat-pill active" onclick="filterDestCards('all', this)">Semua</button>
+                        <button type="button" class="dash-cat-pill" onclick="filterDestCards('waterfall', this)">Waterfall</button>
+                        <button type="button" class="dash-cat-pill" onclick="filterDestCards('sunset', this)">Sunset Beach</button>
+                        <button type="button" class="dash-cat-pill" onclick="filterDestCards('sunrise', this)">Sunrise Beach</button>
+                        <button type="button" class="dash-cat-pill" onclick="filterDestCards('mountain', this)">Mountain</button>
+                    </nav>
+                </div>
+
+                <div class="dash-recom-grid admin-dest-cards-grid" id="admin-cards-container">
+                    <!-- Waterfall 1 -->
+                    <div class="dash-recom-card" data-category="waterfall">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/waterfall.jpg" alt="Air Terjun Sekumpul" class="dash-recom-img">
+                            <span class="dash-recom-badge">Waterfall</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Air Terjun Sekumpul</h3>
+                            <p class="dash-recom-card-desc">Gugusan air terjun kembar megah berketinggian 80m di lembah Buleleng.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">07:00 - 16:00</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('sekumpul')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Waterfall 2 -->
+                    <div class="dash-recom-card" data-category="waterfall">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/waterfall.jpg" alt="Air Terjun Tegenungan" class="dash-recom-img">
+                            <span class="dash-recom-badge">Waterfall</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Air Terjun Tegenungan</h3>
+                            <p class="dash-recom-card-desc">Kolam alami segar di lembah Gianyar dengan akses mudah dekat Ubud.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">06:30 - 18:00</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('waterfall')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Waterfall 3 -->
+                    <div class="dash-recom-card" data-category="waterfall">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/waterfall.jpg" alt="Air Terjun Gitgit" class="dash-recom-img">
+                            <span class="dash-recom-badge">Waterfall</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Air Terjun Gitgit</h3>
+                            <p class="dash-recom-card-desc">Air terjun legendaris dengan ketinggian 35 meter di Singaraja.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">08:00 - 17:00</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('sekumpul')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Waterfall 4 -->
+                    <div class="dash-recom-card" data-category="waterfall">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/waterfall.jpg" alt="Air Terjun Aling-Aling" class="dash-recom-img">
+                            <span class="dash-recom-badge">Waterfall</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Air Terjun Aling-Aling</h3>
+                            <p class="dash-recom-card-desc">Sensasi seluncur alami dan cliff jumping yang menantang di Sambangan.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">08:00 - 16:30</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('sekumpul')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sunset Beach 1 -->
+                    <div class="dash-recom-card" data-category="sunset">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/sunset-beach.jpg" alt="Pantai Tanah Lot" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Pantai Tanah Lot</h3>
+                            <p class="dash-recom-card-desc">Siluet pura agung di atas karang laut saat matahari terbenam.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">17:00 - 18:45</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('sunset')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sunset Beach 2 -->
+                    <div class="dash-recom-card" data-category="sunset">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/sunset-beach.jpg" alt="Pantai Melasti & Tebing Karang" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Pantai Melasti Ungasan</h3>
+                            <p class="dash-recom-card-desc">Tebing kapur menjulang tinggi dengan pasir putih bersih dan sunset magis.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">16:00 - 19:00</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('sunset')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sunset Beach 3 -->
+                    <div class="dash-recom-card" data-category="sunset">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/sunset-beach.jpg" alt="Pantai Uluwatu / Suluban" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Pantai Uluwatu / Suluban</h3>
+                            <p class="dash-recom-card-desc">Tebing karang megah dengan ombak peselancar kelas dunia di Bukit.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">16:30 - 18:30</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('sunset')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sunset Beach 4 -->
+                    <div class="dash-recom-card" data-category="sunset">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/sunset-beach.jpg" alt="Pantai Kuta & Legian" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Pantai Kuta &amp; Legian</h3>
+                            <p class="dash-recom-card-desc">Garis pantai ikonik nan landai untuk menikmati senja santai Bali.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">17:00 - 18:30</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('sunset')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sunrise Beach 1 -->
+                    <div class="dash-recom-card" data-category="sunrise">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/sunrise-beach.jpg" alt="Pantai Sanur" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Pantai Sanur Denpasar</h3>
+                            <p class="dash-recom-card-desc">Fajar hening nan damai dengan gazebo klasik dan jalur sepeda tepi laut.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">05:45 - 06:45</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('sunrise')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sunrise Beach 2 -->
+                    <div class="dash-recom-card" data-category="sunrise">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/sunrise-beach.jpg" alt="Pantai Candidasa" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Pantai Candidasa</h3>
+                            <p class="dash-recom-card-desc">Ketenangan pesisir Karangasem dengan pemandangan pulau karang.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">05:30 - 06:30</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('sunrise')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sunrise Beach 3 -->
+                    <div class="dash-recom-card" data-category="sunrise">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/sunrise-beach.jpg" alt="Pantai Kusamba" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Pantai Kusamba Klungkung</h3>
+                            <p class="dash-recom-card-desc">Pasir hitam eksotis dan aktivitas pembuat garam tradisional saat fajar.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">05:30 - 06:30</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('sunrise')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sunrise Beach 4 -->
+                    <div class="dash-recom-card" data-category="sunrise">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/sunrise-beach.jpg" alt="Pantai Amed" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Pantai Amed</h3>
+                            <p class="dash-recom-card-desc">Perahu jukung tradisional bersandar dengan latar fajar Gunung Agung.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">05:15 - 06:30</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('sunrise')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mountain 1 -->
+                    <div class="dash-recom-card" data-category="mountain">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/mountain.jpg" alt="Gunung Batur" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-mountain">Mountain</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Gunung Batur (1.717 mdpl)</h3>
+                            <p class="dash-recom-card-desc">Sunrise trekking paling populer dengan kaldera luas dan Danau Batur.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">03:30 - 09:00</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('mountain')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mountain 2 -->
+                    <div class="dash-recom-card" data-category="mountain">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/mountain.jpg" alt="Gunung Agung" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-mountain">Mountain</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Gunung Agung (3.142 mdpl)</h3>
+                            <p class="dash-recom-card-desc">Titik tertinggi dan tersuci di Bali untuk pendaki berpengalaman.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">Malam Hari</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('mountain')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mountain 3 -->
+                    <div class="dash-recom-card" data-category="mountain">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/mountain.jpg" alt="Bukit Campuhan Ubud" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-mountain">Mountain</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Bukit Campuhan Ubud</h3>
+                            <p class="dash-recom-card-desc">Jalur punggung bukit ilalang hijau yang sejuk dan ramah keluarga.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">06:00 - 08:30</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('mountain')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mountain 4 -->
+                    <div class="dash-recom-card" data-category="mountain">
+                        <div class="dash-recom-img-wrap">
+                            <img src="/images/mountain.jpg" alt="Gunung Abang" class="dash-recom-img">
+                            <span class="dash-recom-badge badge-mountain">Mountain</span>
+                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">Gunung Abang (2.152 mdpl)</h3>
+                            <p class="dash-recom-card-desc">Puncak berhutan rindang di seberang Kaldera Batur yang damai.</p>
+                            <div class="dash-recom-footer">
+                                <span class="dash-recom-time">03:00 - 10:00</span>
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="viewDestination('mountain')">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabel Moderasi Ulasan & Log Aktivitas Destinasi -->
             <section class="admin-table-section" id="admin-table-container">
                 <div class="admin-section-header">
                     <div class="admin-table-title-group">
-                        <h2 class="admin-section-title">Verifikasi & Pengelolaan Destinasi</h2>
-                        <span class="admin-table-count-badge" id="admin-table-count">6 Data Terpilih</span>
+                        <h2 class="admin-section-title">Moderasi Ulasan & Log Aktivitas Destinasi</h2>
+                        <span class="admin-table-count-badge" id="admin-table-count">3 Data Terpilih</span>
                     </div>
 
                     <!-- Filter Tabs -->
                     <div class="admin-table-filters">
                         <button type="button" class="admin-tab-btn active" onclick="filterAdminTable('all', this)">Semua</button>
-                        <button type="button" class="admin-tab-btn" onclick="filterAdminTable('pending', this)">Menunggu Verifikasi</button>
                         <button type="button" class="admin-tab-btn" onclick="filterAdminTable('active', this)">Terverifikasi</button>
                         <button type="button" class="admin-tab-btn" onclick="filterAdminTable('review', this)">Ulasan Baru</button>
                     </div>
@@ -445,36 +715,14 @@
                             <thead>
                                 <tr>
                                     <th>Nama / Entitas</th>
-                                    <th>Peran / Kategori</th>
-                                    <th>Status Verifikasi</th>
-                                    <th>Kontak / Wilayah</th>
+                                    <th>Kategori</th>
+                                    <th>Status Publikasi</th>
+                                    <th>Lokasi / Wilayah</th>
                                     <th style="text-align: right;">Aksi Cepat</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Row 1 (Highlight Active Row, matching reference image) -->
-                                <tr class="admin-row-active" data-type="pending" data-category="Waterfall">
-                                    <td>
-                                        <div class="admin-user-cell">
-                                            <div class="admin-avatar-mini" style="background: #e59b2b; color: #122115;">PA</div>
-                                            <div>
-                                                <div class="admin-cell-title">Putu Arya Wiguna</div>
-                                                <div class="admin-cell-sub">Pendaftaran Author Wisata Alam</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="admin-role-tag role-author">Calon Author</span></td>
-                                    <td><span class="admin-status-dot dot-pending" id="status-1">● Menunggu Verifikasi</span></td>
-                                    <td><span class="admin-location-cell">Buleleng, Bali</span></td>
-                                    <td style="text-align: right;">
-                                        <div class="admin-row-actions">
-                                            <button type="button" class="btn-action-approve" onclick="approveAuthor(1, 'Putu Arya Wiguna')">Setujui</button>
-                                            <button type="button" class="btn-action-reject" onclick="rejectAuthor(1)">Tolak</button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- Row 2 -->
+                                <!-- Row 1 -->
                                 <tr data-type="active" data-category="Waterfall">
                                     <td>
                                         <div class="admin-user-cell">
@@ -495,36 +743,14 @@
                                     </td>
                                 </tr>
 
-                                <!-- Row 3 -->
-                                <tr data-type="pending" data-category="Sunset Beach">
-                                    <td>
-                                        <div class="admin-user-cell">
-                                            <div class="admin-avatar-mini" style="background: #df6a3e; color: #ffffff;">SW</div>
-                                            <div>
-                                                <div class="admin-cell-title">Sarah Wijaya</div>
-                                                <div class="admin-cell-sub">Permohonan Pengelola Konten</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="admin-role-tag role-author">Calon Author</span></td>
-                                    <td><span class="admin-status-dot dot-pending" id="status-2">● Menunggu Verifikasi</span></td>
-                                    <td><span class="admin-location-cell">Ubud, Gianyar</span></td>
-                                    <td style="text-align: right;">
-                                        <div class="admin-row-actions">
-                                            <button type="button" class="btn-action-approve" onclick="approveAuthor(2, 'Sarah Wijaya')">Setujui</button>
-                                            <button type="button" class="btn-action-reject" onclick="rejectAuthor(2)">Tolak</button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- Row 4 -->
+                                <!-- Row 2 -->
                                 <tr data-type="review" data-category="Waterfall">
                                     <td>
                                         <div class="admin-user-cell">
                                             <div class="admin-avatar-mini" style="background: #5e8967; color: #ffffff;">KD</div>
                                             <div>
                                                 <div class="admin-cell-title">Ketut Dharmayana</div>
-                                                <div class="admin-cell-sub">Ulasan Pengunjung Baru (4.0 ★)</div>
+                                                <div class="admin-cell-sub">Ulasan Wisatawan Baru (4.0 ★)</div>
                                             </div>
                                         </div>
                                     </td>
@@ -539,13 +765,13 @@
                                     </td>
                                 </tr>
 
-                                <!-- Row 5 -->
+                                <!-- Row 3 -->
                                 <tr data-type="active" data-category="Sunset Beach">
                                     <td>
                                         <div class="admin-user-cell">
                                             <div class="admin-avatar-mini" style="background: #e59b2b; color: #122115;">PM</div>
                                             <div>
-                                                <div class="admin-cell-title">Pantai Melasti & Tebing Karang</div>
+                                                <div class="admin-cell-title">Pantai Melasti &amp; Tebing Karang</div>
                                                 <div class="admin-cell-sub">Destinasi Sunset Favorit</div>
                                             </div>
                                         </div>
@@ -559,234 +785,12 @@
                                         </div>
                                     </td>
                                 </tr>
-
-                                <!-- Row 6 -->
-                                <tr data-type="pending" data-category="Gunung">
-                                    <td>
-                                        <div class="admin-user-cell">
-                                            <div class="admin-avatar-mini" style="background: #497a53; color: #ffffff;">GB</div>
-                                            <div>
-                                                <div class="admin-cell-title">Gede Batur Tour & Guide</div>
-                                                <div class="admin-cell-sub">Pendaftaran Author Pemandu Trekking</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="admin-role-tag role-author">Calon Author</span></td>
-                                    <td><span class="admin-status-dot dot-pending" id="status-4">● Menunggu Verifikasi</span></td>
-                                    <td><span class="admin-location-cell">Kintamani, Bangli</span></td>
-                                    <td style="text-align: right;">
-                                        <div class="admin-row-actions">
-                                            <button type="button" class="btn-action-approve" onclick="approveAuthor(4, 'Gede Batur Guide')">Setujui</button>
-                                            <button type="button" class="btn-action-reject" onclick="rejectAuthor(4)">Tolak</button>
-                                        </div>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </section>
         </main>
-
-
-        <!-- ============================================== -->
-        <!-- 3. RIGHT SIDEBAR / ACTIVITY PANEL              -->
-        <!-- ============================================== -->
-        <aside class="admin-right-sidebar">
-
-            <!-- Top Profile & Icon Utilities Bar -->
-            <div class="admin-profile-top">
-                <div class="admin-icon-tools">
-                    <button type="button" class="admin-tool-icon-btn" title="Pengaturan Sistem">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                        </svg>
-                    </button>
-                    <button type="button" class="admin-tool-icon-btn admin-notif-btn" title="Notifikasi Admin">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        </svg>
-                        <span class="admin-notif-indicator"></span>
-                    </button>
-                </div>
-
-                <div class="admin-profile-badge">
-                    <div class="admin-profile-meta">
-                        <span class="admin-profile-name">Erick</span>
-                        <span class="admin-profile-role">Admin</span>
-                    </div>
-                    <div class="admin-profile-avatar">
-                        <span>ER</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Schedule Calendar (Matching Reference) -->
-            <div class="admin-panel-widget">
-                <div class="admin-widget-header">
-                    <div class="admin-widget-title-row">
-                        <h3 class="admin-widget-title">Jadwal & Agenda</h3>
-                        <div class="admin-cal-nav">
-                            <button type="button" class="cal-nav-arrow" aria-label="Sebelumnya">&lt;</button>
-                            <button type="button" class="cal-nav-arrow" aria-label="Berikutnya">&gt;</button>
-                        </div>
-                    </div>
-                    <span class="admin-cal-month">
-                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                        <span>Mei 2026</span>
-                    </span>
-                </div>
-
-                <!-- Calendar Day Pills -->
-                <div class="admin-calendar-days">
-                    <div class="cal-day-pill">
-                        <span class="cal-day-label">Sen</span>
-                        <span class="cal-day-num">22</span>
-                    </div>
-                    <div class="cal-day-pill">
-                        <span class="cal-day-label">Sel</span>
-                        <span class="cal-day-num">23</span>
-                    </div>
-                    <!-- Active Highlighted Day (Matching blue pill in reference) -->
-                    <div class="cal-day-pill active">
-                        <span class="cal-day-label">Rab</span>
-                        <span class="cal-day-num">24</span>
-                    </div>
-                    <div class="cal-day-pill">
-                        <span class="cal-day-label">Kam</span>
-                        <span class="cal-day-num">25</span>
-                    </div>
-                    <div class="cal-day-pill">
-                        <span class="cal-day-label">Jum</span>
-                        <span class="cal-day-num">26</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- New Author Applicants ("New Applicants" in Reference) -->
-            <div class="admin-panel-widget">
-                <div class="admin-widget-header">
-                    <h3 class="admin-widget-title">Permohonan Author</h3>
-                    <a href="javascript:void(0)" class="admin-link-sm" onclick="filterAdminTable('pending')">Lihat Semua</a>
-                </div>
-
-                <div class="admin-applicants-list" id="applicants-sidebar-list">
-                    <!-- Applicant 1 -->
-                    <div class="admin-applicant-card" id="applicant-card-1">
-                        <div class="applicant-avatar" style="background: #244b2c; color: #fff;">PA</div>
-                        <div class="applicant-info">
-                            <h4 class="applicant-name">Putu Arya Wiguna</h4>
-                            <p class="applicant-applied">Author Destinasi Buleleng</p>
-                        </div>
-                        <div class="applicant-actions">
-                            <button type="button" class="btn-app-action btn-app-chat" title="Kirim Email" onclick="showAdminToast('Membuka kontak Putu Arya: arya@wisata.bali')">
-                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                            </button>
-                            <button type="button" class="btn-app-action btn-app-approve" title="Setujui" onclick="approveAuthor(1, 'Putu Arya Wiguna')">
-                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Applicant 2 -->
-                    <div class="admin-applicant-card" id="applicant-card-2">
-                        <div class="applicant-avatar" style="background: #df6a3e; color: #fff;">SW</div>
-                        <div class="applicant-info">
-                            <h4 class="applicant-name">Sarah Wijaya</h4>
-                            <p class="applicant-applied">Kontributor Wisata Ubud</p>
-                        </div>
-                        <div class="applicant-actions">
-                            <button type="button" class="btn-app-action btn-app-chat" title="Kirim Email" onclick="showAdminToast('Membuka kontak Sarah Wijaya')">
-                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                            </button>
-                            <button type="button" class="btn-app-action btn-app-approve" title="Setujui" onclick="approveAuthor(2, 'Sarah Wijaya')">
-                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Applicant 3 -->
-                    <div class="admin-applicant-card" id="applicant-card-3">
-                        <div class="applicant-avatar" style="background: #e59b2b; color: #122115;">KD</div>
-                        <div class="applicant-info">
-                            <h4 class="applicant-name">Ketut Dharmayana</h4>
-                            <p class="applicant-applied">Fotografer Pantai Badung</p>
-                        </div>
-                        <div class="applicant-actions">
-                            <button type="button" class="btn-app-action btn-app-chat" title="Kirim Email" onclick="showAdminToast('Membuka kontak Ketut Dharmayana')">
-                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                            </button>
-                            <button type="button" class="btn-app-action btn-app-approve" title="Setujui" onclick="approveAuthor(3, 'Ketut Dharmayana')">
-                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ready for Publishing Destinasi ("Ready For Training" in Reference) -->
-            <div class="admin-panel-widget">
-                <div class="admin-widget-header">
-                    <h3 class="admin-widget-title">Destinasi Siap Rilis</h3>
-                    <a href="javascript:void(0)" class="admin-link-sm" onclick="showAdminToast('Memuat semua draft destinasi...')">Semua Draft</a>
-                </div>
-
-                <div class="admin-ready-grid">
-                    <!-- Destinasi 1 -->
-                    <div class="admin-ready-card" id="ready-card-1">
-                        <div class="ready-thumb">
-                            <img src="/images/waterfall.jpg" alt="Hidden Canyon" class="ready-img">
-                        </div>
-                        <h4 class="ready-title">Hidden Canyon</h4>
-                        <p class="ready-cat">Gianyar (Trekking)</p>
-                        <button type="button" class="btn-ready-action" onclick="publishDraft(1, 'Hidden Canyon Beji Guwang')">Publikasikan</button>
-                    </div>
-
-                    <!-- Destinasi 2 -->
-                    <div class="admin-ready-card" id="ready-card-2">
-                        <div class="ready-thumb">
-                            <img src="/images/mountain.jpg" alt="Savana Tianyar" class="ready-img">
-                        </div>
-                        <h4 class="ready-title">Savana Tianyar</h4>
-                        <p class="ready-cat">Karangasem</p>
-                        <button type="button" class="btn-ready-action" onclick="publishDraft(2, 'Savana Tianyar')">Publikasikan</button>
-                    </div>
-
-                    <!-- Destinasi 3 -->
-                    <div class="admin-ready-card" id="ready-card-3">
-                        <div class="ready-thumb">
-                            <img src="/images/air terjun sekumpul.png" alt="Banyumala" class="ready-img">
-                        </div>
-                        <h4 class="ready-title">Banyumala Twin</h4>
-                        <p class="ready-cat">Buleleng</p>
-                        <button type="button" class="btn-ready-action" onclick="publishDraft(3, 'Air Terjun Banyumala Twin')">Publikasikan</button>
-                    </div>
-                </div>
-            </div>
-
-        </aside>
 
     </div>
 
@@ -855,27 +859,22 @@
 
     <!-- Live Interactive Client Logic for Admin Portal -->
     <script>
-        // Handle Left Navigation Item Click (Lights up active menu in yellow gold)
+        // Handle Left Navigation Item Click
         function handleNavClick(element, type) {
             document.querySelectorAll('.admin-nav-item').forEach(item => item.classList.remove('active'));
-            element.classList.add('active');
+            if (element) element.classList.add('active');
 
             if (type === 'destinasi') {
-                filterAdminTable('destinasi');
-                syncTableFilterTab('active');
-                showAdminToast('Menampilkan Kelola Destinasi (Destinasi Aktif)');
-                scrollToTable();
-            } else if (type === 'pending') {
-                filterAdminTable('pending');
-                syncTableFilterTab('pending');
-                showAdminToast('Menampilkan Verifikasi Author');
-                scrollToTable();
+                filterDestCards('all');
+                showAdminToast('Menampilkan Kelola Destinasi (Seluruh Katalog Dewasufa)');
+                scrollToDestCards();
             } else if (type === 'ulasan') {
                 filterAdminTable('review');
                 syncTableFilterTab('review');
                 showAdminToast('Menampilkan Moderasi Ulasan');
                 scrollToTable();
             } else if (type === 'all') {
+                filterDestCards('all');
                 filterAdminTable('all');
                 syncTableFilterTab('all');
                 showAdminToast('Kembali ke Dashboard Utama');
@@ -884,7 +883,7 @@
                 scrollToCategories();
                 showAdminToast('Menampilkan Kategori Alam Dewasufa');
             } else {
-                const label = element.querySelector('.admin-nav-label')?.textContent || type;
+                const label = element?.querySelector('.admin-nav-label')?.textContent || type;
                 showAdminToast(`Menu "${label}" aktif`);
             }
         }
@@ -898,6 +897,71 @@
             }
         }
 
+        // Filter Destination Cards (Identical to User Dashboard behavior)
+        function filterDestCards(cat, clickedBtn) {
+            if (clickedBtn) {
+                document.querySelectorAll('#admin-destinasi-section .dash-cat-pill').forEach(btn => btn.classList.remove('active'));
+                clickedBtn.classList.add('active');
+            } else {
+                document.querySelectorAll('#admin-destinasi-section .dash-cat-pill').forEach(btn => {
+                    const fn = btn.getAttribute('onclick') || '';
+                    if (fn.includes(`'${cat}'`)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+
+            const cards = document.querySelectorAll('#admin-cards-container .dash-recom-card');
+            let count = 0;
+
+            cards.forEach(card => {
+                const cardCat = card.dataset.category;
+                const isMatch = (cat === 'all') || (cardCat === cat);
+
+                if (isMatch) {
+                    card.style.display = 'flex';
+                    count++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const badge = document.getElementById('admin-dest-count-badge');
+            if (badge) {
+                badge.textContent = `${count} Destinasi Ditampilkan`;
+            }
+        }
+
+        function scrollToDestCards() {
+            const el = document.getElementById('admin-destinasi-section');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function scrollToCategories() {
+            const el = document.querySelector('.admin-categories-section');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function scrollToTable() {
+            const target = document.getElementById('admin-table-container');
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Filter by Category from Category Grid
+        function filterByCategory(cat) {
+            let filterKey = 'all';
+            if (cat === 'Waterfall') filterKey = 'waterfall';
+            else if (cat === 'Sunset Beach') filterKey = 'sunset';
+            else if (cat === 'Sunrise Beach') filterKey = 'sunrise';
+            else if (cat === 'Gunung') filterKey = 'mountain';
+
+            filterDestCards(filterKey);
+            showAdminToast(`Memfilter kategori: ${cat}`);
+            scrollToDestCards();
+        }
+
         // Synchronize Table Filter Tabs
         function syncTableFilterTab(tabType) {
             document.querySelectorAll('.admin-tab-btn').forEach(btn => {
@@ -907,11 +971,6 @@
                     btn.classList.add('active');
                 }
             });
-        }
-
-        function scrollToCategories() {
-            const el = document.querySelector('.admin-categories-section');
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // Filter Table Rows
@@ -942,87 +1001,47 @@
             if (badge) badge.textContent = `${count} Data Terpilih`;
         }
 
-        // Filter by Category
-        function filterByCategory(cat) {
-            const rows = document.querySelectorAll('#admin-main-table tbody tr');
-            let count = 0;
-
-            rows.forEach(row => {
-                const rowCat = row.dataset.category;
-                if (cat === 'all' || (rowCat && rowCat.toLowerCase().includes(cat.toLowerCase()))) {
-                    row.style.display = '';
-                    count++;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-
-            const badge = document.getElementById('admin-table-count');
-            if (badge) badge.textContent = `${count} Destinasi Kategori "${cat}"`;
-
-            showAdminToast(`Memfilter kategori: ${cat}`);
-            scrollToTable();
-        }
-
-        // Live Search in Main Table
+        // Live Search in Destination Cards & Main Table
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('admin-search-input');
             if (searchInput) {
                 searchInput.addEventListener('input', (e) => {
                     const query = e.target.value.toLowerCase().trim();
-                    const rows = document.querySelectorAll('#admin-main-table tbody tr');
-                    let count = 0;
 
+                    // Filter Cards
+                    const cards = document.querySelectorAll('#admin-cards-container .dash-recom-card');
+                    let cardCount = 0;
+                    cards.forEach(card => {
+                        const text = card.textContent.toLowerCase();
+                        if (!query || text.includes(query)) {
+                            card.style.display = 'flex';
+                            cardCount++;
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+
+                    const cardBadge = document.getElementById('admin-dest-count-badge');
+                    if (cardBadge) cardBadge.textContent = `${cardCount} Destinasi Ditemukan`;
+
+                    // Filter Table
+                    const rows = document.querySelectorAll('#admin-main-table tbody tr');
+                    let rowCount = 0;
                     rows.forEach(row => {
                         const text = row.textContent.toLowerCase();
                         if (!query || text.includes(query)) {
                             row.style.display = '';
-                            count++;
+                            rowCount++;
                         } else {
                             row.style.display = 'none';
                         }
                     });
 
                     const badge = document.getElementById('admin-table-count');
-                    if (badge) badge.textContent = `${count} Hasil Ditemukan`;
+                    if (badge) badge.textContent = `${rowCount} Data Ditemukan`;
                 });
             }
         });
-
-        // Approve Author
-        function approveAuthor(id, name) {
-            const statusEl = document.getElementById(`status-${id}`);
-            if (statusEl) {
-                statusEl.className = 'admin-status-dot dot-active';
-                statusEl.textContent = '● Terverifikasi (Aktif)';
-            }
-
-            const card = document.getElementById(`applicant-card-${id}`);
-            if (card) {
-                card.style.opacity = '0.4';
-                card.style.pointerEvents = 'none';
-            }
-
-            updatePendingCount(-1);
-            showAdminToast(`Author "${name}" berhasil disetujui & diverifikasi!`);
-        }
-
-        // Reject Author
-        function rejectAuthor(id) {
-            const statusEl = document.getElementById(`status-${id}`);
-            if (statusEl) {
-                statusEl.className = 'admin-status-dot dot-rejected';
-                statusEl.textContent = '● Permohonan Ditolak';
-            }
-
-            const card = document.getElementById(`applicant-card-${id}`);
-            if (card) {
-                card.style.display = 'none';
-            }
-
-            updatePendingCount(-1);
-            showAdminToast('Permohonan author ditolak.', '⚠️');
-        }
 
         // Approve Review
         function approveReview(id) {
@@ -1042,32 +1061,6 @@
                 statusEl.textContent = '● Ulasan Disembunyikan';
             }
             showAdminToast('Ulasan disembunyikan/dihapus.', '⚠️');
-        }
-
-        // Publish Draft Destination
-        function publishDraft(id, title) {
-            const card = document.getElementById(`ready-card-${id}`);
-            if (card) {
-                const btn = card.querySelector('.btn-ready-action');
-                if (btn) {
-                    btn.textContent = '✓ Terbit';
-                    btn.style.background = 'rgba(74, 222, 128, 0.2)';
-                    btn.style.color = '#4ade80';
-                    btn.style.borderColor = 'rgba(74, 222, 128, 0.4)';
-                    btn.disabled = true;
-                }
-            }
-            showAdminToast(`Destinasi "${title}" berhasil dipublikasikan ke katalog!`);
-        }
-
-        // Update Counter
-        let currentPending = 4;
-        function updatePendingCount(diff) {
-            currentPending = Math.max(0, currentPending + diff);
-            const badge = document.getElementById('badge-pending-count');
-            if (badge) badge.textContent = currentPending;
-            const heroText = document.getElementById('hero-pending-text');
-            if (heroText) heroText.textContent = `${currentPending} permohonan author baru`;
         }
 
         // View Destination helper
