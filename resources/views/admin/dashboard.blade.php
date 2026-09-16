@@ -180,10 +180,10 @@
             </header>
 
             <!-- Status Ringkasan Destinasi (Post & Draft - Equal Width) -->
-            <section class="admin-status-section" aria-label="Status Ringkasan Destinasi">
+            <section class="admin-status-section" id="admin-status-section" aria-label="Status Ringkasan Destinasi">
                 <div class="admin-status-grid">
                     <!-- 1. POST (Terbit) -->
-                    <div class="admin-status-card stat-card-post" onclick="handleNavClick(document.querySelector('.admin-nav-item[data-nav=destinasi]'), 'destinasi')" role="button" tabindex="0" title="Klik untuk mengelola destinasi aktif yang tayang">
+                    <div class="admin-status-card stat-card-post" onclick="handleNavClick(document.querySelector('.admin-nav-item[data-nav=destinasi]'), 'destinasi', 'status-post')" role="button" tabindex="0" title="Klik untuk mengelola destinasi aktif yang tayang">
                         <div class="stat-card-icon-wrap icon-post">
                             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
@@ -196,7 +196,7 @@
                                 <span class="stat-pill-badge badge-published">● Terbit</span>
                             </div>
                             <div class="stat-card-value-group">
-                                <span class="stat-main-number" id="stat-post-count">16</span>
+                                <span class="stat-main-number" id="stat-post-count">13</span>
                                 <span class="stat-unit">Destinasi</span>
                             </div>
                             <p class="stat-card-desc">Konten aktif tayang di katalog publik Dewasufa</p>
@@ -204,7 +204,7 @@
                     </div>
 
                     <!-- 2. DRAFT (Konsep / Siap Rilis) -->
-                    <div class="admin-status-card stat-card-draft" onclick="showAdminToast('Menampilkan draft destinasi siap rilis'); scrollToDestCards();" role="button" tabindex="0" title="Klik untuk melihat draft destinasi">
+                    <div class="admin-status-card stat-card-draft" onclick="handleNavClick(document.querySelector('.admin-nav-item[data-nav=destinasi]'), 'destinasi', 'status-draft')" role="button" tabindex="0" title="Klik untuk melihat draft destinasi">
                         <div class="stat-card-icon-wrap icon-draft">
                             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -229,8 +229,8 @@
                 </div>
             </section>
 
-            <!-- Kategori Destinasi Dewasufa -->
-            <section class="admin-categories-section">
+            <!-- Kategori Destinasi Dewasufa (3 Kategori Unggulan) -->
+            <section class="admin-categories-section" id="admin-categories-section">
                 <div class="admin-section-header">
                     <h2 class="admin-section-title">Kategori Destinasi Dewasufa</h2>
                 </div>
@@ -288,19 +288,6 @@
                             <span class="admin-cat-count">(12 Destinasi)</span>
                         </div>
                     </div>
-
-                    <!-- Mountain -->
-                    <div class="admin-cat-card" onclick="filterByCategory('Gunung')">
-                        <div class="admin-cat-icon-box cat-mountain">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="3 20 9 7 13 14 17 9 21 20 3 20"></polygon>
-                            </svg>
-                        </div>
-                        <div class="admin-cat-info">
-                            <h3 class="admin-cat-name">Pegunungan</h3>
-                            <span class="admin-cat-count">(8 Destinasi)</span>
-                        </div>
-                    </div>
                 </div>
             </section>
 
@@ -311,12 +298,14 @@
                 <div class="dash-section-header">
                     <div class="admin-table-title-group">
                         <h2 class="dash-section-title">Koleksi Destinasi Dewasufa</h2>
-                        <span class="admin-table-count-badge" id="admin-dest-count-badge">16 Destinasi Aktif</span>
+                        <span class="admin-table-count-badge" id="admin-dest-count-badge">16 Destinasi (13 Post • 3 Draft)</span>
                     </div>
 
-                    <!-- Category Filter Pills (Matching User Dashboard) -->
+                    <!-- Category & Status Filter Pills -->
                     <nav class="dash-category-nav" aria-label="Filter Kategori Destinasi">
                         <button type="button" class="dash-cat-pill active" onclick="filterDestCards('all', this)">Semua</button>
+                        <button type="button" class="dash-cat-pill pill-status-post" onclick="filterDestCards('status-post', this)">● Post (13)</button>
+                        <button type="button" class="dash-cat-pill pill-status-draft" onclick="filterDestCards('status-draft', this)">● Draft (3)</button>
                         <button type="button" class="dash-cat-pill" onclick="filterDestCards('waterfall', this)">Waterfall</button>
                         <button type="button" class="dash-cat-pill" onclick="filterDestCards('sunset', this)">Sunset Beach</button>
                         <button type="button" class="dash-cat-pill" onclick="filterDestCards('sunrise', this)">Sunrise Beach</button>
@@ -326,11 +315,11 @@
 
                 <div class="dash-recom-grid admin-dest-cards-grid" id="admin-cards-container">
                     <!-- Waterfall 1 -->
-                    <div class="dash-recom-card" data-category="waterfall" data-key="sekumpul" data-title="Air Terjun Sekumpul" data-desc="Gugusan air terjun kembar megah berketinggian 80m di lembah Buleleng." data-time="07:00 - 16:00" data-ticket="Rp 20.000 / orang" data-loc="Sawan, Buleleng, Bali">
+                    <div class="dash-recom-card" data-category="waterfall" data-status="post" data-key="sekumpul" data-title="Air Terjun Sekumpul" data-desc="Gugusan air terjun kembar megah berketinggian 80m di lembah Buleleng." data-time="07:00 - 16:00" data-ticket="Rp 20.000 / orang" data-loc="Sawan, Buleleng, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/waterfall.jpg" alt="Air Terjun Sekumpul" class="dash-recom-img">
                             <span class="dash-recom-badge">Waterfall</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Air Terjun Sekumpul</h3>
@@ -356,11 +345,11 @@
                     </div>
 
                     <!-- Waterfall 2 -->
-                    <div class="dash-recom-card" data-category="waterfall" data-key="waterfall" data-title="Air Terjun Tegenungan" data-desc="Kolam alami segar di lembah Gianyar dengan akses mudah dekat Ubud." data-time="06:30 - 18:00" data-ticket="Rp 25.000 / orang" data-loc="Kemenuh, Gianyar, Bali">
+                    <div class="dash-recom-card" data-category="waterfall" data-status="post" data-key="waterfall" data-title="Air Terjun Tegenungan" data-desc="Kolam alami segar di lembah Gianyar dengan akses mudah dekat Ubud." data-time="06:30 - 18:00" data-ticket="Rp 25.000 / orang" data-loc="Kemenuh, Gianyar, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/waterfall.jpg" alt="Air Terjun Tegenungan" class="dash-recom-img">
                             <span class="dash-recom-badge">Waterfall</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Air Terjun Tegenungan</h3>
@@ -386,11 +375,11 @@
                     </div>
 
                     <!-- Waterfall 3 -->
-                    <div class="dash-recom-card" data-category="waterfall" data-key="sekumpul" data-title="Air Terjun Gitgit" data-desc="Air terjun legendaris dengan ketinggian 35 meter di lereng perbukitan Singaraja." data-time="08:00 - 17:00" data-ticket="Rp 20.000 / orang" data-loc="Sukasada, Buleleng, Bali">
+                    <div class="dash-recom-card" data-category="waterfall" data-status="post" data-key="sekumpul" data-title="Air Terjun Gitgit" data-desc="Air terjun legendaris dengan ketinggian 35 meter di lereng perbukitan Singaraja." data-time="08:00 - 17:00" data-ticket="Rp 20.000 / orang" data-loc="Sukasada, Buleleng, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/waterfall.jpg" alt="Air Terjun Gitgit" class="dash-recom-img">
                             <span class="dash-recom-badge">Waterfall</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Air Terjun Gitgit</h3>
@@ -416,11 +405,11 @@
                     </div>
 
                     <!-- Waterfall 4 -->
-                    <div class="dash-recom-card" data-category="waterfall" data-key="sekumpul" data-title="Air Terjun Aling-Aling" data-desc="Sensasi seluncur alami dan cliff jumping yang menantang di Sambangan." data-time="08:00 - 16:30" data-ticket="Rp 30.000 / orang" data-loc="Sambangan, Buleleng, Bali">
+                    <div class="dash-recom-card" data-category="waterfall" data-status="post" data-key="sekumpul" data-title="Air Terjun Aling-Aling" data-desc="Sensasi seluncur alami dan cliff jumping yang menantang di Sambangan." data-time="08:00 - 16:30" data-ticket="Rp 30.000 / orang" data-loc="Sambangan, Buleleng, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/waterfall.jpg" alt="Air Terjun Aling-Aling" class="dash-recom-img">
                             <span class="dash-recom-badge">Waterfall</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Air Terjun Aling-Aling</h3>
@@ -446,11 +435,11 @@
                     </div>
 
                     <!-- Sunset Beach 1 -->
-                    <div class="dash-recom-card" data-category="sunset" data-key="sunset" data-title="Pantai Tanah Lot" data-desc="Siluet pura agung di atas karang laut saat matahari terbenam." data-time="17:00 - 18:45" data-ticket="Rp 20.000 / orang" data-loc="Beraban, Tabanan, Bali">
+                    <div class="dash-recom-card" data-category="sunset" data-status="post" data-key="sunset" data-title="Pantai Tanah Lot" data-desc="Siluet pura agung di atas karang laut saat matahari terbenam." data-time="17:00 - 18:45" data-ticket="Rp 20.000 / orang" data-loc="Beraban, Tabanan, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/sunset-beach.jpg" alt="Pantai Tanah Lot" class="dash-recom-img">
                             <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Pantai Tanah Lot</h3>
@@ -476,11 +465,11 @@
                     </div>
 
                     <!-- Sunset Beach 2 -->
-                    <div class="dash-recom-card" data-category="sunset" data-key="sunset" data-title="Pantai Melasti Ungasan" data-desc="Tebing kapur menjulang tinggi dengan pasir putih bersih dan sunset magis." data-time="16:00 - 19:00" data-ticket="Rp 10.000 / orang" data-loc="Ungasan, Badung, Bali">
+                    <div class="dash-recom-card" data-category="sunset" data-status="post" data-key="sunset" data-title="Pantai Melasti Ungasan" data-desc="Tebing kapur menjulang tinggi dengan pasir putih bersih dan sunset magis." data-time="16:00 - 19:00" data-ticket="Rp 10.000 / orang" data-loc="Ungasan, Badung, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/sunset-beach.jpg" alt="Pantai Melasti & Tebing Karang" class="dash-recom-img">
                             <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Pantai Melasti Ungasan</h3>
@@ -506,11 +495,11 @@
                     </div>
 
                     <!-- Sunset Beach 3 -->
-                    <div class="dash-recom-card" data-category="sunset" data-key="sunset" data-title="Pantai Uluwatu / Suluban" data-desc="Tebing karang megah dengan ombak peselancar kelas dunia di Bukit." data-time="16:30 - 18:30" data-ticket="Rp 15.000 / orang" data-loc="Pecatu, Badung, Bali">
+                    <div class="dash-recom-card" data-category="sunset" data-status="post" data-key="sunset" data-title="Pantai Uluwatu / Suluban" data-desc="Tebing karang megah dengan ombak peselancar kelas dunia di Bukit." data-time="16:30 - 18:30" data-ticket="Rp 15.000 / orang" data-loc="Pecatu, Badung, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/sunset-beach.jpg" alt="Pantai Uluwatu / Suluban" class="dash-recom-img">
                             <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Pantai Uluwatu / Suluban</h3>
@@ -536,11 +525,11 @@
                     </div>
 
                     <!-- Sunset Beach 4 -->
-                    <div class="dash-recom-card" data-category="sunset" data-key="sunset" data-title="Pantai Kuta & Legian" data-desc="Garis pantai ikonik nan landai untuk menikmati senja santai Bali." data-time="17:00 - 18:30" data-ticket="Gratis" data-loc="Kuta, Badung, Bali">
+                    <div class="dash-recom-card" data-category="sunset" data-status="post" data-key="sunset" data-title="Pantai Kuta & Legian" data-desc="Garis pantai ikonik nan landai untuk menikmati senja santai Bali." data-time="17:00 - 18:30" data-ticket="Gratis" data-loc="Kuta, Badung, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/sunset-beach.jpg" alt="Pantai Kuta & Legian" class="dash-recom-img">
                             <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Pantai Kuta &amp; Legian</h3>
@@ -566,11 +555,11 @@
                     </div>
 
                     <!-- Sunrise Beach 1 -->
-                    <div class="dash-recom-card" data-category="sunrise" data-key="sunrise" data-title="Pantai Sanur Denpasar" data-desc="Fajar hening nan damai dengan gazebo klasik dan jalur sepeda tepi laut." data-time="05:45 - 06:45" data-ticket="Gratis" data-loc="Sanur, Denpasar, Bali">
+                    <div class="dash-recom-card" data-category="sunrise" data-status="post" data-key="sunrise" data-title="Pantai Sanur Denpasar" data-desc="Fajar hening nan damai dengan gazebo klasik dan jalur sepeda tepi laut." data-time="05:45 - 06:45" data-ticket="Gratis" data-loc="Sanur, Denpasar, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/sunrise-beach.jpg" alt="Pantai Sanur" class="dash-recom-img">
                             <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Pantai Sanur Denpasar</h3>
@@ -596,11 +585,11 @@
                     </div>
 
                     <!-- Sunrise Beach 2 -->
-                    <div class="dash-recom-card" data-category="sunrise" data-key="sunrise" data-title="Pantai Candidasa" data-desc="Ketenangan pesisir Karangasem dengan pemandangan pulau karang." data-time="05:30 - 06:30" data-ticket="Rp 10.000 / orang" data-loc="Candidasa, Karangasem, Bali">
+                    <div class="dash-recom-card" data-category="sunrise" data-status="post" data-key="sunrise" data-title="Pantai Candidasa" data-desc="Ketenangan pesisir Karangasem dengan pemandangan pulau karang." data-time="05:30 - 06:30" data-ticket="Rp 10.000 / orang" data-loc="Candidasa, Karangasem, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/sunrise-beach.jpg" alt="Pantai Candidasa" class="dash-recom-img">
                             <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Pantai Candidasa</h3>
@@ -625,12 +614,12 @@
                         </div>
                     </div>
 
-                    <!-- Sunrise Beach 3 -->
-                    <div class="dash-recom-card" data-category="sunrise" data-key="sunrise" data-title="Pantai Kusamba Klungkung" data-desc="Pasir hitam eksotis dan aktivitas pembuat garam tradisional saat fajar." data-time="05:30 - 06:30" data-ticket="Gratis" data-loc="Dawan, Klungkung, Bali">
+                    <!-- Sunrise Beach 3 (DRAFT) -->
+                    <div class="dash-recom-card" data-category="sunrise" data-status="draft" data-key="sunrise" data-title="Pantai Kusamba Klungkung" data-desc="Pasir hitam eksotis dan aktivitas pembuat garam tradisional saat fajar." data-time="05:30 - 06:30" data-ticket="Gratis" data-loc="Dawan, Klungkung, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/sunrise-beach.jpg" alt="Pantai Kusamba" class="dash-recom-img">
                             <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-draft">● Draft</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Pantai Kusamba Klungkung</h3>
@@ -655,12 +644,12 @@
                         </div>
                     </div>
 
-                    <!-- Sunrise Beach 4 -->
-                    <div class="dash-recom-card" data-category="sunrise" data-key="sunrise" data-title="Pantai Amed" data-desc="Perahu jukung tradisional bersandar dengan latar fajar Gunung Agung." data-time="05:15 - 06:30" data-ticket="Rp 10.000 / orang" data-loc="Abang, Karangasem, Bali">
+                    <!-- Sunrise Beach 4 (DRAFT) -->
+                    <div class="dash-recom-card" data-category="sunrise" data-status="draft" data-key="sunrise" data-title="Pantai Amed" data-desc="Perahu jukung tradisional bersandar dengan latar fajar Gunung Agung." data-time="05:15 - 06:30" data-ticket="Rp 10.000 / orang" data-loc="Abang, Karangasem, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/sunrise-beach.jpg" alt="Pantai Amed" class="dash-recom-img">
                             <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-draft">● Draft</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Pantai Amed</h3>
@@ -686,11 +675,11 @@
                     </div>
 
                     <!-- Mountain 1 -->
-                    <div class="dash-recom-card" data-category="mountain" data-key="mountain" data-title="Gunung Batur (1.717 mdpl)" data-desc="Sunrise trekking paling populer dengan kaldera luas dan Danau Batur." data-time="03:30 - 09:00" data-ticket="Rp 100.000 / guide" data-loc="Kintamani, Bangli, Bali">
+                    <div class="dash-recom-card" data-category="mountain" data-status="post" data-key="mountain" data-title="Gunung Batur (1.717 mdpl)" data-desc="Sunrise trekking paling populer dengan kaldera luas dan Danau Batur." data-time="03:30 - 09:00" data-ticket="Rp 100.000 / guide" data-loc="Kintamani, Bangli, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/mountain.jpg" alt="Gunung Batur" class="dash-recom-img">
                             <span class="dash-recom-badge badge-mountain">Mountain</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Gunung Batur (1.717 mdpl)</h3>
@@ -716,11 +705,11 @@
                     </div>
 
                     <!-- Mountain 2 -->
-                    <div class="dash-recom-card" data-category="mountain" data-key="mountain" data-title="Gunung Agung (3.142 mdpl)" data-desc="Titik tertinggi dan tersuci di Bali untuk pendaki berpengalaman." data-time="Malam Hari" data-ticket="Rp 150.000 / guide" data-loc="Rendang, Karangasem, Bali">
+                    <div class="dash-recom-card" data-category="mountain" data-status="post" data-key="mountain" data-title="Gunung Agung (3.142 mdpl)" data-desc="Titik tertinggi dan tersuci di Bali untuk pendaki berpengalaman." data-time="Malam Hari" data-ticket="Rp 150.000 / guide" data-loc="Rendang, Karangasem, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/mountain.jpg" alt="Gunung Agung" class="dash-recom-img">
                             <span class="dash-recom-badge badge-mountain">Mountain</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Gunung Agung (3.142 mdpl)</h3>
@@ -746,11 +735,11 @@
                     </div>
 
                     <!-- Mountain 3 -->
-                    <div class="dash-recom-card" data-category="mountain" data-key="mountain" data-title="Bukit Campuhan Ubud" data-desc="Jalur punggung bukit ilalang hijau yang sejuk dan ramah keluarga." data-time="06:00 - 08:30" data-ticket="Gratis" data-loc="Ubud, Gianyar, Bali">
+                    <div class="dash-recom-card" data-category="mountain" data-status="post" data-key="mountain" data-title="Bukit Campuhan Ubud" data-desc="Jalur punggung bukit ilalang hijau yang sejuk dan ramah keluarga." data-time="06:00 - 08:30" data-ticket="Gratis" data-loc="Ubud, Gianyar, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/mountain.jpg" alt="Bukit Campuhan Ubud" class="dash-recom-img">
                             <span class="dash-recom-badge badge-mountain">Mountain</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-post">● Post</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Bukit Campuhan Ubud</h3>
@@ -775,12 +764,12 @@
                         </div>
                     </div>
 
-                    <!-- Mountain 4 -->
-                    <div class="dash-recom-card" data-category="mountain" data-key="mountain" data-title="Gunung Abang (2.152 mdpl)" data-desc="Puncak berhutan rindang di seberang Kaldera Batur yang damai." data-time="03:00 - 10:00" data-ticket="Rp 50.000 / orang" data-loc="Kintamani, Bangli, Bali">
+                    <!-- Mountain 4 (DRAFT) -->
+                    <div class="dash-recom-card" data-category="mountain" data-status="draft" data-key="mountain" data-title="Gunung Abang (2.152 mdpl)" data-desc="Puncak berhutan rindang di seberang Kaldera Batur yang damai." data-time="03:00 - 10:00" data-ticket="Rp 50.000 / orang" data-loc="Kintamani, Bangli, Bali">
                         <div class="dash-recom-img-wrap">
                             <img src="/images/mountain.jpg" alt="Gunung Abang" class="dash-recom-img">
                             <span class="dash-recom-badge badge-mountain">Mountain</span>
-                            <span class="admin-card-status-pill" style="position: absolute; top: 10px; right: 10px;">● Terbit</span>
+                            <span class="admin-card-status-pill badge-status-draft">● Draft</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">Gunung Abang (2.152 mdpl)</h3>
@@ -1185,19 +1174,26 @@
                         </select>
                     </div>
                     <div class="admin-form-group">
-                        <label for="edit-dest-ticket" class="admin-form-label">Harga Tiket Masuk</label>
-                        <input type="text" id="edit-dest-ticket" class="admin-form-input" required>
+                        <label for="edit-dest-status" class="admin-form-label">Status Destinasi</label>
+                        <select id="edit-dest-status" class="admin-form-select" required>
+                            <option value="post">Post (Terbit Publik)</option>
+                            <option value="draft">Draft (Konsep)</option>
+                        </select>
                     </div>
                 </div>
                 <div class="admin-form-row-2">
                     <div class="admin-form-group">
+                        <label for="edit-dest-ticket" class="admin-form-label">Harga Tiket Masuk</label>
+                        <input type="text" id="edit-dest-ticket" class="admin-form-input" required>
+                    </div>
+                    <div class="admin-form-group">
                         <label for="edit-dest-time" class="admin-form-label">Jam Operasional</label>
                         <input type="text" id="edit-dest-time" class="admin-form-input" required>
                     </div>
-                    <div class="admin-form-group">
-                        <label for="edit-dest-loc" class="admin-form-label">Lokasi di Bali</label>
-                        <input type="text" id="edit-dest-loc" class="admin-form-input" required>
-                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label for="edit-dest-loc" class="admin-form-label">Lokasi di Bali</label>
+                    <input type="text" id="edit-dest-loc" class="admin-form-input" required>
                 </div>
                 <div class="admin-form-group">
                     <label for="edit-dest-desc" class="admin-form-label">Deskripsi Singkat Destinasi</label>
@@ -1376,6 +1372,7 @@
             const get = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
             get('edit-dest-title',    card.dataset.title    || card.querySelector('.dash-recom-card-title')?.textContent || '');
             get('edit-dest-category', card.dataset.category || 'waterfall');
+            get('edit-dest-status',   card.dataset.status   || 'post');
             get('edit-dest-ticket',   card.dataset.ticket   || 'Rp 20.000 / orang');
             get('edit-dest-time',     card.dataset.time     || '08:00 - 17:00');
             get('edit-dest-loc',      card.dataset.loc      || 'Bali, Indonesia');
@@ -1392,21 +1389,42 @@
             e.preventDefault();
             if (!currentEditingCard) return;
             const val = id => document.getElementById(id)?.value || '';
-            const newTitle = val('edit-dest-title'), newCat = val('edit-dest-category'),
-                  newTicket = val('edit-dest-ticket'), newTime = val('edit-dest-time'),
-                  newLoc = val('edit-dest-loc'), newDesc = val('edit-dest-desc');
-            currentEditingCard.dataset.title   = newTitle;
+            const newTitle  = val('edit-dest-title'),
+                  newCat    = val('edit-dest-category'),
+                  newStatus = val('edit-dest-status'),
+                  newTicket = val('edit-dest-ticket'),
+                  newTime   = val('edit-dest-time'),
+                  newLoc    = val('edit-dest-loc'),
+                  newDesc   = val('edit-dest-desc');
+
+            currentEditingCard.dataset.title    = newTitle;
             currentEditingCard.dataset.category = newCat;
-            currentEditingCard.dataset.ticket  = newTicket;
-            currentEditingCard.dataset.time    = newTime;
-            currentEditingCard.dataset.loc     = newLoc;
-            currentEditingCard.dataset.desc    = newDesc;
+            currentEditingCard.dataset.status   = newStatus;
+            currentEditingCard.dataset.ticket   = newTicket;
+            currentEditingCard.dataset.time     = newTime;
+            currentEditingCard.dataset.loc      = newLoc;
+            currentEditingCard.dataset.desc     = newDesc;
+
             const t = currentEditingCard.querySelector('.dash-recom-card-title');
             if (t) t.textContent = newTitle;
             const d = currentEditingCard.querySelector('.dash-recom-card-desc');
             if (d) d.textContent = newDesc;
             const b = currentEditingCard.querySelector('.dash-recom-badge');
             if (b) b.textContent = newCat.charAt(0).toUpperCase() + newCat.slice(1);
+
+            // Update status pill badge on card
+            const statusPill = currentEditingCard.querySelector('.admin-card-status-pill');
+            if (statusPill) {
+                if (newStatus === 'draft') {
+                    statusPill.className = 'admin-card-status-pill badge-status-draft';
+                    statusPill.textContent = '● Draft';
+                } else {
+                    statusPill.className = 'admin-card-status-pill badge-status-post';
+                    statusPill.textContent = '● Post';
+                }
+            }
+
+            updateDestCounts();
             closeEditDestModal();
             showAdminToast('Destinasi "' + newTitle + '" berhasil diperbarui! ✨');
         }
@@ -1423,14 +1441,27 @@
                 card.style.transform = 'scale(0.88)';
                 setTimeout(() => {
                     card.remove();
-                    const count = document.querySelectorAll('#admin-cards-container .dash-recom-card').length;
-                    const badge = document.getElementById('admin-dest-count-badge');
-                    if (badge) badge.textContent = count + ' Destinasi Aktif';
-                    const stat = document.getElementById('stat-post-count');
-                    if (stat) stat.textContent = count;
+                    updateDestCounts();
                     showAdminToast('Destinasi "' + title + '" berhasil dihapus.');
                 }, 350);
             }
+        }
+
+        function updateDestCounts() {
+            const allCards = document.querySelectorAll('#admin-cards-container .dash-recom-card');
+            let postCount = 0, draftCount = 0;
+            allCards.forEach(c => {
+                if (c.dataset.status === 'draft') draftCount++;
+                else postCount++;
+            });
+            const statPost = document.getElementById('stat-post-count');
+            if (statPost) statPost.textContent = postCount;
+            const statDraft = document.getElementById('stat-draft-count');
+            if (statDraft) statDraft.textContent = draftCount;
+            const navPill = document.querySelector('.admin-nav-item[data-nav="destinasi"] .admin-nav-pill');
+            if (navPill) navPill.textContent = allCards.length;
+            const badge = document.getElementById('admin-dest-count-badge');
+            if (badge) badge.textContent = `${allCards.length} Destinasi (${postCount} Post • ${draftCount} Draft)`;
         }
 
         // ===== REVIEW MODERATION DETAIL MODAL =====
@@ -1489,7 +1520,7 @@
         function updateCommentsCount() {
             const count = document.querySelectorAll('#admin-comments-tbody tr').length;
             const badge = document.getElementById('admin-table-count');
-            if (badge) badge.textContent = count + ' Ulasan Aktif';
+            if (badge) badge.textContent = count + ' Komentar Pengunjung';
             const pill = document.querySelector('.admin-nav-item[data-nav="ulasan"] .admin-nav-pill');
             if (pill) pill.textContent = count;
         }
@@ -1519,32 +1550,65 @@
             currentEditingCard = null; currentCommentRow = null;
         });
 
-        // Handle Left Navigation Item Click
-        function handleNavClick(element, type) {
+        // ==============================================
+        // IN-PLACE SECTION FILTERING (NO SCROLL, FILTER & HIDE OTHERS)
+        // ==============================================
+        function handleNavClick(element, type, filterArg) {
+            // Update active sidebar nav item
             document.querySelectorAll('.admin-nav-item').forEach(item => item.classList.remove('active'));
-            if (element) element.classList.add('active');
-
-            if (type === 'destinasi') {
-                filterDestCards('all');
-                showAdminToast('Menampilkan Kelola Destinasi (Seluruh Katalog Dewasufa)');
-                scrollToDestCards();
-            } else if (type === 'ulasan') {
-                filterAdminTable('review');
-                syncTableFilterTab('review');
-                showAdminToast('Menampilkan Moderasi Ulasan');
-                scrollToTable();
-            } else if (type === 'all') {
-                filterDestCards('all');
-                filterAdminTable('all');
-                syncTableFilterTab('all');
-                showAdminToast('Kembali ke Dashboard Utama');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else if (type === 'kategori') {
-                scrollToCategories();
-                showAdminToast('Menampilkan Kategori Alam Dewasufa');
+            if (element) {
+                element.classList.add('active');
             } else {
-                const label = element?.querySelector('.admin-nav-label')?.textContent || type;
-                showAdminToast(`Menu "${label}" aktif`);
+                const target = document.querySelector(`.admin-nav-item[data-nav="${type}"]`);
+                if (target) target.classList.add('active');
+            }
+
+            const secStatus     = document.getElementById('admin-status-section');
+            const secCategories = document.getElementById('admin-categories-section');
+            const secDestinasi  = document.getElementById('admin-destinasi-section');
+            const secUlasan     = document.getElementById('admin-table-container');
+
+            if (type === 'all' || type === 'dashboard') {
+                // Dashboard: Tampilkan SEMUANYA
+                if (secStatus)     secStatus.classList.remove('admin-section-hidden');
+                if (secCategories) secCategories.classList.remove('admin-section-hidden');
+                if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
+                if (secUlasan)     secUlasan.classList.remove('admin-section-hidden');
+
+                filterDestCards('all');
+                filterCommentsTable('all');
+                showAdminToast('Dashboard: Menampilkan seluruh ringkasan panel');
+            } else if (type === 'destinasi') {
+                // Kelola Destinasi: Hanya munculkan seluruh destinasi, sembunyikan yang lain
+                if (secStatus)     secStatus.classList.add('admin-section-hidden');
+                if (secCategories) secCategories.classList.add('admin-section-hidden');
+                if (secUlasan)     secUlasan.classList.add('admin-section-hidden');
+                if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
+
+                if (filterArg) {
+                    filterDestCards(filterArg);
+                } else {
+                    filterDestCards('all');
+                }
+                showAdminToast('Kelola Destinasi: Menampilkan katalog destinasi (Post & Draft)');
+            } else if (type === 'ulasan') {
+                // Moderasi Ulasan: Hanya menampilkan komentar-komentar tanpa menampilkan yang lain
+                if (secStatus)     secStatus.classList.add('admin-section-hidden');
+                if (secCategories) secCategories.classList.add('admin-section-hidden');
+                if (secDestinasi)  secDestinasi.classList.add('admin-section-hidden');
+                if (secUlasan)     secUlasan.classList.remove('admin-section-hidden');
+
+                filterCommentsTable('all');
+                showAdminToast('Moderasi Ulasan: Menampilkan daftar komentar pengunjung');
+            } else if (type === 'kategori') {
+                // Kategori Alam: tampilkan kategori dan destinasi, sembunyikan status dan ulasan
+                if (secStatus)     secStatus.classList.add('admin-section-hidden');
+                if (secUlasan)     secUlasan.classList.add('admin-section-hidden');
+                if (secCategories) secCategories.classList.remove('admin-section-hidden');
+                if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
+
+                filterDestCards('all');
+                showAdminToast('Kategori Alam Dewasufa');
             }
         }
 
@@ -1557,15 +1621,15 @@
             }
         }
 
-        // Filter Destination Cards (Identical to User Dashboard behavior)
-        function filterDestCards(cat, clickedBtn) {
+        // Filter Destination Cards by Category or Status (Post / Draft)
+        function filterDestCards(filter, clickedBtn) {
             if (clickedBtn) {
                 document.querySelectorAll('#admin-destinasi-section .dash-cat-pill').forEach(btn => btn.classList.remove('active'));
                 clickedBtn.classList.add('active');
             } else {
                 document.querySelectorAll('#admin-destinasi-section .dash-cat-pill').forEach(btn => {
                     const fn = btn.getAttribute('onclick') || '';
-                    if (fn.includes(`'${cat}'`)) {
+                    if (fn.includes(`'${filter}'`)) {
                         btn.classList.add('active');
                     } else {
                         btn.classList.remove('active');
@@ -1575,14 +1639,29 @@
 
             const cards = document.querySelectorAll('#admin-cards-container .dash-recom-card');
             let count = 0;
+            let postCount = 0;
+            let draftCount = 0;
 
             cards.forEach(card => {
                 const cardCat = card.dataset.category;
-                const isMatch = (cat === 'all') || (cardCat === cat);
+                const cardStatus = card.dataset.status || 'post';
+
+                let isMatch = false;
+                if (filter === 'all') {
+                    isMatch = true;
+                } else if (filter === 'status-post') {
+                    isMatch = (cardStatus === 'post');
+                } else if (filter === 'status-draft') {
+                    isMatch = (cardStatus === 'draft');
+                } else {
+                    isMatch = (cardCat === filter);
+                }
 
                 if (isMatch) {
                     card.style.display = 'flex';
                     count++;
+                    if (cardStatus === 'post') postCount++;
+                    if (cardStatus === 'draft') draftCount++;
                 } else {
                     card.style.display = 'none';
                 }
@@ -1590,23 +1669,16 @@
 
             const badge = document.getElementById('admin-dest-count-badge');
             if (badge) {
-                badge.textContent = `${count} Destinasi Ditampilkan`;
+                if (filter === 'all') {
+                    badge.textContent = `${count} Destinasi (${postCount} Post • ${draftCount} Draft)`;
+                } else if (filter === 'status-post') {
+                    badge.textContent = `${count} Destinasi Publik (Post)`;
+                } else if (filter === 'status-draft') {
+                    badge.textContent = `${count} Destinasi Tersimpan (Draft)`;
+                } else {
+                    badge.textContent = `${count} Destinasi Ditampilkan`;
+                }
             }
-        }
-
-        function scrollToDestCards() {
-            const el = document.getElementById('admin-destinasi-section');
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function scrollToCategories() {
-            const el = document.querySelector('.admin-categories-section');
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function scrollToTable() {
-            const target = document.getElementById('admin-table-container');
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // Filter by Category from Category Grid
@@ -1615,39 +1687,34 @@
             if (cat === 'Waterfall') filterKey = 'waterfall';
             else if (cat === 'Sunset Beach') filterKey = 'sunset';
             else if (cat === 'Sunrise Beach') filterKey = 'sunrise';
-            else if (cat === 'Gunung') filterKey = 'mountain';
+
+            // Ensure destination section is visible
+            const secDestinasi = document.getElementById('admin-destinasi-section');
+            if (secDestinasi) secDestinasi.classList.remove('admin-section-hidden');
 
             filterDestCards(filterKey);
             showAdminToast(`Memfilter kategori: ${cat}`);
-            scrollToDestCards();
         }
 
-        // Synchronize Table Filter Tabs
-        function syncTableFilterTab(tabType) {
-            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
-                const onclickAttr = btn.getAttribute('onclick') || '';
-                if (onclickAttr.includes(`'${tabType}'`)) {
-                    document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                }
-            });
-        }
-
-        // Filter Table Rows
-        function filterAdminTable(type, clickedBtn) {
+        // Filter Table Rows in Moderasi Ulasan
+        function filterCommentsTable(cat, clickedBtn) {
             if (clickedBtn) {
-                document.querySelectorAll('.admin-tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.admin-table-filters .admin-tab-btn').forEach(btn => btn.classList.remove('active'));
                 clickedBtn.classList.add('active');
+            } else {
+                document.querySelectorAll('.admin-table-filters .admin-tab-btn').forEach(btn => {
+                    const fn = btn.getAttribute('onclick') || '';
+                    if (fn.includes(`'${cat}'`)) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                });
             }
 
-            const rows = document.querySelectorAll('#admin-main-table tbody tr');
+            const rows = document.querySelectorAll('#admin-comments-tbody tr');
             let count = 0;
 
             rows.forEach(row => {
-                const rowType = row.dataset.type;
-                const isMatch = (type === 'all') || 
-                                (type === 'destinasi' && rowType === 'active') || 
-                                (rowType === type);
+                const rowCat = row.dataset.category;
+                const isMatch = (cat === 'all') || (rowCat === cat);
 
                 if (isMatch) {
                     row.style.display = '';
@@ -1658,7 +1725,7 @@
             });
 
             const badge = document.getElementById('admin-table-count');
-            if (badge) badge.textContent = `${count} Data Terpilih`;
+            if (badge) badge.textContent = `${count} Komentar Pengunjung`;
         }
 
         // Live Search in Destination Cards & Main Table
