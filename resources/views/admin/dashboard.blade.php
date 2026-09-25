@@ -1539,6 +1539,60 @@
         </div>
     </div>
 
+    <!-- ===== MODAL KONFIRMASI HAPUS (DESTINASI / KOMENTAR) ===== -->
+    <div class="admin-modal-backdrop" id="admin-delete-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="admin-confirm-title">
+        <div class="admin-modal-card admin-confirm-modal-card">
+            <div class="admin-confirm-header">
+                <div class="admin-confirm-icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                </div>
+                <div style="flex: 1; min-width: 0;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                        <span class="admin-modal-badge" id="admin-confirm-badge" style="color: #f87171;">Konfirmasi Penghapusan</span>
+                        <button type="button" class="admin-modal-close" onclick="closeAdminDeleteConfirmModal()" aria-label="Tutup">&times;</button>
+                    </div>
+                    <h3 id="admin-confirm-title" class="admin-modal-title" style="margin-top: 4px; font-size: 18.5px;">Hapus Data Ini?</h3>
+                </div>
+            </div>
+
+            <p id="admin-confirm-desc" class="admin-confirm-desc">
+                Apakah Anda yakin ingin menghapus data ini?
+            </p>
+
+            <!-- Container for dynamic preview card -->
+            <div id="admin-confirm-preview-box" class="admin-confirm-preview-box">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <div class="admin-confirm-warning-note">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span>Tindakan ini tidak dapat dibatalkan. Data akan dihapus secara permanen.</span>
+            </div>
+
+            <div class="admin-confirm-actions">
+                <button type="button" class="btn-admin-cancel" id="btn-cancel-delete" onclick="closeAdminDeleteConfirmModal()">
+                    Batal
+                </button>
+                <button type="button" class="btn-admin-danger-delete" id="btn-execute-delete" onclick="executePendingDelete()">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    <span id="btn-execute-delete-text">Ya, Hapus Sekarang</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ============================================== -->
     <!-- TOAST NOTIFICATION                            -->
     <!-- ============================================== -->
@@ -1744,22 +1798,107 @@
             showAdminToast('Destinasi "' + newTitle + '" berhasil diperbarui! ✨');
         }
 
+        // ===== CUSTOM CONFIRMATION POPUP MODAL =====
+        let pendingDeleteAction = null;
+
+        function openAdminDeleteConfirmModal(config) {
+            const modal = document.getElementById('admin-delete-confirm-modal');
+            if (!modal) return;
+
+            const badgeEl = document.getElementById('admin-confirm-badge');
+            const titleEl = document.getElementById('admin-confirm-title');
+            const descEl  = document.getElementById('admin-confirm-desc');
+            const boxEl   = document.getElementById('admin-confirm-preview-box');
+            const btnText = document.getElementById('btn-execute-delete-text');
+
+            if (badgeEl) badgeEl.textContent = config.badge || 'Konfirmasi Penghapusan';
+            if (titleEl) titleEl.textContent = config.title || 'Hapus Data Ini?';
+            if (descEl)  descEl.textContent  = config.desc  || 'Apakah Anda yakin ingin menghapus data ini?';
+            if (boxEl)   boxEl.innerHTML     = config.previewHtml || '';
+            if (btnText) btnText.textContent = config.btnText || 'Ya, Hapus Sekarang';
+
+            pendingDeleteAction = config.onConfirm;
+
+            modal.classList.add('show', 'active');
+            document.body.style.overflow = 'hidden';
+
+            const cancelBtn = document.getElementById('btn-cancel-delete');
+            if (cancelBtn) cancelBtn.focus();
+        }
+
+        function closeAdminDeleteConfirmModal() {
+            const modal = document.getElementById('admin-delete-confirm-modal');
+            if (modal) {
+                modal.classList.remove('show', 'active');
+            }
+            const reviewModal = document.getElementById('admin-review-detail-modal');
+            if (!reviewModal || !reviewModal.classList.contains('show')) {
+                document.body.style.overflow = '';
+            }
+            pendingDeleteAction = null;
+        }
+
+        function executePendingDelete() {
+            if (typeof pendingDeleteAction === 'function') {
+                const action = pendingDeleteAction;
+                pendingDeleteAction = null;
+                action();
+            } else {
+                closeAdminDeleteConfirmModal();
+            }
+        }
+
         // ===== DELETE DESTINATION CARD (TRASH ICON) =====
         function confirmDeleteCard(btn, e) {
             if (e) e.stopPropagation();
             const card = btn.closest('.dash-recom-card');
             if (!card) return;
-            const title = card.dataset.title || card.querySelector('.dash-recom-card-title')?.textContent || 'Destinasi';
-            if (confirm('Hapus "' + title + '" dari katalog destinasi?')) {
-                card.style.transition = 'all 0.35s ease';
-                card.style.opacity = '0';
-                card.style.transform = 'scale(0.88)';
-                setTimeout(() => {
-                    card.remove();
-                    updateDestCounts();
-                    showAdminToast('Destinasi "' + title + '" berhasil dihapus.');
-                }, 350);
-            }
+
+            const title = card.dataset.title || card.querySelector('.dash-recom-card-title')?.textContent?.trim() || 'Destinasi';
+            const cat = card.dataset.category || card.querySelector('.dash-recom-badge')?.textContent?.trim() || 'Wisata';
+            const status = card.dataset.status || 'post';
+            const loc = card.dataset.loc || card.querySelector('.dash-recom-card-desc')?.textContent?.trim() || 'Bali, Indonesia';
+            const imgEl = card.querySelector('.dash-recom-img');
+            const imgSrc = imgEl ? imgEl.src : '/images/waterfall.jpg';
+
+            const isPost = status === 'post';
+            const statusBadgeStyle = isPost
+                ? 'background:rgba(34,197,94,0.18);color:#4ade80;border:1px solid rgba(74,222,128,0.4);'
+                : 'background:rgba(245,158,11,0.18);color:#fbbf24;border:1px solid rgba(251,191,36,0.4);';
+            const statusLabel = isPost ? '● Post (Terbit)' : '● Draft (Konsep)';
+
+            const previewHtml = `
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <img src="${imgSrc}" alt="${title}" style="width:54px;height:54px;border-radius:12px;object-fit:cover;border:1px solid rgba(255,255,255,0.14);flex-shrink:0;">
+                    <div style="flex:1;min-width:0;">
+                        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap;">
+                            <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:9999px;background:rgba(94,234,212,0.15);color:#5eead4;border:1px solid rgba(94,234,212,0.3);text-transform:capitalize;">${cat}</span>
+                            <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:9999px;${statusBadgeStyle}">${statusLabel}</span>
+                        </div>
+                        <h4 style="font-size:14.5px;font-weight:700;color:#ffffff;margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${title}</h4>
+                        <div style="font-size:11.5px;color:rgba(255,255,255,0.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${loc}</div>
+                    </div>
+                </div>
+            `;
+
+            openAdminDeleteConfirmModal({
+                badge: 'Hapus Destinasi Wisata',
+                title: 'Hapus Destinasi Ini?',
+                desc: `Apakah Anda yakin ingin menghapus "${title}" dari katalog destinasi?`,
+                previewHtml: previewHtml,
+                btnText: 'Ya, Hapus Destinasi',
+                onConfirm: () => {
+                    closeAdminDeleteConfirmModal();
+                    card.style.transition = 'all 0.35s ease';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.88)';
+                    setTimeout(() => {
+                        card.remove();
+                        updateDestCounts();
+                        showAdminToast('Destinasi "' + title + '" berhasil dihapus.');
+                    }, 350);
+                }
+            });
         }
 
         function updateDestCounts() {
@@ -1802,36 +1941,122 @@
             const av = document.getElementById('review-detail-avatar');
             if (av) { av.textContent = avatarText; av.style.background = avatarBg; }
             const modal = document.getElementById('admin-review-detail-modal');
-            if (modal) { modal.classList.add('show'); document.body.style.overflow = 'hidden'; }
+            if (modal) { modal.classList.add('show', 'active'); document.body.style.overflow = 'hidden'; }
         }
+
         function closeReviewDetailModal() {
             const modal = document.getElementById('admin-review-detail-modal');
-            if (modal) { modal.classList.remove('show'); document.body.style.overflow = ''; }
+            if (modal) { modal.classList.remove('show', 'active'); document.body.style.overflow = ''; }
             currentCommentRow = null;
         }
+
         function deleteCurrentReviewFromModal() {
             if (!currentCommentRow) return;
-            const user = currentCommentRow.dataset.user || 'Ulasan';
-            currentCommentRow.style.transition = 'all 0.3s ease';
-            currentCommentRow.style.opacity = '0';
-            setTimeout(() => {
-                if (currentCommentRow) currentCommentRow.remove();
-                updateCommentsCount();
-                closeReviewDetailModal();
-                showAdminToast('Ulasan dari ' + user + ' berhasil dihapus.');
-            }, 300);
+            const user    = currentCommentRow.dataset.user    || currentCommentRow.querySelector('.admin-cell-title')?.textContent || 'Pengguna';
+            const dest    = currentCommentRow.dataset.dest    || currentCommentRow.querySelector('.admin-role-tag')?.textContent   || 'Destinasi';
+            const rating  = currentCommentRow.dataset.rating  || '5.0';
+            const time    = currentCommentRow.dataset.time    || 'Baru saja';
+            const comment = currentCommentRow.dataset.comment || currentCommentRow.querySelector('.admin-comment-snippet')?.textContent?.replace(/"/g,'').trim() || '';
+            const avatarMini = currentCommentRow.querySelector('.admin-avatar-mini');
+            const avatarText = avatarMini ? avatarMini.textContent.trim() : user.slice(0,2).toUpperCase();
+            const avatarBg   = avatarMini ? (avatarMini.style.background || '#244b2c') : '#244b2c';
+            const avatarColor= avatarMini ? (avatarMini.style.color || '#ffffff') : '#ffffff';
+
+            const previewHtml = `
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                            <div style="width:36px;height:36px;border-radius:50%;background:${avatarBg};color:${avatarColor};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">${avatarText}</div>
+                            <div style="min-width:0;">
+                                <h4 style="font-size:13.5px;font-weight:700;color:#ffffff;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${user}</h4>
+                                <div style="font-size:11px;color:rgba(255,255,255,0.5);">${time} • <span style="color:#f5b842;">★ ${rating}</span></div>
+                            </div>
+                        </div>
+                        <span style="font-size:11px;font-weight:600;padding:3px 9px;border-radius:8px;background:rgba(36,75,44,0.4);color:#5eead4;border:1px solid rgba(36,75,44,0.6);white-space:nowrap;flex-shrink:0;">${dest}</span>
+                    </div>
+                    <div style="padding:9px 12px;background:rgba(0,0,0,0.25);border-radius:10px;font-size:12px;line-height:1.45;color:rgba(255,255,255,0.85);font-style:italic;border-left:3px solid #ef4444;max-height:80px;overflow:hidden;">
+                        "${comment}"
+                    </div>
+                </div>
+            `;
+
+            openAdminDeleteConfirmModal({
+                badge: 'Moderasi Komentar',
+                title: 'Hapus Komentar Wisatawan?',
+                desc: `Apakah Anda yakin ingin menghapus komentar dari "${user}"?`,
+                previewHtml: previewHtml,
+                btnText: 'Ya, Hapus Komentar',
+                onConfirm: () => {
+                    closeAdminDeleteConfirmModal();
+                    if (currentCommentRow) {
+                        const targetRow = currentCommentRow;
+                        targetRow.style.transition = 'all 0.3s ease';
+                        targetRow.style.opacity = '0';
+                        setTimeout(() => {
+                            targetRow.remove();
+                            updateCommentsCount();
+                            closeReviewDetailModal();
+                            showAdminToast('Ulasan dari ' + user + ' berhasil dihapus.');
+                        }, 300);
+                    } else {
+                        closeReviewDetailModal();
+                    }
+                }
+            });
         }
+
         function deleteCommentRow(btn, e) {
             if (e) e.stopPropagation();
             const row = btn.closest('tr');
             if (!row) return;
-            const user = row.dataset.user || 'Pengguna';
-            if (confirm('Hapus komentar dari "' + user + '"?')) {
-                row.style.transition = 'all 0.3s ease';
-                row.style.opacity = '0';
-                setTimeout(() => { row.remove(); updateCommentsCount(); showAdminToast('Ulasan dari ' + user + ' dihapus.'); }, 300);
-            }
+
+            const user    = row.dataset.user    || row.querySelector('.admin-cell-title')?.textContent || 'Pengguna';
+            const dest    = row.dataset.dest    || row.querySelector('.admin-role-tag')?.textContent   || 'Destinasi';
+            const rating  = row.dataset.rating  || '5.0';
+            const time    = row.dataset.time    || 'Baru saja';
+            const comment = row.dataset.comment || row.querySelector('.admin-comment-snippet')?.textContent?.replace(/"/g,'').trim() || '';
+            const avatarMini = row.querySelector('.admin-avatar-mini');
+            const avatarText = avatarMini ? avatarMini.textContent.trim() : user.slice(0,2).toUpperCase();
+            const avatarBg   = avatarMini ? (avatarMini.style.background || '#244b2c') : '#244b2c';
+            const avatarColor= avatarMini ? (avatarMini.style.color || '#ffffff') : '#ffffff';
+
+            const previewHtml = `
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                            <div style="width:36px;height:36px;border-radius:50%;background:${avatarBg};color:${avatarColor};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">${avatarText}</div>
+                            <div style="min-width:0;">
+                                <h4 style="font-size:13.5px;font-weight:700;color:#ffffff;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${user}</h4>
+                                <div style="font-size:11px;color:rgba(255,255,255,0.5);">${time} • <span style="color:#f5b842;">★ ${rating}</span></div>
+                            </div>
+                        </div>
+                        <span style="font-size:11px;font-weight:600;padding:3px 9px;border-radius:8px;background:rgba(36,75,44,0.4);color:#5eead4;border:1px solid rgba(36,75,44,0.6);white-space:nowrap;flex-shrink:0;">${dest}</span>
+                    </div>
+                    <div style="padding:9px 12px;background:rgba(0,0,0,0.25);border-radius:10px;font-size:12px;line-height:1.45;color:rgba(255,255,255,0.85);font-style:italic;border-left:3px solid #ef4444;max-height:80px;overflow:hidden;">
+                        "${comment}"
+                    </div>
+                </div>
+            `;
+
+            openAdminDeleteConfirmModal({
+                badge: 'Moderasi Komentar',
+                title: 'Hapus Komentar Wisatawan?',
+                desc: `Apakah Anda yakin ingin menghapus komentar dari "${user}"?`,
+                previewHtml: previewHtml,
+                btnText: 'Ya, Hapus Komentar',
+                onConfirm: () => {
+                    closeAdminDeleteConfirmModal();
+                    row.style.transition = 'all 0.3s ease';
+                    row.style.opacity = '0';
+                    setTimeout(() => {
+                        row.remove();
+                        updateCommentsCount();
+                        showAdminToast('Ulasan dari ' + user + ' dihapus.');
+                    }, 300);
+                }
+            });
         }
+
         function updateCommentsCount() {
             const count = document.querySelectorAll('#admin-comments-tbody tr').length;
             const badge = document.getElementById('admin-table-count');
@@ -1842,14 +2067,18 @@
 
         // ===== CLOSE MODALS ON BACKDROP CLICK =====
         document.addEventListener('DOMContentLoaded', () => {
-            ['dest-detail-modal','admin-edit-dest-modal','admin-review-detail-modal','admin-settings-modal','admin-create-dest-modal'].forEach(id => {
+            ['dest-detail-modal','admin-edit-dest-modal','admin-review-detail-modal','admin-settings-modal','admin-create-dest-modal','admin-delete-confirm-modal'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.addEventListener('click', (e) => {
                     if (e.target === el) {
-                        el.classList.remove('show','active');
-                        document.body.style.overflow = '';
-                        currentEditingCard = null;
-                        currentCommentRow = null;
+                        if (id === 'admin-delete-confirm-modal') {
+                            closeAdminDeleteConfirmModal();
+                        } else {
+                            el.classList.remove('show','active');
+                            document.body.style.overflow = '';
+                            currentEditingCard = null;
+                            currentCommentRow = null;
+                        }
                     }
                 });
             });
@@ -1858,6 +2087,11 @@
         // ===== ESC KEY CLOSES ALL ADMIN MODALS =====
         document.addEventListener('keydown', (e) => {
             if (e.key !== 'Escape') return;
+            const confirmModal = document.getElementById('admin-delete-confirm-modal');
+            if (confirmModal && confirmModal.classList.contains('show')) {
+                closeAdminDeleteConfirmModal();
+                return;
+            }
             ['dest-detail-modal','admin-edit-dest-modal','admin-review-detail-modal','admin-settings-modal','admin-create-dest-modal'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) { el.classList.remove('show','active'); document.body.style.overflow = ''; }

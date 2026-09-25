@@ -83,9 +83,9 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Admin Portal');
         $response->assertSee('Dewasufa');
-        $response->assertSee('Selamat Pagi, Admin Dewasufa!');
-        $response->assertSee('Verifikasi Author');
         $response->assertSee('Moderasi Ulasan');
-        $response->assertSee('Kelola Destinasi');
+        $response->assertSee('admin-delete-confirm-modal');
+        $response->assertSee('Konfirmasi Penghapusan');
+        $response->assertSee('btn-execute-delete');
     }
 }
