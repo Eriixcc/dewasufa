@@ -6021,9 +6021,14 @@ html[data-theme="dark"] .dest-spot-time {
     box-shadow: 0 0 24px rgba(74, 222, 128, 0.3), 0 16px 36px rgba(0, 0, 0, 0.45);
 }
 .admin-status-card.stat-card-draft.active {
-    background: rgba(16, 40, 56, 0.85);
-    border-color: #38bdf8;
-    box-shadow: 0 0 24px rgba(56, 189, 248, 0.3), 0 16px 36px rgba(0, 0, 0, 0.45);
+    background: rgba(48, 36, 16, 0.88);
+    border-color: #fbbf24;
+    box-shadow: 0 0 24px rgba(251, 191, 36, 0.3), 0 16px 36px rgba(0, 0, 0, 0.45);
+}
+
+.admin-status-card.stat-card-draft:hover {
+    border-color: rgba(251, 191, 36, 0.4);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38), 0 0 16px rgba(251, 191, 36, 0.15);
 }
 
 .stat-card-icon-wrap {
@@ -6054,9 +6059,9 @@ html[data-theme="dark"] .dest-spot-time {
 }
 
 .stat-card-icon-wrap.icon-draft {
-    background: rgba(56, 189, 248, 0.16);
-    color: #38bdf8;
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.45);
 }
 
 .stat-card-content {
@@ -6101,9 +6106,9 @@ html[data-theme="dark"] .dest-spot-time {
 }
 
 .badge-draft {
-    background: rgba(56, 189, 248, 0.15);
-    color: #38bdf8;
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    background: rgba(245, 158, 11, 0.25);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.6);
 }
 
 .stat-card-value-group {
