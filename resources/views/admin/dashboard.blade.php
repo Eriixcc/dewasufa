@@ -1063,17 +1063,21 @@
                 <div class="admin-preview-grid-wrap" title="Pratinjau galeri foto destinasi (sesuai tata letak detail destinasi pengguna)">
                     <div class="admin-preview-tall">
                         <img id="create-preview-img-main" src="/images/waterfall.jpg" alt="Foto Utama">
+                        <span class="admin-preview-tag">Cover Utama</span>
                     </div>
                     <div class="admin-preview-stack">
                         <div class="admin-preview-wide">
                             <img id="create-preview-img-thumb1" src="/images/waterfall.jpg" alt="Foto 2">
+                            <span class="admin-preview-tag">Foto 2 (Wide)</span>
                         </div>
                         <div class="admin-preview-row-sm">
                             <div class="admin-preview-sm">
                                 <img id="create-preview-img-thumb2" src="/images/waterfall.jpg" alt="Foto 3">
+                                <span class="admin-preview-tag">Foto 3</span>
                             </div>
                             <div class="admin-preview-sm">
                                 <img id="create-preview-img-thumb3" src="/images/waterfall.jpg" alt="Foto 4">
+                                <span class="admin-preview-tag">Foto 4</span>
                             </div>
                         </div>
                     </div>
@@ -1501,17 +1505,21 @@
                 <div class="admin-preview-grid-wrap" title="Pratinjau galeri foto destinasi (sesuai tata letak detail destinasi pengguna)">
                     <div class="admin-preview-tall">
                         <img id="edit-preview-img-main" src="/images/waterfall.jpg" alt="Foto Utama">
+                        <span class="admin-preview-tag">Cover Utama</span>
                     </div>
                     <div class="admin-preview-stack">
                         <div class="admin-preview-wide">
                             <img id="edit-preview-img-thumb1" src="/images/waterfall.jpg" alt="Foto 2">
+                            <span class="admin-preview-tag">Foto 2 (Wide)</span>
                         </div>
                         <div class="admin-preview-row-sm">
                             <div class="admin-preview-sm">
                                 <img id="edit-preview-img-thumb2" src="/images/waterfall.jpg" alt="Foto 3">
+                                <span class="admin-preview-tag">Foto 3</span>
                             </div>
                             <div class="admin-preview-sm">
                                 <img id="edit-preview-img-thumb3" src="/images/waterfall.jpg" alt="Foto 4">
+                                <span class="admin-preview-tag">Foto 4</span>
                             </div>
                         </div>
                     </div>

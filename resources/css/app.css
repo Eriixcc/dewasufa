@@ -7245,43 +7245,58 @@ html[data-theme="dark"] .dest-spot-time {
 
 .admin-preview-grid-wrap {
     display: grid;
-    grid-template-columns: 1.35fr 1fr;
+    grid-template-columns: 1.25fr 1fr;
     gap: 8px;
-    height: 160px;
+    height: 190px;
+    max-height: 190px;
     border-radius: 16px;
     overflow: hidden;
     margin-bottom: 12px;
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: rgba(0, 0, 0, 0.35);
+    box-sizing: border-box;
 }
 
 .admin-preview-tall {
-    height: 100%;
+    height: 190px;
+    max-height: 190px;
     position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    min-height: 0;
 }
 
 .admin-preview-tall img {
     width: 100%;
     height: 100%;
+    max-height: 190px;
     object-fit: cover;
     display: block;
 }
 
 .admin-preview-stack {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    gap: 6px;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 190px;
+    max-height: 190px;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .admin-preview-wide {
-    height: 100%;
+    height: 91px;
+    max-height: 91px;
+    border-radius: 10px;
     overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
 }
 
 .admin-preview-wide img {
     width: 100%;
     height: 100%;
+    max-height: 91px;
     object-fit: cover;
     display: block;
 }
@@ -7289,20 +7304,46 @@ html[data-theme="dark"] .dest-spot-time {
 .admin-preview-row-sm {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    height: 100%;
+    gap: 8px;
+    height: 91px;
+    max-height: 91px;
+    flex-shrink: 0;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .admin-preview-sm {
-    height: 100%;
+    height: 91px;
+    max-height: 91px;
+    border-radius: 8px;
     overflow: hidden;
+    position: relative;
+    min-height: 0;
 }
 
 .admin-preview-sm img {
     width: 100%;
     height: 100%;
+    max-height: 91px;
     object-fit: cover;
     display: block;
+}
+
+.admin-preview-tag {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 5px;
+    pointer-events: none;
+    letter-spacing: 0.3px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    z-index: 2;
 }
 
 /* File Upload Card for Admin Modal */
