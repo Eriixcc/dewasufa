@@ -301,6 +301,22 @@
                             <span class="admin-cat-count">(8 Destinasi)</span>
                         </div>
                     </div>
+
+                    <!-- Lihat Semua -->
+                    <div class="admin-cat-card" onclick="filterByCategory('all')" role="button" tabindex="0" title="Tampilkan Semua Destinasi">
+                        <div class="admin-cat-icon-box cat-all">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                                <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                            </svg>
+                        </div>
+                        <div class="admin-cat-info">
+                            <h3 class="admin-cat-name">Lihat Semua</h3>
+                            <span class="admin-cat-count">(Semua Destinasi)</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -1710,7 +1726,16 @@
             if (secDestinasi) secDestinasi.classList.remove('admin-section-hidden');
 
             filterDestCards(filterKey);
-            showAdminToast(`Memfilter kategori: ${cat}`);
+
+            if (filterKey === 'all') {
+                showAdminToast('Menampilkan seluruh destinasi wisata');
+            } else {
+                showAdminToast(`Memfilter kategori: ${cat}`);
+            }
+
+            if (secDestinasi) {
+                secDestinasi.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
         // Filter Table Rows in Moderasi Ulasan

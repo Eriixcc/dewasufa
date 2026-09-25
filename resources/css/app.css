@@ -6087,7 +6087,7 @@ html[data-theme="dark"] .dest-spot-time {
 
 .admin-category-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 12px;
 }
 
@@ -6154,9 +6154,9 @@ html[data-theme="dark"] .dest-spot-time {
 }
 
 .cat-all {
-    background: rgba(255, 255, 255, 0.10);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(168, 85, 247, 0.18);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.32);
 }
 
 .admin-cat-name {
@@ -7141,7 +7141,7 @@ html[data-theme="dark"] .dest-spot-time {
     }
 
     .admin-category-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
     }
 }
 
@@ -7182,6 +7182,10 @@ html[data-theme="dark"] .dest-spot-time {
 
     .admin-category-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-category-grid .admin-cat-card:last-child:nth-child(odd) {
+        grid-column: span 2;
     }
 
     .admin-hero-banner {
