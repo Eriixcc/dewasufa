@@ -314,8 +314,8 @@
                         <span class="admin-table-count-badge" id="admin-dest-count-badge">16 Destinasi</span>
                     </div>
 
-                    <!-- Category Filter Pills -->
-                    <nav class="dash-category-nav" aria-label="Filter Kategori Destinasi">
+                    <!-- Category Filter Pills (Hanya muncul saat Kelola Destinasi) -->
+                    <nav class="dash-category-nav" id="admin-dest-cat-nav" aria-label="Filter Kategori Destinasi" style="display: none;">
                         <button type="button" class="dash-cat-pill active" onclick="filterDestCards('all', this)">Semua</button>
                         <button type="button" class="dash-cat-pill" onclick="filterDestCards('waterfall', this)">Waterfall</button>
                         <button type="button" class="dash-cat-pill" onclick="filterDestCards('sunset', this)">Sunset Beach</button>
@@ -1578,6 +1578,7 @@
             const secCategories = document.getElementById('admin-categories-section');
             const secDestinasi  = document.getElementById('admin-destinasi-section');
             const secUlasan     = document.getElementById('admin-table-container');
+            const destCatNav    = document.getElementById('admin-dest-cat-nav');
 
             if (type === 'all' || type === 'dashboard') {
                 // Dashboard: Tampilkan SEMUANYA
@@ -1585,6 +1586,7 @@
                 if (secCategories) secCategories.classList.remove('admin-section-hidden');
                 if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
                 if (secUlasan)     secUlasan.classList.remove('admin-section-hidden');
+                if (destCatNav)    destCatNav.style.display = 'none';
 
                 filterDestCards('all');
                 filterCommentsTable('all');
@@ -1595,6 +1597,7 @@
                 if (secCategories) secCategories.classList.add('admin-section-hidden');
                 if (secUlasan)     secUlasan.classList.add('admin-section-hidden');
                 if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
+                if (destCatNav)    destCatNav.style.display = 'flex';
 
                 if (filterArg) {
                     filterDestCards(filterArg);
@@ -1608,6 +1611,7 @@
                 if (secCategories) secCategories.classList.add('admin-section-hidden');
                 if (secDestinasi)  secDestinasi.classList.add('admin-section-hidden');
                 if (secUlasan)     secUlasan.classList.remove('admin-section-hidden');
+                if (destCatNav)    destCatNav.style.display = 'none';
 
                 filterCommentsTable('all');
                 showAdminToast('Moderasi Ulasan: Menampilkan daftar komentar pengunjung');
@@ -1617,6 +1621,7 @@
                 if (secUlasan)     secUlasan.classList.add('admin-section-hidden');
                 if (secCategories) secCategories.classList.remove('admin-section-hidden');
                 if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
+                if (destCatNav)    destCatNav.style.display = 'none';
 
                 filterDestCards('all');
                 showAdminToast('Kategori Alam Dewasufa');
