@@ -123,7 +123,7 @@
                             </div>
                             <div class="dash-user-info">
                                 <span class="dash-user-name">Erick</span>
-                                <span class="dash-user-role">Admin</span>
+                                <span class="dash-user-role" id="admin-user-role">Admin</span>
                             </div>
                             <svg class="dash-chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -1794,34 +1794,150 @@
         </div>
     </div>
 
-    <!-- ===== MODAL PENGATURAN PROFIL ADMIN ===== -->
-    <div class="admin-modal-backdrop" id="admin-settings-modal" role="dialog" aria-modal="true" aria-labelledby="admin-settings-modal-title">
-        <div class="admin-modal-card">
-            <div class="admin-modal-header">
-                <div><span class="admin-modal-badge">Panel Administrator</span><h3 id="admin-settings-modal-title" class="admin-modal-title">Pengaturan Akun &amp; Sistem</h3></div>
-                <button type="button" class="admin-modal-close" onclick="closeAdminSettingsModal()" aria-label="Tutup">&times;</button>
+    <!-- ===== MODAL PENGATURAN (SETTINGS) PROFIL ADMIN ===== -->
+    <div class="dash-modal-backdrop admin-modal-backdrop" id="admin-settings-modal" role="dialog" aria-modal="true" aria-labelledby="admin-settings-modal-title">
+        <div class="dash-modal-card dash-settings-card">
+            <div class="dash-modal-header">
+                <div class="dash-modal-title-wrap">
+                    <span class="dash-modal-badge">Pengaturan Akun</span>
+                    <h3 id="admin-settings-modal-title" class="dash-modal-title">Pengaturan &amp; Preferensi</h3>
+                    <p class="dash-modal-subtitle">Kelola informasi profil, preferensi sistem administrator, dan sesi akun Anda.</p>
+                </div>
+                <button type="button" class="dash-modal-close" onclick="closeAdminSettingsModal()" aria-label="Tutup Pengaturan">&times;</button>
             </div>
+
+            <!-- Form Edit Profil Admin -->
             <form id="admin-settings-form" onsubmit="saveAdminSettings(event)">
-                <div style="display:flex;align-items:center;gap:16px;margin:16px 0;padding:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;">
-                    <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1b3821,#244b2c);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;">ER</div>
-                    <div>
-                        <h4 style="font-size:16px;font-weight:700;color:#fff;margin:0 0 4px;">Erick</h4>
-                        <span class="admin-role-tag role-admin" style="font-size:11px;">Super Administrator</span>
+                <div class="dash-settings-section">
+                    <h4 class="dash-settings-sec-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Informasi Profil</span>
+                    </h4>
+
+                    <!-- Upload Foto Profil Admin -->
+                    <div class="dash-settings-avatar-wrap">
+                        <div class="dash-avatar-preview-box" id="admin-avatar-preview-box">
+                            <img id="admin-settings-avatar-preview" src="" alt="Avatar Admin" style="display: none;" class="dash-avatar-preview-img">
+                            <span id="admin-settings-avatar-fallback" class="dash-avatar-preview-fallback">ER</span>
+                        </div>
+                        <div class="dash-avatar-upload-actions">
+                            <label for="admin-settings-avatar-input" class="dash-btn-upload-avatar">
+                                <span>Pilih Foto Profil</span>
+                            </label>
+                            <input type="file" id="admin-settings-avatar-input" accept="image/*" style="display: none;">
+                            <div class="dash-avatar-btns">
+                                <button type="button" class="dash-btn-remove-avatar" id="btn-admin-remove-avatar" style="display: none;" onclick="removeAdminAvatar()">Hapus Foto</button>
+                            </div>
+                            <span class="dash-avatar-hint">Format JPG, PNG, WEBP. Maksimal 2MB.</span>
+                        </div>
+                    </div>
+
+                    <div class="dash-form-grid">
+                        <div class="dash-form-group">
+                            <label for="admin-settings-name">Nama Lengkap</label>
+                            <input type="text" id="admin-settings-name" placeholder="Nama Anda" value="Erick">
+                        </div>
+                        <div class="dash-form-group">
+                            <label for="admin-settings-email">
+                                <span>Email Terdaftar</span>
+                                <span class="dash-comment-author-lock-tag" title="Email akun admin terkunci dan tidak dapat diubah">
+                                    <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    Terkunci
+                                </span>
+                            </label>
+                            <input type="email" id="admin-settings-email" class="dash-input-readonly" value="admin@dewasufa.com" readonly aria-readonly="true" tabindex="-1" title="Email akun aktif terkunci dan tidak dapat diubah">
+                        </div>
+                    </div>
+
+                    <div class="dash-form-grid">
+                        <div class="dash-form-group">
+                            <label for="admin-settings-role">Status Akun</label>
+                            <input type="text" id="admin-settings-role" value="Admin" readonly class="dash-input-readonly" title="Status akun Administrator dikelola oleh sistem Dewasufa">
+                        </div>
+                        <div class="dash-form-group">
+                            <label for="admin-settings-phone">
+                                <span>Nomor Telepon</span>
+                                <span class="dash-comment-author-lock-tag" title="Nomor telepon akun admin terkunci dan tidak dapat diubah">
+                                    <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    Terkunci
+                                </span>
+                            </label>
+                            <input type="tel" id="admin-settings-phone" class="dash-input-readonly" value="+62 811-2345-6789" readonly aria-readonly="true" tabindex="-1" title="Nomor telepon akun aktif terkunci dan tidak dapat diubah">
+                        </div>
+                    </div>
+
+                    <div class="dash-form-grid">
+                        <div class="dash-form-group">
+                            <label for="admin-settings-reset-password">Reset Password</label>
+                            <input type="password" id="admin-settings-reset-password" name="reset_password" placeholder="Masukkan password baru" autocomplete="new-password">
+                        </div>
+                        <div class="dash-form-group">
+                            <label for="admin-settings-confirm-password">Konfirmasi Password</label>
+                            <input type="password" id="admin-settings-confirm-password" name="confirm_password" placeholder="Ulangi password baru" autocomplete="new-password">
+                        </div>
                     </div>
                 </div>
-                <div class="admin-form-group">
-                    <label for="admin-settings-email" class="admin-form-label">Email Administrator</label>
-                    <input type="email" id="admin-settings-email" class="admin-form-input" value="admin@dewasufa.com" required>
+
+                <!-- Preferensi Notifikasi & Eksplorasi Sistem -->
+                <div class="dash-settings-section">
+                    <h4 class="dash-settings-sec-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span>Preferensi Aplikasi &amp; Sistem</span>
+                    </h4>
+
+                    <div class="dash-settings-toggle-row">
+                        <div class="dash-toggle-info">
+                            <span class="dash-toggle-title">Pemberitahuan Sistem &amp; Moderasi Destinasi</span>
+                            <span class="dash-toggle-sub">Terima notifikasi otomatis saat ada permohonan destinasi atau komentar baru</span>
+                        </div>
+                        <label class="dash-switch">
+                            <input type="checkbox" id="admin-settings-toggle-notif" checked>
+                            <span class="dash-switch-slider"></span>
+                        </label>
+                    </div>
                 </div>
-                <div class="admin-form-group">
-                    <label for="admin-settings-role" class="admin-form-label">Hak Akses Sistem</label>
-                    <input type="text" id="admin-settings-role" class="admin-form-input" value="Full System Administrator" readonly style="opacity:0.7;cursor:not-allowed;">
-                </div>
-                <div class="admin-modal-actions">
-                    <button type="button" class="btn-admin-cancel" onclick="closeAdminSettingsModal()">Batal</button>
-                    <button type="submit" class="btn-admin-submit-save">Simpan Pengaturan</button>
+
+                <div class="dash-modal-actions" style="margin-bottom: 24px;">
+                    <button type="submit" class="dash-btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        <span>Simpan Perubahan</span>
+                    </button>
                 </div>
             </form>
+
+            <!-- ZONA LOGOUT (MASUK DI DALAM FITUR SETTING) -->
+            <div class="dash-settings-danger-zone">
+                <div class="dash-danger-info">
+                    <h4 class="dash-danger-title">Sesi Akun &amp; Logout</h4>
+                    <p class="dash-danger-desc">
+                        Ingin mengakhiri sesi administrator Anda di Dewasufa? Anda dapat masuk kembali kapan saja.
+                    </p>
+                </div>
+                <a href="{{ route('home') }}" class="dash-btn-logout-inside" id="admin-btn-logout-inside" style="text-decoration: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Logout Admin</span>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -1912,21 +2028,173 @@
             }
         });
 
-        // ===== ADMIN SETTINGS MODAL =====
+        // ===== ADMIN SETTINGS & AVATAR MANAGER =====
+        function initAdminProfile() {
+            const savedName = localStorage.getItem('dewasufa_admin_name') || 'Erick';
+            document.querySelectorAll('.dash-user-name').forEach(el => el.textContent = savedName);
+            document.querySelectorAll('.dash-user-role').forEach(el => el.textContent = 'Admin');
+
+            const savedAvatar = localStorage.getItem('dewasufa_admin_avatar');
+            const headerAvatar = document.querySelector('#admin-user-menu-btn .dash-avatar');
+            if (savedAvatar && headerAvatar) {
+                headerAvatar.innerHTML = `<img src="${savedAvatar}" alt="Avatar Admin" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+            }
+        }
+
         function openAdminSettingsModal() {
             const modal = document.getElementById('admin-settings-modal');
-            if (modal) { modal.classList.add('show'); document.body.style.overflow = 'hidden'; }
+            if (!modal) return;
+
+            // Prefill nama
+            const nameInput = document.getElementById('admin-settings-name');
+            const savedName = localStorage.getItem('dewasufa_admin_name') || 'Erick';
+            if (nameInput) nameInput.value = savedName;
+
+            // Prefill email & phone & role (locked/readonly)
+            const emailInput = document.getElementById('admin-settings-email');
+            const phoneInput = document.getElementById('admin-settings-phone');
+            const roleInput = document.getElementById('admin-settings-role');
+            if (emailInput) {
+                emailInput.value = localStorage.getItem('dewasufa_admin_email') || 'admin@dewasufa.com';
+                emailInput.readOnly = true;
+            }
+            if (phoneInput) {
+                phoneInput.value = localStorage.getItem('dewasufa_admin_phone') || '+62 811-2345-6789';
+                phoneInput.readOnly = true;
+            }
+            if (roleInput) {
+                roleInput.value = 'Admin';
+                roleInput.readOnly = true;
+            }
+
+            // Reset password inputs
+            const resetPass = document.getElementById('admin-settings-reset-password');
+            const confirmPass = document.getElementById('admin-settings-confirm-password');
+            if (resetPass) resetPass.value = '';
+            if (confirmPass) confirmPass.value = '';
+
+            // Avatar preview
+            const savedAvatar = localStorage.getItem('dewasufa_admin_avatar');
+            const previewImg = document.getElementById('admin-settings-avatar-preview');
+            const fallbackSpan = document.getElementById('admin-settings-avatar-fallback');
+            const removeBtn = document.getElementById('btn-admin-remove-avatar');
+            if (savedAvatar && previewImg && fallbackSpan) {
+                previewImg.src = savedAvatar;
+                previewImg.style.display = 'block';
+                fallbackSpan.style.display = 'none';
+                if (removeBtn) removeBtn.style.display = 'inline-flex';
+            } else if (previewImg && fallbackSpan) {
+                previewImg.src = '';
+                previewImg.style.display = 'none';
+                fallbackSpan.style.display = 'block';
+                if (removeBtn) removeBtn.style.display = 'none';
+            }
+
+            modal.classList.add('show', 'active');
+            document.body.style.overflow = 'hidden';
+
             const dropdown = document.getElementById('admin-user-dropdown');
             if (dropdown) dropdown.classList.remove('show');
         }
+
         function closeAdminSettingsModal() {
             const modal = document.getElementById('admin-settings-modal');
-            if (modal) { modal.classList.remove('show'); document.body.style.overflow = ''; }
+            if (modal) {
+                modal.classList.remove('show', 'active');
+                document.body.style.overflow = '';
+            }
         }
+
         function saveAdminSettings(e) {
             e.preventDefault();
+            const nameInput = document.getElementById('admin-settings-name');
+            const newName = nameInput ? nameInput.value.trim() : 'Erick';
+
+            if (newName) {
+                localStorage.setItem('dewasufa_admin_name', newName);
+                document.querySelectorAll('.dash-user-name').forEach(el => el.textContent = newName);
+            }
+
+            const resetPass = document.getElementById('admin-settings-reset-password');
+            const confirmPass = document.getElementById('admin-settings-confirm-password');
+            const newPass = resetPass ? resetPass.value : '';
+            const confPass = confirmPass ? confirmPass.value : '';
+
+            if (newPass || confPass) {
+                if (newPass.length < 6) {
+                    showAdminToast('Password baru admin minimal 6 karakter.');
+                    return;
+                }
+                if (newPass !== confPass) {
+                    showAdminToast('Konfirmasi password tidak cocok.');
+                    return;
+                }
+                showAdminToast('Password berhasil direset & profil admin disimpan!');
+            } else {
+                showAdminToast('Pengaturan profil admin dan preferensi berhasil disimpan!');
+            }
+
             closeAdminSettingsModal();
-            showAdminToast('Pengaturan profil admin berhasil diperbarui!');
+        }
+
+        function initAdminAvatarManager() {
+            const avatarInput = document.getElementById('admin-settings-avatar-input');
+            const previewImg = document.getElementById('admin-settings-avatar-preview');
+            const fallbackSpan = document.getElementById('admin-settings-avatar-fallback');
+            const removeBtn = document.getElementById('btn-admin-remove-avatar');
+            const headerAvatar = document.querySelector('#admin-user-menu-btn .dash-avatar');
+
+            function applyAdminAvatar(dataUrl) {
+                if (dataUrl) {
+                    if (previewImg) {
+                        previewImg.src = dataUrl;
+                        previewImg.style.display = 'block';
+                    }
+                    if (fallbackSpan) fallbackSpan.style.display = 'none';
+                    if (removeBtn) removeBtn.style.display = 'inline-flex';
+                    if (headerAvatar) {
+                        headerAvatar.innerHTML = `<img src="${dataUrl}" alt="Avatar Admin" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+                    }
+                } else {
+                    if (previewImg) {
+                        previewImg.src = '';
+                        previewImg.style.display = 'none';
+                    }
+                    if (fallbackSpan) fallbackSpan.style.display = 'block';
+                    if (removeBtn) removeBtn.style.display = 'none';
+                    if (headerAvatar) {
+                        headerAvatar.innerHTML = `<span class="dash-avatar-initials">ER</span>`;
+                    }
+                }
+            }
+
+            if (avatarInput) {
+                avatarInput.addEventListener('change', (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    if (file.size > 2 * 1024 * 1024) {
+                        showAdminToast('Ukuran gambar maksimal 2MB.');
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        const dataUrl = evt.target?.result;
+                        if (dataUrl) {
+                            localStorage.setItem('dewasufa_admin_avatar', dataUrl);
+                            applyAdminAvatar(dataUrl);
+                            showAdminToast('Foto profil admin berhasil diperbarui!');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            window.removeAdminAvatar = function() {
+                localStorage.removeItem('dewasufa_admin_avatar');
+                if (avatarInput) avatarInput.value = '';
+                applyAdminAvatar(null);
+                showAdminToast('Foto profil admin dihapus.');
+            };
         }
 
         // ===== DESTINATION DETAIL MODAL (NO PORTAL REDIRECT) =====
@@ -2640,8 +2908,11 @@
             if (pill) pill.textContent = count;
         }
 
-        // ===== CLOSE MODALS ON BACKDROP CLICK =====
+        // ===== CLOSE MODALS ON BACKDROP CLICK & INIT ADMIN PROFILE =====
         document.addEventListener('DOMContentLoaded', () => {
+            initAdminProfile();
+            initAdminAvatarManager();
+
             ['dest-detail-modal','admin-edit-dest-modal','admin-review-detail-modal','admin-settings-modal','admin-create-dest-modal','admin-delete-confirm-modal'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.addEventListener('click', (e) => {

@@ -1661,8 +1661,12 @@ function initApp() {
     }
     const dashRole = document.querySelector('.dash-user-role');
     if (dashRole) {
-        const savedRole = sessionStorage.getItem('dewasufa_role');
-        dashRole.textContent = savedRole || 'User';
+        if (document.body.classList.contains('admin-body')) {
+            dashRole.textContent = 'Admin';
+        } else {
+            const savedRole = sessionStorage.getItem('dewasufa_role');
+            dashRole.textContent = savedRole || 'User';
+        }
     }
 
     // Initialize locked registered email with active account
