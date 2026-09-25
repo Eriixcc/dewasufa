@@ -7157,6 +7157,147 @@ html[data-theme="dark"] .dest-spot-time {
     box-shadow: 0 6px 20px rgba(245, 184, 66, 0.45);
 }
 
+/* Large Admin Modal */
+.admin-modal-card.admin-modal-card-lg {
+    max-width: 780px;
+    width: 95%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 30px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(245, 184, 66, 0.4) rgba(0, 0, 0, 0.2);
+}
+
+.admin-modal-card.admin-modal-card-lg::-webkit-scrollbar {
+    width: 6px;
+}
+.admin-modal-card.admin-modal-card-lg::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+.admin-modal-card.admin-modal-card-lg::-webkit-scrollbar-thumb {
+    background: rgba(245, 184, 66, 0.35);
+    border-radius: 8px;
+}
+.admin-modal-card.admin-modal-card-lg::-webkit-scrollbar-thumb:hover {
+    background: rgba(245, 184, 66, 0.6);
+}
+
+.admin-modal-subtitle {
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.65);
+    margin-top: 4px;
+    margin-bottom: 0;
+}
+
+.admin-form-section-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: #f5b842;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 22px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.admin-form-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.admin-preview-grid-wrap {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 8px;
+    height: 160px;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.35);
+}
+.admin-preview-tall {
+    height: 100%;
+    position: relative;
+}
+.admin-preview-tall img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.admin-preview-stack {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 6px;
+    height: 100%;
+}
+.admin-preview-wide {
+    height: 100%;
+    overflow: hidden;
+}
+.admin-preview-wide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.admin-preview-row-sm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    height: 100%;
+}
+.admin-preview-sm {
+    height: 100%;
+    overflow: hidden;
+}
+.admin-preview-sm img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.admin-photo-presets {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+.admin-preset-chip {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+.admin-preset-chip:hover {
+    background: rgba(245, 184, 66, 0.2);
+    color: #f5b842;
+    border-color: rgba(245, 184, 66, 0.4);
+}
+
+.admin-form-row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+.admin-input-hint {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 2px;
+}
+
 /* =========================================
    ADMIN TOAST
    ========================================= */

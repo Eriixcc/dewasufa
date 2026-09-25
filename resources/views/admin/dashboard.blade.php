@@ -1046,51 +1046,166 @@
     <!-- ============================================== -->
     <!-- MODAL TAMBAH DESTINASI BARU (ADMIN)           -->
     <!-- ============================================== -->
+    <!-- ============================================== -->
+    <!-- MODAL TAMBAH DESTINASI BARU (ADMIN)           -->
+    <!-- ============================================== -->
     <div class="admin-modal-backdrop" id="admin-create-dest-modal" role="dialog" aria-modal="true" aria-labelledby="modal-dest-title">
-        <div class="admin-modal-card">
+        <div class="admin-modal-card admin-modal-card-lg">
             <div class="admin-modal-header">
                 <div>
                     <span class="admin-modal-badge">Kelola Konten Dewasufa</span>
                     <h3 id="modal-dest-title" class="admin-modal-title">Tambah Destinasi Wisata Baru</h3>
+                    <p class="admin-modal-subtitle">Isi data lengkap destinasi sesuai tampilan pengunjung (foto galeri, rating, waktu terbaik, tiket, dll).</p>
                 </div>
                 <button type="button" class="admin-modal-close" onclick="closeAdminCreateModal()" aria-label="Tutup Modal">&times;</button>
             </div>
 
             <form id="admin-add-dest-form" onsubmit="handleAdminAddDest(event)">
+
+                <!-- 1. Galeri Foto & Visual Destinasi -->
+                <div class="admin-form-section-title">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    <span>1. Foto &amp; Galeri Visual (Tampilan Pengunjung)</span>
+                </div>
+
+                <!-- Live Preview of User Destination Photo Layout (1 Tall + 1 Wide + 2 Small) -->
+                <div class="admin-preview-grid-wrap" title="Pratinjau galeri foto destinasi (sesuai tata letak detail destinasi pengguna)">
+                    <div class="admin-preview-tall">
+                        <img id="create-preview-img-main" src="/images/waterfall.jpg" alt="Foto Utama">
+                    </div>
+                    <div class="admin-preview-stack">
+                        <div class="admin-preview-wide">
+                            <img id="create-preview-img-thumb1" src="/images/waterfall.jpg" alt="Foto 2">
+                        </div>
+                        <div class="admin-preview-row-sm">
+                            <div class="admin-preview-sm">
+                                <img id="create-preview-img-thumb2" src="/images/waterfall.jpg" alt="Foto 3">
+                            </div>
+                            <div class="admin-preview-sm">
+                                <img id="create-preview-img-thumb3" src="/images/waterfall.jpg" alt="Foto 4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="admin-form-group">
-                    <label for="dest-input-name" class="admin-form-label">Nama Destinasi Wisata</label>
-                    <input type="text" id="dest-input-name" class="admin-form-input" placeholder="Contoh: Air Terjun Aling-Aling" required>
+                    <label for="dest-input-img-main" class="admin-form-label">URL Foto Utama / Cover</label>
+                    <input type="text" id="dest-input-img-main" class="admin-form-input" value="/images/waterfall.jpg" oninput="updateCreateModalPhotoPreview()" placeholder="https://... atau /images/waterfall.jpg" required>
+                    <div class="admin-photo-presets">
+                        <span class="admin-input-hint" style="margin-right:4px;">Pilih Preset Cepat:</span>
+                        <button type="button" class="admin-preset-chip" onclick="applyPhotoPreset('/images/waterfall.jpg', 'Waterfall')">Air Terjun</button>
+                        <button type="button" class="admin-preset-chip" onclick="applyPhotoPreset('/images/air terjun sekumpul.png', 'Waterfall')">Sekumpul</button>
+                        <button type="button" class="admin-preset-chip" onclick="applyPhotoPreset('/images/sunset-beach.jpg', 'Sunset Beach')">Sunset Beach</button>
+                        <button type="button" class="admin-preset-chip" onclick="applyPhotoPreset('/images/sunrise-beach.jpg', 'Sunrise Beach')">Sunrise Beach</button>
+                        <button type="button" class="admin-preset-chip" onclick="applyPhotoPreset('/images/mountain.jpg', 'Mountain')">Pegunungan</button>
+                    </div>
+                </div>
+
+                <div class="admin-form-row-3">
+                    <div class="admin-form-group">
+                        <label for="dest-input-thumb1" class="admin-form-label">Foto Tambahan 2 (Wide)</label>
+                        <input type="text" id="dest-input-thumb1" class="admin-form-input" placeholder="Opsional (URL foto)" oninput="updateCreateModalPhotoPreview()">
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="dest-input-thumb2" class="admin-form-label">Foto Tambahan 3</label>
+                        <input type="text" id="dest-input-thumb2" class="admin-form-input" placeholder="Opsional (URL foto)" oninput="updateCreateModalPhotoPreview()">
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="dest-input-thumb3" class="admin-form-label">Foto Tambahan 4</label>
+                        <input type="text" id="dest-input-thumb3" class="admin-form-input" placeholder="Opsional (URL foto)" oninput="updateCreateModalPhotoPreview()">
+                    </div>
+                </div>
+
+                <!-- 2. Identitas Destinasi -->
+                <div class="admin-form-section-title">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>2. Identitas &amp; Klasifikasi Destinasi</span>
                 </div>
 
                 <div class="admin-form-row-2">
                     <div class="admin-form-group">
-                        <label for="dest-input-category" class="admin-form-label">Kategori Wisata</label>
-                        <select id="dest-input-category" class="admin-form-select" required>
-                            <option value="Waterfall">Waterfall</option>
-                            <option value="Sunset Beach">Sunset Beach</option>
-                            <option value="Sunrise Beach">Sunrise Beach</option>
-                            <option value="Mountain">Mountain</option>
-                        </select>
+                        <label for="dest-input-name" class="admin-form-label">Nama Destinasi Wisata</label>
+                        <input type="text" id="dest-input-name" class="admin-form-input" placeholder="Contoh: Air Terjun Tegenungan" required>
                     </div>
                     <div class="admin-form-group">
-                        <label for="dest-input-ticket" class="admin-form-label">Harga Tiket Masuk</label>
-                        <input type="text" id="dest-input-ticket" class="admin-form-input" placeholder="Rp 20.000 / orang" required>
+                        <label for="dest-input-category" class="admin-form-label">Kategori Wisata</label>
+                        <select id="dest-input-category" class="admin-form-select" onchange="onCategorySelectChange(this.value)" required>
+                            <option value="Waterfall">Waterfall (Air Terjun)</option>
+                            <option value="Sunset Beach">Sunset Beach (Pantai Senja)</option>
+                            <option value="Sunrise Beach">Sunrise Beach (Pantai Fajar)</option>
+                            <option value="Mountain">Mountain (Pegunungan)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="admin-form-row-2">
+                    <div class="admin-form-group">
+                        <label for="dest-input-location" class="admin-form-label">Lokasi / Alamat Lengkap di Bali</label>
+                        <input type="text" id="dest-input-location" class="admin-form-input" placeholder="Contoh: Kemenuh, Sukawati, Gianyar" required>
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="dest-input-status" class="admin-form-label">Status Destinasi</label>
+                        <select id="dest-input-status" class="admin-form-select" required>
+                            <option value="post">● Post (Terbit Aktif ke Pengunjung)</option>
+                            <option value="draft">● Draft (Konsep Tersimpan)</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="admin-form-group">
-                    <label for="dest-input-location" class="admin-form-label">Kabupaten / Lokasi di Bali</label>
-                    <input type="text" id="dest-input-location" class="admin-form-input" placeholder="Contoh: Sambangan, Sukasada, Buleleng" required>
+                    <label for="dest-input-tags" class="admin-form-label">Tag / Sorotan Fitur Destinasi</label>
+                    <input type="text" id="dest-input-tags" class="admin-form-input" placeholder="Contoh: Air Terjun, Akses Mudah, Spot Foto, Dekat Ubud">
+                    <span class="admin-input-hint">Pisahkan tag dengan tanda koma (,). Tag akan tampil sebagai badge fitur di halaman pengunjung.</span>
+                </div>
+
+                <!-- 3. Informasi & Fasilitas (Rating, Jam Buka, Tiket Masuk, Waktu Terbaik) -->
+                <div class="admin-form-section-title">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>3. Informasi &amp; Fasilitas Destinasi</span>
+                </div>
+
+                <div class="admin-form-row-2">
+                    <div class="admin-form-group">
+                        <label for="dest-input-rating" class="admin-form-label">★ Rating Pengunjung (1.0 - 5.0)</label>
+                        <input type="number" step="0.1" min="1.0" max="5.0" id="dest-input-rating" class="admin-form-input" value="4.8" placeholder="Contoh: 4.8" required>
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="dest-input-time" class="admin-form-label">Jam Buka / Operasional</label>
+                        <input type="text" id="dest-input-time" class="admin-form-input" value="06:30 – 18:00 WITA" placeholder="Contoh: 06:30 – 18:00 WITA" required>
+                    </div>
+                </div>
+
+                <div class="admin-form-row-2">
+                    <div class="admin-form-group">
+                        <label for="dest-input-ticket" class="admin-form-label">Harga Tiket Masuk</label>
+                        <input type="text" id="dest-input-ticket" class="admin-form-input" value="Rp 25.000 / orang" placeholder="Contoh: Rp 25.000 / orang" required>
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="dest-input-best-visit" class="admin-form-label">Waktu Terbaik Berkunjung</label>
+                        <input type="text" id="dest-input-best-visit" class="admin-form-input" value="07:00 – 09:30 WITA (Suasana tenang dan udara sejuk)" placeholder="Contoh: 07:00 – 09:30 WITA (Udara sejuk)" required>
+                    </div>
+                </div>
+
+                <!-- 4. Deskripsi & Peta Google Maps -->
+                <div class="admin-form-section-title">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span>4. Tentang Destinasi &amp; Tautan Peta</span>
                 </div>
 
                 <div class="admin-form-group">
-                    <label for="dest-input-desc" class="admin-form-label">Deskripsi Singkat</label>
-                    <textarea id="dest-input-desc" class="admin-form-textarea" rows="3" placeholder="Tuliskan daya tarik keindahan alam destinasi ini..." required></textarea>
+                    <label for="dest-input-desc" class="admin-form-label">Tentang Destinasi (Deskripsi Lengkap)</label>
+                    <textarea id="dest-input-desc" class="admin-form-textarea" rows="3" placeholder="Tuliskan deskripsi lengkap, daya tarik utama, akses jalan, dan fasilitas bagi wisatawan..." required></textarea>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="dest-input-gmaps" class="admin-form-label">Tautan Google Maps</label>
+                    <input type="text" id="dest-input-gmaps" class="admin-form-input" placeholder="Contoh: https://maps.google.com/?q=Air+Terjun+Tegenungan+Bali">
+                    <span class="admin-input-hint">Jika dikosongkan, tautan otomatis dicari berdasarkan nama destinasi di Google Maps.</span>
                 </div>
 
                 <div class="admin-modal-actions">
                     <button type="button" class="btn-admin-cancel" onclick="closeAdminCreateModal()">Batal</button>
-                    <button type="submit" class="btn-admin-submit-save">+ Simpan & Publikasikan</button>
+                    <button type="submit" class="btn-admin-submit-save">+ Simpan &amp; Publikasikan Destinasi</button>
                 </div>
             </form>
         </div>
@@ -1099,38 +1214,78 @@
 
     <!-- ===== MODAL DETAIL DESTINASI (TANPA REDIRECT KE PORTAL USER) ===== -->
     <div class="dash-modal-backdrop" id="dest-detail-modal" role="dialog" aria-modal="true" aria-labelledby="dest-detail-title" style="z-index:12000;">
-        <div class="dash-modal-card" style="max-width:900px;width:100%;max-height:90vh;overflow-y:auto;border-radius:28px;padding:28px;position:relative;">
+        <div class="dash-modal-card" style="max-width:920px;width:95%;max-height:90vh;overflow-y:auto;border-radius:28px;padding:28px;position:relative;">
             <button type="button" onclick="closeAdminSpotDetail()" aria-label="Tutup" style="position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.8);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;">✕</button>
 
             <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:24px;">
                 <!-- Left -->
                 <div>
-                    <img id="dest-detail-img" src="/images/waterfall.jpg" alt="Destinasi" style="width:100%;height:220px;object-fit:cover;border-radius:18px;display:block;margin-bottom:16px;">
+                    <!-- Photo Layout -->
+                    <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:8px;height:190px;border-radius:18px;overflow:hidden;margin-bottom:16px;">
+                        <img id="dest-detail-img" src="/images/waterfall.jpg" alt="Destinasi Utama" style="width:100%;height:100%;object-fit:cover;display:block;">
+                        <div style="display:grid;grid-template-rows:1fr 1fr;gap:6px;height:100%;">
+                            <img id="dest-detail-img-thumb-1" src="/images/waterfall.jpg" alt="Foto 2" style="width:100%;height:100%;object-fit:cover;display:block;">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;height:100%;">
+                                <img id="dest-detail-img-thumb-2" src="/images/waterfall.jpg" alt="Foto 3" style="width:100%;height:100%;object-fit:cover;display:block;">
+                                <img id="dest-detail-img-thumb-3" src="/images/waterfall.jpg" alt="Foto 4" style="width:100%;height:100%;object-fit:cover;display:block;">
+                            </div>
+                        </div>
+                    </div>
+
                     <h2 id="dest-detail-title" style="font-size:22px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-0.02em;">Air Terjun Sekumpul</h2>
                     <div style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:12px;">
                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                         <span id="dest-detail-location-text">Buleleng, Bali</span>
                     </div>
-                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-                        <span id="dest-detail-category" style="display:inline-block;padding:4px 12px;border-radius:20px;background:rgba(94,234,212,0.15);color:#5eead4;font-size:12px;font-weight:600;border:1px solid rgba(94,234,212,0.25);">Waterfall</span>
-                        <span style="display:inline-block;padding:4px 12px;border-radius:20px;background:rgba(36,75,44,0.5);color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,0.1);">● Terbit Aktif</span>
+
+                    <!-- Category & Tags -->
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px;">
+                        <span id="dest-detail-category" style="display:inline-block;padding:4px 12px;border-radius:20px;background:rgba(94,234,212,0.15);color:#5eead4;font-size:12px;font-weight:700;border:1px solid rgba(94,234,212,0.25);">Waterfall</span>
+                        <span id="dest-detail-status-pill" style="display:inline-block;padding:4px 12px;border-radius:20px;background:rgba(36,75,44,0.5);color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,0.1);">● Terbit Aktif</span>
+                        <div id="dest-detail-tags" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
                     </div>
-                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+
+                    <!-- 3 Feature Boxes: Rating, Jam Buka, Tiket -->
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;">
                         <div style="padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;text-align:center;">
-                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">★ Rating</div>
-                            <div style="font-size:16px;font-weight:700;color:#f5b842;" id="dest-detail-score">4.9</div>
+                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">★ RATING</div>
+                            <div style="font-size:16px;font-weight:800;color:#f5b842;"><span id="dest-detail-score">4.9</span> / 5.0</div>
                         </div>
                         <div style="padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;text-align:center;">
-                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">Jam Buka</div>
-                            <div style="font-size:12px;font-weight:600;color:#fff;" id="dest-detail-time">07:00 - 16:00</div>
+                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">JAM BUKA</div>
+                            <div style="font-size:12px;font-weight:700;color:#fff;" id="dest-detail-time">07:00 - 16:00</div>
                         </div>
                         <div style="padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;text-align:center;">
-                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">Tiket Masuk</div>
-                            <div style="font-size:12px;font-weight:600;color:#fff;" id="dest-detail-ticket">Rp 20.000</div>
+                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">TIKET MASUK</div>
+                            <div style="font-size:12px;font-weight:700;color:#fff;" id="dest-detail-ticket">Rp 20.000 / orang</div>
                         </div>
                     </div>
-                    <h4 style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Tentang Destinasi</h4>
-                    <p id="dest-detail-desc" style="font-size:14px;line-height:1.65;color:rgba(255,255,255,0.8);margin:0;">Deskripsi destinasi wisata ini.</p>
+
+                    <!-- Waktu Terbaik Banner -->
+                    <div style="padding:11px 15px;background:rgba(245,184,66,0.1);border:1px solid rgba(245,184,66,0.25);border-radius:14px;display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f5b842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        </svg>
+                        <div style="font-size:12.5px;color:#f1f5f9;">
+                            <strong style="color:#f5b842;text-transform:uppercase;font-size:11px;letter-spacing:0.5px;">Waktu Terbaik:</strong>
+                            <span id="dest-detail-best-visit" style="margin-left:6px;font-weight:600;">07:00 – 09:30 WITA (Suasana tenang dan udara sejuk)</span>
+                        </div>
+                    </div>
+
+                    <h4 style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Tentang Destinasi</h4>
+                    <p id="dest-detail-desc" style="font-size:14px;line-height:1.65;color:rgba(255,255,255,0.8);margin:0 0 16px;">Deskripsi destinasi wisata ini.</p>
+
+                    <!-- Google Maps Link Button -->
+                    <a id="dest-detail-gmaps-link" href="https://maps.google.com" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:12px;background:rgba(255,255,255,0.08);color:#5eead4;border:1px solid rgba(94,234,212,0.3);text-decoration:none;font-size:13px;font-weight:700;transition:all 0.2s ease;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                        </svg>
+                        <span>Buka di Google Maps</span>
+                    </a>
                 </div>
                 <!-- Right -->
                 <div style="display:flex;flex-direction:column;gap:14px;">
@@ -1341,8 +1496,12 @@
             const modal = document.getElementById('dest-detail-modal');
             if (!modal) return;
             let title = 'Air Terjun Sekumpul', desc = 'Keindahan alam Bali yang memukau.',
-                time = '07:00 - 16:00 WITA', ticket = 'Rp 20.000', loc = 'Buleleng, Bali',
-                cat = 'Waterfall', imgSrc = '/images/waterfall.jpg';
+                time = '07:00 - 16:00 WITA', ticket = 'Rp 20.000 / orang', loc = 'Buleleng, Bali',
+                cat = 'Waterfall', imgSrc = '/images/waterfall.jpg',
+                rating = '4.9', bestVisit = '07:00 – 09:30 WITA (Suasana tenang dan sejuk)',
+                status = 'post', tags = 'Air Terjun, Alam, Spot Foto', gmaps = '';
+            let thumb1 = '', thumb2 = '', thumb3 = '';
+
             if (card) {
                 title  = card.dataset.title  || card.querySelector('.dash-recom-card-title')?.textContent  || title;
                 desc   = card.dataset.desc   || card.querySelector('.dash-recom-card-desc')?.textContent   || desc;
@@ -1350,19 +1509,67 @@
                 ticket = card.dataset.ticket || ticket;
                 loc    = card.dataset.loc    || loc;
                 cat    = card.dataset.category || cat;
+                rating = card.dataset.rating || rating;
+                bestVisit = card.dataset.bestVisit || bestVisit;
+                status = card.dataset.status || status;
+                tags   = card.dataset.tags || tags;
+                gmaps  = card.dataset.gmaps || '';
+                thumb1 = card.dataset.thumb1 || '';
+                thumb2 = card.dataset.thumb2 || '';
+                thumb3 = card.dataset.thumb3 || '';
                 const img = card.querySelector('.dash-recom-img');
                 if (img) imgSrc = img.src;
             }
+
             const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
             set('dest-detail-title', title);
             set('dest-detail-desc', desc);
             set('dest-detail-time', time);
             set('dest-detail-ticket', ticket);
             set('dest-detail-location-text', loc);
+            set('dest-detail-score', rating);
+            set('dest-detail-best-visit', bestVisit);
             set('dest-detail-category', cat.charAt(0).toUpperCase() + cat.slice(1));
-            ['dest-detail-img','dest-detail-img-thumb-1','dest-detail-img-thumb-2','dest-detail-img-thumb-3'].forEach(id => {
-                const el = document.getElementById(id); if (el) el.src = imgSrc;
-            });
+
+            const statusPill = document.getElementById('dest-detail-status-pill');
+            if (statusPill) {
+                if (status === 'draft') {
+                    statusPill.textContent = '● Draft (Konsep)';
+                    statusPill.style.background = 'rgba(234, 179, 8, 0.2)';
+                    statusPill.style.color = '#facc15';
+                    statusPill.style.borderColor = 'rgba(234, 179, 8, 0.35)';
+                } else {
+                    statusPill.textContent = '● Terbit Aktif';
+                    statusPill.style.background = 'rgba(36, 75, 44, 0.5)';
+                    statusPill.style.color = '#86efac';
+                    statusPill.style.borderColor = 'rgba(34, 197, 94, 0.3)';
+                }
+            }
+
+            const tagsContainer = document.getElementById('dest-detail-tags');
+            if (tagsContainer) {
+                if (tags) {
+                    const tagArr = tags.split(',').map(t => t.trim()).filter(Boolean);
+                    tagsContainer.innerHTML = tagArr.map(t => `<span style="display:inline-block;padding:3px 10px;border-radius:14px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;border:1px solid rgba(255,255,255,0.12);">${t}</span>`).join(' ');
+                } else {
+                    tagsContainer.innerHTML = '';
+                }
+            }
+
+            const gmapsLink = document.getElementById('dest-detail-gmaps-link');
+            if (gmapsLink) {
+                gmapsLink.href = gmaps || `https://maps.google.com/?q=${encodeURIComponent(title + ' ' + loc)}`;
+            }
+
+            const mainImg = document.getElementById('dest-detail-img');
+            if (mainImg) mainImg.src = imgSrc;
+            const t1 = document.getElementById('dest-detail-img-thumb-1');
+            if (t1) t1.src = thumb1 || imgSrc;
+            const t2 = document.getElementById('dest-detail-img-thumb-2');
+            if (t2) t2.src = thumb2 || imgSrc;
+            const t3 = document.getElementById('dest-detail-img-thumb-3');
+            if (t3) t3.src = thumb3 || imgSrc;
+
             modal.classList.add('active', 'show');
             document.body.style.overflow = 'hidden';
         }
@@ -1856,47 +2063,161 @@
             }
         }
 
-        // Handle Add New Destination Form Submit
+        // ===== PHOTO PREVIEW & PRESET HELPERS FOR CREATE MODAL =====
+        function updateCreateModalPhotoPreview() {
+            const mainUrl = document.getElementById('dest-input-img-main')?.value.trim() || '/images/waterfall.jpg';
+            const thumb1Url = document.getElementById('dest-input-thumb1')?.value.trim() || mainUrl;
+            const thumb2Url = document.getElementById('dest-input-thumb2')?.value.trim() || mainUrl;
+            const thumb3Url = document.getElementById('dest-input-thumb3')?.value.trim() || mainUrl;
+
+            const pMain = document.getElementById('create-preview-img-main');
+            const p1 = document.getElementById('create-preview-img-thumb1');
+            const p2 = document.getElementById('create-preview-img-thumb2');
+            const p3 = document.getElementById('create-preview-img-thumb3');
+
+            if (pMain) pMain.src = mainUrl;
+            if (p1) p1.src = thumb1Url;
+            if (p2) p2.src = thumb2Url;
+            if (p3) p3.src = thumb3Url;
+        }
+
+        function applyPhotoPreset(url, catName) {
+            const mainInput = document.getElementById('dest-input-img-main');
+            if (mainInput) {
+                mainInput.value = url;
+            }
+            if (catName) {
+                const catSelect = document.getElementById('dest-input-category');
+                if (catSelect) catSelect.value = catName;
+            }
+            updateCreateModalPhotoPreview();
+        }
+
+        function onCategorySelectChange(catVal) {
+            const mainInput = document.getElementById('dest-input-img-main');
+            if (!mainInput) return;
+            // Only auto-update if current value is one of standard image presets
+            const stdPresets = ['/images/waterfall.jpg', '/images/air terjun sekumpul.png', '/images/sunset-beach.jpg', '/images/sunrise-beach.jpg', '/images/mountain.jpg'];
+            if (stdPresets.includes(mainInput.value.trim())) {
+                if (catVal === 'Waterfall') mainInput.value = '/images/waterfall.jpg';
+                else if (catVal === 'Sunset Beach') mainInput.value = '/images/sunset-beach.jpg';
+                else if (catVal === 'Sunrise Beach') mainInput.value = '/images/sunrise-beach.jpg';
+                else if (catVal === 'Mountain') mainInput.value = '/images/mountain.jpg';
+                updateCreateModalPhotoPreview();
+            }
+        }
+
+        // Handle Add New Destination Form Submit (Synced with User Destination View)
         function handleAdminAddDest(event) {
             event.preventDefault();
-            const name = document.getElementById('dest-input-name')?.value;
+            const name = document.getElementById('dest-input-name')?.value.trim();
             const cat = document.getElementById('dest-input-category')?.value || 'Waterfall';
-            const location = document.getElementById('dest-input-location')?.value || 'Bali';
+            const location = document.getElementById('dest-input-location')?.value.trim() || 'Bali';
+            const status = document.getElementById('dest-input-status')?.value || 'post';
+            const tags = document.getElementById('dest-input-tags')?.value.trim() || '';
+            const rating = document.getElementById('dest-input-rating')?.value.trim() || '4.8';
+            const time = document.getElementById('dest-input-time')?.value.trim() || '06:30 – 18:00 WITA';
+            const ticket = document.getElementById('dest-input-ticket')?.value.trim() || 'Rp 25.000 / orang';
+            const bestVisit = document.getElementById('dest-input-best-visit')?.value.trim() || '07:00 – 09:30 WITA';
+            const desc = document.getElementById('dest-input-desc')?.value.trim() || '';
+            const gmaps = document.getElementById('dest-input-gmaps')?.value.trim() || '';
+
+            const imgMain = document.getElementById('dest-input-img-main')?.value.trim() || '/images/waterfall.jpg';
+            const thumb1 = document.getElementById('dest-input-thumb1')?.value.trim() || imgMain;
+            const thumb2 = document.getElementById('dest-input-thumb2')?.value.trim() || imgMain;
+            const thumb3 = document.getElementById('dest-input-thumb3')?.value.trim() || imgMain;
 
             if (!name) return;
 
-            // Prepend new row to table
-            const tbody = document.querySelector('#admin-main-table tbody');
-            if (tbody) {
-                const tr = document.createElement('tr');
-                tr.dataset.type = 'active';
-                tr.dataset.category = cat;
-                tr.innerHTML = `
-                    <td>
-                        <div class="admin-user-cell">
-                            <div class="admin-avatar-mini" style="background: #f5b842; color: #122115;">${name.charAt(0).toUpperCase()}</div>
-                            <div>
-                                <div class="admin-cell-title">${name}</div>
-                                <div class="admin-cell-sub">Destinasi Baru Ditambahkan</div>
+            // Normalize category key
+            let catKey = 'waterfall';
+            if (cat === 'Sunset Beach') catKey = 'sunset';
+            else if (cat === 'Sunrise Beach') catKey = 'sunrise';
+            else if (cat === 'Mountain') catKey = 'mountain';
+
+            const slug = 'dest-' + Date.now();
+
+            // Create new destination card in #admin-cards-container
+            const container = document.getElementById('admin-cards-container');
+            if (container) {
+                const card = document.createElement('div');
+                card.className = 'dash-recom-card';
+                card.dataset.category = catKey;
+                card.dataset.status = status;
+                card.dataset.key = slug;
+                card.dataset.title = name;
+                card.dataset.desc = desc;
+                card.dataset.time = time;
+                card.dataset.ticket = ticket;
+                card.dataset.loc = location;
+                card.dataset.rating = rating;
+                card.dataset.bestVisit = bestVisit;
+                card.dataset.tags = tags;
+                card.dataset.gmaps = gmaps;
+                card.dataset.thumb1 = thumb1;
+                card.dataset.thumb2 = thumb2;
+                card.dataset.thumb3 = thumb3;
+
+                const statusPillClass = status === 'draft' ? 'badge-status-draft' : 'badge-status-post';
+                const statusPillText  = status === 'draft' ? '● Draft' : '● Post';
+
+                card.innerHTML = `
+                    <div class="dash-recom-img-wrap">
+                        <img src="${imgMain}" alt="${name}" class="dash-recom-img">
+                        <span class="dash-recom-badge">${cat}</span>
+                        <span class="admin-card-status-pill ${statusPillClass}">${statusPillText}</span>
+                    </div>
+                    <div class="dash-recom-body">
+                        <h3 class="dash-recom-card-title">${name}</h3>
+                        <p class="dash-recom-card-desc">${desc}</p>
+                        <div class="dash-recom-footer">
+                            <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('${slug}', this)">Detail</button>
+                            <div class="admin-card-actions">
+                                <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                </button>
+                                <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
-                    </td>
-                    <td><span class="admin-role-tag role-dest">${cat}</span></td>
-                    <td><span class="admin-status-dot dot-active">● Terverifikasi (Aktif)</span></td>
-                    <td><span class="admin-location-cell">${location}</span></td>
-                    <td style="text-align: right;">
-                        <div class="admin-row-actions">
-                            <button type="button" class="btn-action-view" onclick="showAdminToast('Destinasi aktif di katalog!')">Detail</button>
-                        </div>
-                    </td>
+                    </div>
                 `;
-                tbody.prepend(tr);
+
+                container.prepend(card);
+
+                // Update counter badge
+                const allCardsCount = container.querySelectorAll('.dash-recom-card').length;
+                const badge = document.getElementById('admin-dest-count-badge');
+                if (badge) badge.textContent = `${allCardsCount} Destinasi`;
+
+                // Update Post / Draft stats
+                if (status === 'post') {
+                    const postStat = document.getElementById('stat-post-count');
+                    if (postStat) postStat.textContent = parseInt(postStat.textContent || '0') + 1;
+                } else {
+                    const draftStat = document.getElementById('stat-draft-count');
+                    if (draftStat) draftStat.textContent = parseInt(draftStat.textContent || '0') + 1;
+                }
             }
 
             closeAdminCreateModal();
             document.getElementById('admin-add-dest-form')?.reset();
+            updateCreateModalPhotoPreview();
             showAdminToast(`Destinasi "${name}" berhasil ditambahkan ke katalog Dewasufa! 🌿`);
-            scrollToTable();
+
+            // Scroll to destination section
+            const secDest = document.getElementById('admin-destinasi-section');
+            if (secDest) {
+                secDest.classList.remove('admin-section-hidden');
+                setTimeout(() => secDest.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+            }
         }
 
         // Admin Toast Alert
