@@ -1055,17 +1055,17 @@
                 <div>
                     <span class="admin-modal-badge">Kelola Konten Dewasufa</span>
                     <h3 id="modal-dest-title" class="admin-modal-title">Tambah Destinasi Wisata Baru</h3>
-                    <p class="admin-modal-subtitle">Isi data lengkap destinasi sesuai tampilan pengunjung (foto galeri, rating, waktu terbaik, tiket, dll).</p>
+                    <p class="admin-modal-subtitle">Upload foto dari komputer, tentukan waktu operasional, dan lengkapi detail destinasi sesuai tampilan pengunjung.</p>
                 </div>
                 <button type="button" class="admin-modal-close" onclick="closeAdminCreateModal()" aria-label="Tutup Modal">&times;</button>
             </div>
 
             <form id="admin-add-dest-form" onsubmit="handleAdminAddDest(event)">
 
-                <!-- 1. Galeri Foto & Visual Destinasi -->
+                <!-- 1. Galeri Foto & Visual Destinasi (Upload dari Komputer) -->
                 <div class="admin-form-section-title">
                     <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                    <span>1. Foto &amp; Galeri Visual (Tampilan Pengunjung)</span>
+                    <span>1. Foto &amp; Galeri Visual (Upload dari Komputer)</span>
                 </div>
 
                 <!-- Live Preview of User Destination Photo Layout (1 Tall + 1 Wide + 2 Small) -->
@@ -1088,33 +1088,43 @@
                     </div>
                 </div>
 
-                <div class="admin-form-group">
-                    <label for="dest-input-img-main" class="admin-form-label">URL Foto Utama / Cover</label>
-                    <input type="text" id="dest-input-img-main" class="admin-form-input" value="/images/waterfall.jpg" oninput="updateCreateModalPhotoPreview()" placeholder="https://... atau /images/waterfall.jpg" required>
-                    <div class="admin-photo-presets">
-                        <span class="admin-input-hint" style="margin-right:4px;">Pilih Preset Cepat:</span>
-                        <button type="button" class="admin-preset-chip" onclick="applyPhotoPreset('/images/waterfall.jpg', 'Waterfall')">Air Terjun</button>
-                        <button type="button" class="admin-preset-chip" onclick="applyPhotoPreset('/images/air terjun sekumpul.png', 'Waterfall')">Sekumpul</button>
-                        <button type="button" class="admin-preset-chip" onclick="applyPhotoPreset('/images/sunset-beach.jpg', 'Sunset Beach')">Sunset Beach</button>
-                        <button type="button" class="admin-preset-chip" onclick="applyPhotoPreset('/images/sunrise-beach.jpg', 'Sunrise Beach')">Sunrise Beach</button>
-                        <button type="button" class="admin-preset-chip" onclick="applyPhotoPreset('/images/mountain.jpg', 'Mountain')">Pegunungan</button>
+                <!-- Upload Foto Utama dari Komputer -->
+                <div class="admin-file-upload-card" onclick="document.getElementById('dest-file-main').click()" role="button" tabindex="0">
+                    <input type="file" id="dest-file-main" accept="image/*" onchange="handleAdminPhotoFile(event, 'main')" style="display:none;">
+                    <div class="admin-file-upload-inner">
+                        <div class="admin-file-upload-icon">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="admin-file-upload-btn-text">Upload Foto Utama / Cover dari Komputer</span>
+                            <p class="admin-file-upload-subtext" id="dest-file-main-name">Klik di sini untuk memilih file gambar dari file komputer (JPG, PNG, WEBP)</p>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Upload 3 Foto Tambahan dari Komputer -->
                 <div class="admin-form-row-3">
-                    <div class="admin-form-group">
-                        <label for="dest-input-thumb1" class="admin-form-label">Foto Tambahan 2 (Wide)</label>
-                        <input type="text" id="dest-input-thumb1" class="admin-form-input" placeholder="Opsional (URL foto)" oninput="updateCreateModalPhotoPreview()">
+                    <div class="admin-file-mini-upload" onclick="document.getElementById('dest-file-thumb1').click()" role="button" tabindex="0">
+                        <input type="file" id="dest-file-thumb1" accept="image/*" onchange="handleAdminPhotoFile(event, 'thumb1')" style="display:none;">
+                        <span class="admin-file-mini-title">Foto Galeri 2 (Wide)</span>
+                        <span class="admin-file-mini-name" id="dest-file-thumb1-name">+ Upload dari File</span>
                     </div>
-                    <div class="admin-form-group">
-                        <label for="dest-input-thumb2" class="admin-form-label">Foto Tambahan 3</label>
-                        <input type="text" id="dest-input-thumb2" class="admin-form-input" placeholder="Opsional (URL foto)" oninput="updateCreateModalPhotoPreview()">
+                    <div class="admin-file-mini-upload" onclick="document.getElementById('dest-file-thumb2').click()" role="button" tabindex="0">
+                        <input type="file" id="dest-file-thumb2" accept="image/*" onchange="handleAdminPhotoFile(event, 'thumb2')" style="display:none;">
+                        <span class="admin-file-mini-title">Foto Galeri 3</span>
+                        <span class="admin-file-mini-name" id="dest-file-thumb2-name">+ Upload dari File</span>
                     </div>
-                    <div class="admin-form-group">
-                        <label for="dest-input-thumb3" class="admin-form-label">Foto Tambahan 4</label>
-                        <input type="text" id="dest-input-thumb3" class="admin-form-input" placeholder="Opsional (URL foto)" oninput="updateCreateModalPhotoPreview()">
+                    <div class="admin-file-mini-upload" onclick="document.getElementById('dest-file-thumb3').click()" role="button" tabindex="0">
+                        <input type="file" id="dest-file-thumb3" accept="image/*" onchange="handleAdminPhotoFile(event, 'thumb3')" style="display:none;">
+                        <span class="admin-file-mini-title">Foto Galeri 4</span>
+                        <span class="admin-file-mini-name" id="dest-file-thumb3-name">+ Upload dari File</span>
                     </div>
                 </div>
+                <span class="admin-input-hint" style="display:block; margin-top: 6px;">Jika foto tambahan tidak diunggah, sistem otomatis menyalin foto utama untuk mengisi galeri.</span>
 
                 <!-- 2. Identitas Destinasi -->
                 <div class="admin-form-section-title">
@@ -1129,7 +1139,7 @@
                     </div>
                     <div class="admin-form-group">
                         <label for="dest-input-category" class="admin-form-label">Kategori Wisata</label>
-                        <select id="dest-input-category" class="admin-form-select" onchange="onCategorySelectChange(this.value)" required>
+                        <select id="dest-input-category" class="admin-form-select" required>
                             <option value="Waterfall">Waterfall (Air Terjun)</option>
                             <option value="Sunset Beach">Sunset Beach (Pantai Senja)</option>
                             <option value="Sunrise Beach">Sunrise Beach (Pantai Fajar)</option>
@@ -1144,11 +1154,8 @@
                         <input type="text" id="dest-input-location" class="admin-form-input" placeholder="Contoh: Kemenuh, Sukawati, Gianyar" required>
                     </div>
                     <div class="admin-form-group">
-                        <label for="dest-input-status" class="admin-form-label">Status Destinasi</label>
-                        <select id="dest-input-status" class="admin-form-select" required>
-                            <option value="post">● Post (Terbit Aktif ke Pengunjung)</option>
-                            <option value="draft">● Draft (Konsep Tersimpan)</option>
-                        </select>
+                        <label for="dest-input-ticket" class="admin-form-label">Harga Tiket Masuk</label>
+                        <input type="text" id="dest-input-ticket" class="admin-form-input" value="Rp 25.000 / orang" placeholder="Contoh: Rp 25.000 / orang" required>
                     </div>
                 </div>
 
@@ -1158,31 +1165,122 @@
                     <span class="admin-input-hint">Pisahkan tag dengan tanda koma (,). Tag akan tampil sebagai badge fitur di halaman pengunjung.</span>
                 </div>
 
-                <!-- 3. Informasi & Fasilitas (Rating, Jam Buka, Tiket Masuk, Waktu Terbaik) -->
+                <!-- 3. Informasi Waktu & Fasilitas (Input Jam, Menit, & Zona Waktu) -->
                 <div class="admin-form-section-title">
                     <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    <span>3. Informasi &amp; Fasilitas Destinasi</span>
+                    <span>3. Waktu Operasional &amp; Kunjungan Terbaik</span>
                 </div>
 
-                <div class="admin-form-row-2">
-                    <div class="admin-form-group">
-                        <label for="dest-input-rating" class="admin-form-label">★ Rating Pengunjung (1.0 - 5.0)</label>
-                        <input type="number" step="0.1" min="1.0" max="5.0" id="dest-input-rating" class="admin-form-input" value="4.8" placeholder="Contoh: 4.8" required>
-                    </div>
-                    <div class="admin-form-group">
-                        <label for="dest-input-time" class="admin-form-label">Jam Buka / Operasional</label>
-                        <input type="text" id="dest-input-time" class="admin-form-input" value="06:30 – 18:00 WITA" placeholder="Contoh: 06:30 – 18:00 WITA" required>
+                <!-- Jam Buka / Operasional (Jam, Menit, Zona Waktu) -->
+                <div class="admin-form-group">
+                    <label class="admin-form-label">Jam Buka / Operasional (Pilih Jam, Menit, &amp; Zona Waktu)</label>
+                    <div class="admin-time-picker-group">
+                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Buka:</span>
+                        <select id="dest-time-open-h" class="admin-time-select" onchange="updateTimePreviews()">
+                            <option value="05">05</option>
+                            <option value="06" selected>06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                        </select>
+                        <span class="admin-time-separator">:</span>
+                        <select id="dest-time-open-m" class="admin-time-select" onchange="updateTimePreviews()">
+                            <option value="00">00</option>
+                            <option value="15">15</option>
+                            <option value="30" selected>30</option>
+                            <option value="45">45</option>
+                        </select>
+
+                        <span class="admin-time-divider">s/d</span>
+
+                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Tutup:</span>
+                        <select id="dest-time-close-h" class="admin-time-select" onchange="updateTimePreviews()">
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18" selected>18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                        </select>
+                        <span class="admin-time-separator">:</span>
+                        <select id="dest-time-close-m" class="admin-time-select" onchange="updateTimePreviews()">
+                            <option value="00" selected>00</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                        </select>
+
+                        <select id="dest-time-tz" class="admin-time-select" onchange="updateTimePreviews()">
+                            <option value="WITA" selected>WITA</option>
+                            <option value="WIB">WIB</option>
+                            <option value="WIT">WIT</option>
+                        </select>
+
+                        <span class="admin-time-preview-badge" id="preview-time-badge">06:30 – 18:00 WITA</span>
                     </div>
                 </div>
 
-                <div class="admin-form-row-2">
-                    <div class="admin-form-group">
-                        <label for="dest-input-ticket" class="admin-form-label">Harga Tiket Masuk</label>
-                        <input type="text" id="dest-input-ticket" class="admin-form-input" value="Rp 25.000 / orang" placeholder="Contoh: Rp 25.000 / orang" required>
-                    </div>
-                    <div class="admin-form-group">
-                        <label for="dest-input-best-visit" class="admin-form-label">Waktu Terbaik Berkunjung</label>
-                        <input type="text" id="dest-input-best-visit" class="admin-form-input" value="07:00 – 09:30 WITA (Suasana tenang dan udara sejuk)" placeholder="Contoh: 07:00 – 09:30 WITA (Udara sejuk)" required>
+                <!-- Waktu Terbaik Berkunjung (Jam, Menit, Zona Waktu, Suasana) -->
+                <div class="admin-form-group">
+                    <label class="admin-form-label">Waktu Terbaik Berkunjung (Pilih Jam, Menit, Zona Waktu, &amp; Kondisi)</label>
+                    <div class="admin-time-picker-group">
+                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Mulai:</span>
+                        <select id="dest-best-start-h" class="admin-time-select" onchange="updateTimePreviews()">
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07" selected>07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                        </select>
+                        <span class="admin-time-separator">:</span>
+                        <select id="dest-best-start-m" class="admin-time-select" onchange="updateTimePreviews()">
+                            <option value="00" selected>00</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                        </select>
+
+                        <span class="admin-time-divider">s/d</span>
+
+                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Selesai:</span>
+                        <select id="dest-best-end-h" class="admin-time-select" onchange="updateTimePreviews()">
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09" selected>09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                        </select>
+                        <span class="admin-time-separator">:</span>
+                        <select id="dest-best-end-m" class="admin-time-select" onchange="updateTimePreviews()">
+                            <option value="00">00</option>
+                            <option value="15">15</option>
+                            <option value="30" selected>30</option>
+                            <option value="45">45</option>
+                        </select>
+
+                        <select id="dest-best-tz" class="admin-time-select" onchange="updateTimePreviews()">
+                            <option value="WITA" selected>WITA</option>
+                            <option value="WIB">WIB</option>
+                            <option value="WIT">WIT</option>
+                        </select>
+
+                        <select id="dest-best-condition" class="admin-time-select" style="max-width:230px;" onchange="updateTimePreviews()">
+                            <option value="(Suasana tenang dan udara sejuk)" selected>Suasana tenang &amp; sejuk</option>
+                            <option value="(Matahari terbit yang cerah)">Sunrise yang cerah</option>
+                            <option value="(Matahari terbenam keemasan)">Sunset keemasan</option>
+                            <option value="(Pencahayaan foto optimal)">Pencahayaan foto optimal</option>
+                            <option value="(Debit air optimal dan jernih)">Debit air optimal &amp; jernih</option>
+                            <option value="">Tanpa catatan suasana</option>
+                        </select>
+
+                        <span class="admin-time-preview-badge" id="preview-best-badge">07:00 – 09:30 WITA (Suasana tenang dan udara sejuk)</span>
                     </div>
                 </div>
 
@@ -1201,6 +1299,16 @@
                     <label for="dest-input-gmaps" class="admin-form-label">Tautan Google Maps</label>
                     <input type="text" id="dest-input-gmaps" class="admin-form-input" placeholder="Contoh: https://maps.google.com/?q=Air+Terjun+Tegenungan+Bali">
                     <span class="admin-input-hint">Jika dikosongkan, tautan otomatis dicari berdasarkan nama destinasi di Google Maps.</span>
+                </div>
+
+                <!-- 5. Status Destinasi (Paling Bawah - Tanpa Dots) -->
+                <div class="admin-form-group" style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                    <label for="dest-input-status" class="admin-form-label">Status Destinasi</label>
+                    <select id="dest-input-status" class="admin-form-select" required>
+                        <option value="post">Post (Terbit Aktif ke Pengunjung)</option>
+                        <option value="draft">Draft (Konsep Tersimpan)</option>
+                    </select>
+                    <span class="admin-input-hint">Tentukan apakah destinasi langsung dipublikasikan ke katalog atau disimpan sebagai draft.</span>
                 </div>
 
                 <div class="admin-modal-actions">
@@ -2050,6 +2158,8 @@
         function openAdminCreateModal() {
             const modal = document.getElementById('admin-create-dest-modal');
             if (modal) {
+                initAdminHourSelects();
+                updateTimePreviews();
                 modal.classList.add('show');
                 document.body.style.overflow = 'hidden';
             }
@@ -2063,49 +2173,111 @@
             }
         }
 
-        // ===== PHOTO PREVIEW & PRESET HELPERS FOR CREATE MODAL =====
-        function updateCreateModalPhotoPreview() {
-            const mainUrl = document.getElementById('dest-input-img-main')?.value.trim() || '/images/waterfall.jpg';
-            const thumb1Url = document.getElementById('dest-input-thumb1')?.value.trim() || mainUrl;
-            const thumb2Url = document.getElementById('dest-input-thumb2')?.value.trim() || mainUrl;
-            const thumb3Url = document.getElementById('dest-input-thumb3')?.value.trim() || mainUrl;
+        // ===== FILE UPLOAD & PREVIEWS FOR CREATE MODAL =====
+        let uploadedPhotos = { main: '', thumb1: '', thumb2: '', thumb3: '' };
 
-            const pMain = document.getElementById('create-preview-img-main');
-            const p1 = document.getElementById('create-preview-img-thumb1');
-            const p2 = document.getElementById('create-preview-img-thumb2');
-            const p3 = document.getElementById('create-preview-img-thumb3');
+        function handleAdminPhotoFile(event, slot) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
 
-            if (pMain) pMain.src = mainUrl;
-            if (p1) p1.src = thumb1Url;
-            if (p2) p2.src = thumb2Url;
-            if (p3) p3.src = thumb3Url;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target.result;
+                uploadedPhotos[slot] = dataUrl;
+
+                if (slot === 'main') {
+                    const pMain = document.getElementById('create-preview-img-main');
+                    if (pMain) pMain.src = dataUrl;
+
+                    // Fill remaining thumbs with main photo if not yet set
+                    ['thumb1', 'thumb2', 'thumb3'].forEach(t => {
+                        if (!uploadedPhotos[t]) {
+                            const pThumb = document.getElementById('create-preview-img-' + t);
+                            if (pThumb) pThumb.src = dataUrl;
+                        }
+                    });
+
+                    const labelEl = document.getElementById('dest-file-main-name');
+                    if (labelEl) labelEl.textContent = '✓ File terpilih: ' + file.name + ' (' + (file.size / 1024).toFixed(0) + ' KB)';
+                } else {
+                    const pThumb = document.getElementById('create-preview-img-' + slot);
+                    if (pThumb) pThumb.src = dataUrl;
+                    const labelEl = document.getElementById('dest-file-' + slot + '-name');
+                    if (labelEl) labelEl.textContent = '✓ ' + file.name;
+                }
+            };
+            reader.readAsDataURL(file);
         }
 
-        function applyPhotoPreset(url, catName) {
-            const mainInput = document.getElementById('dest-input-img-main');
-            if (mainInput) {
-                mainInput.value = url;
-            }
-            if (catName) {
-                const catSelect = document.getElementById('dest-input-category');
-                if (catSelect) catSelect.value = catName;
-            }
-            updateCreateModalPhotoPreview();
+        function resetCreateModalPhotos() {
+            uploadedPhotos = { main: '', thumb1: '', thumb2: '', thumb3: '' };
+            const defaultImg = '/images/waterfall.jpg';
+            ['main', 'thumb1', 'thumb2', 'thumb3'].forEach(k => {
+                const img = document.getElementById('create-preview-img-' + k);
+                if (img) img.src = defaultImg;
+            });
+            const mainLabel = document.getElementById('dest-file-main-name');
+            if (mainLabel) mainLabel.textContent = 'Klik di sini untuk memilih file gambar dari file komputer (JPG, PNG, WEBP)';
+            ['thumb1', 'thumb2', 'thumb3'].forEach(k => {
+                const l = document.getElementById('dest-file-' + k + '-name');
+                if (l) l.textContent = '+ Upload dari File';
+            });
+            const fMain = document.getElementById('dest-file-main');
+            if (fMain) fMain.value = '';
+            ['thumb1', 'thumb2', 'thumb3'].forEach(k => {
+                const f = document.getElementById('dest-file-' + k);
+                if (f) f.value = '';
+            });
         }
 
-        function onCategorySelectChange(catVal) {
-            const mainInput = document.getElementById('dest-input-img-main');
-            if (!mainInput) return;
-            // Only auto-update if current value is one of standard image presets
-            const stdPresets = ['/images/waterfall.jpg', '/images/air terjun sekumpul.png', '/images/sunset-beach.jpg', '/images/sunrise-beach.jpg', '/images/mountain.jpg'];
-            if (stdPresets.includes(mainInput.value.trim())) {
-                if (catVal === 'Waterfall') mainInput.value = '/images/waterfall.jpg';
-                else if (catVal === 'Sunset Beach') mainInput.value = '/images/sunset-beach.jpg';
-                else if (catVal === 'Sunrise Beach') mainInput.value = '/images/sunrise-beach.jpg';
-                else if (catVal === 'Mountain') mainInput.value = '/images/mountain.jpg';
-                updateCreateModalPhotoPreview();
+        // ===== TIME PREVIEW HELPER (JAM, MENIT, ZONA WAKTU) =====
+        function updateTimePreviews() {
+            const openH = document.getElementById('dest-time-open-h')?.value || '06';
+            const openM = document.getElementById('dest-time-open-m')?.value || '30';
+            const closeH = document.getElementById('dest-time-close-h')?.value || '18';
+            const closeM = document.getElementById('dest-time-close-m')?.value || '00';
+            const tz = document.getElementById('dest-time-tz')?.value || 'WITA';
+
+            const badgeTime = document.getElementById('preview-time-badge');
+            if (badgeTime) {
+                badgeTime.textContent = `${openH}:${openM} – ${closeH}:${closeM} ${tz}`;
+            }
+
+            const startH = document.getElementById('dest-best-start-h')?.value || '07';
+            const startM = document.getElementById('dest-best-start-m')?.value || '00';
+            const endH = document.getElementById('dest-best-end-h')?.value || '09';
+            const endM = document.getElementById('dest-best-end-m')?.value || '30';
+            const bestTz = document.getElementById('dest-best-tz')?.value || 'WITA';
+            const cond = document.getElementById('dest-best-condition')?.value || '';
+
+            const badgeBest = document.getElementById('preview-best-badge');
+            if (badgeBest) {
+                badgeBest.textContent = `${startH}:${startM} – ${endH}:${endM} ${bestTz}` + (cond ? ` ${cond}` : '');
             }
         }
+
+        // Initialize hour options for 24-hour picker
+        function initAdminHourSelects() {
+            const populate = (id, def) => {
+                const el = document.getElementById(id);
+                if (!el || el.children.length > 10) return;
+                el.innerHTML = '';
+                for (let h = 0; h < 24; h++) {
+                    const val = String(h).padStart(2, '0');
+                    const opt = document.createElement('option');
+                    opt.value = val;
+                    opt.textContent = val;
+                    if (val === String(def).padStart(2, '0')) opt.selected = true;
+                    el.appendChild(opt);
+                }
+            };
+            populate('dest-time-open-h', '06');
+            populate('dest-time-close-h', '18');
+            populate('dest-best-start-h', '07');
+            populate('dest-best-end-h', '09');
+            updateTimePreviews();
+        }
+        document.addEventListener('DOMContentLoaded', initAdminHourSelects);
 
         // Handle Add New Destination Form Submit (Synced with User Destination View)
         function handleAdminAddDest(event) {
@@ -2113,19 +2285,37 @@
             const name = document.getElementById('dest-input-name')?.value.trim();
             const cat = document.getElementById('dest-input-category')?.value || 'Waterfall';
             const location = document.getElementById('dest-input-location')?.value.trim() || 'Bali';
-            const status = document.getElementById('dest-input-status')?.value || 'post';
-            const tags = document.getElementById('dest-input-tags')?.value.trim() || '';
-            const rating = document.getElementById('dest-input-rating')?.value.trim() || '4.8';
-            const time = document.getElementById('dest-input-time')?.value.trim() || '06:30 – 18:00 WITA';
             const ticket = document.getElementById('dest-input-ticket')?.value.trim() || 'Rp 25.000 / orang';
-            const bestVisit = document.getElementById('dest-input-best-visit')?.value.trim() || '07:00 – 09:30 WITA';
+            const tags = document.getElementById('dest-input-tags')?.value.trim() || '';
             const desc = document.getElementById('dest-input-desc')?.value.trim() || '';
             const gmaps = document.getElementById('dest-input-gmaps')?.value.trim() || '';
+            const status = document.getElementById('dest-input-status')?.value || 'post';
 
-            const imgMain = document.getElementById('dest-input-img-main')?.value.trim() || '/images/waterfall.jpg';
-            const thumb1 = document.getElementById('dest-input-thumb1')?.value.trim() || imgMain;
-            const thumb2 = document.getElementById('dest-input-thumb2')?.value.trim() || imgMain;
-            const thumb3 = document.getElementById('dest-input-thumb3')?.value.trim() || imgMain;
+            // Automatic time calculations from dropdowns (Jam, Menit, Zona Waktu)
+            const openH = document.getElementById('dest-time-open-h')?.value || '06';
+            const openM = document.getElementById('dest-time-open-m')?.value || '30';
+            const closeH = document.getElementById('dest-time-close-h')?.value || '18';
+            const closeM = document.getElementById('dest-time-close-m')?.value || '00';
+            const tz = document.getElementById('dest-time-tz')?.value || 'WITA';
+            const time = `${openH}:${openM} – ${closeH}:${closeM} ${tz}`;
+
+            // Automatic best visit calculation from dropdowns (Jam, Menit, Zona Waktu, Kondisi)
+            const startH = document.getElementById('dest-best-start-h')?.value || '07';
+            const startM = document.getElementById('dest-best-start-m')?.value || '00';
+            const endH = document.getElementById('dest-best-end-h')?.value || '09';
+            const endM = document.getElementById('dest-best-end-m')?.value || '30';
+            const bestTz = document.getElementById('dest-best-tz')?.value || 'WITA';
+            const cond = document.getElementById('dest-best-condition')?.value || '';
+            const bestVisit = `${startH}:${startM} – ${endH}:${endM} ${bestTz}` + (cond ? ` ${cond}` : '');
+
+            // Rating: removed from form, defaulted to '5.0'
+            const rating = '5.0';
+
+            // Photos from computer upload
+            const imgMain = uploadedPhotos.main || '/images/waterfall.jpg';
+            const thumb1 = uploadedPhotos.thumb1 || imgMain;
+            const thumb2 = uploadedPhotos.thumb2 || imgMain;
+            const thumb3 = uploadedPhotos.thumb3 || imgMain;
 
             if (!name) return;
 
@@ -2159,7 +2349,7 @@
                 card.dataset.thumb3 = thumb3;
 
                 const statusPillClass = status === 'draft' ? 'badge-status-draft' : 'badge-status-post';
-                const statusPillText  = status === 'draft' ? '● Draft' : '● Post';
+                const statusPillText  = status === 'draft' ? 'Draft' : 'Post';
 
                 card.innerHTML = `
                     <div class="dash-recom-img-wrap">
@@ -2209,7 +2399,7 @@
 
             closeAdminCreateModal();
             document.getElementById('admin-add-dest-form')?.reset();
-            updateCreateModalPhotoPreview();
+            resetCreateModalPhotos();
             showAdminToast(`Destinasi "${name}" berhasil ditambahkan ke katalog Dewasufa! 🌿`);
 
             // Scroll to destination section
