@@ -488,11 +488,17 @@
                             <input type="text" id="settings-role" value="User" readonly class="dash-input-readonly" title="Status akun hanya dapat diubah oleh sistem atau persetujuan Admin">
                         </div>
                         <div class="dash-form-group">
-                            <label for="settings-distance">Satuan Jarak Rute</label>
-                            <select id="settings-distance">
-                                <option value="km" selected>Kilometer (km)</option>
-                                <option value="miles">Mil (miles)</option>
-                            </select>
+                            <label for="settings-phone">
+                                <span>Nomor Telepon</span>
+                                <span class="dash-comment-author-lock-tag" title="Nomor telepon akun terkunci sesuai saat pendaftaran dan tidak dapat diubah">
+                                    <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    Terkunci
+                                </span>
+                            </label>
+                            <input type="tel" id="settings-phone" class="dash-input-readonly" value="+62 812-3456-7890" readonly aria-readonly="true" tabindex="-1" title="Nomor telepon akun aktif terkunci dan tidak dapat diubah">
                         </div>
                     </div>
 

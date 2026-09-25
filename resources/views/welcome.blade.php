@@ -599,8 +599,8 @@
 
             <form id="login-form" onsubmit="handleLoginSubmit(event)">
                 <div class="form-group">
-                    <label for="login-email" class="form-label">Email Anda</label>
-                    <input type="email" id="login-email" class="form-input" placeholder="nama@email.com" required autocomplete="email">
+                    <label for="login-email" class="form-label">Email atau Nomor Telepon</label>
+                    <input type="text" id="login-email" class="form-input" placeholder="nama@email.com atau +62 812-xxxx" required autocomplete="username">
                 </div>
 
                 <div class="form-group">
@@ -669,6 +669,11 @@
                 <div class="form-group">
                     <label for="signup-username" class="form-label">Username</label>
                     <input type="text" id="signup-username" class="form-input" placeholder="Nama pengguna Anda" required autocomplete="username" minlength="3">
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-phone" class="form-label">Nomor Telepon</label>
+                    <input type="tel" id="signup-phone" class="form-input" placeholder="+62 812-3456-7890" required autocomplete="tel">
                 </div>
 
                 <div class="form-group">

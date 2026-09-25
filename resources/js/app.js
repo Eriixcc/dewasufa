@@ -101,13 +101,21 @@ export function handleSignupSubmit(event) {
 
     const emailEl = document.getElementById('signup-email');
     const usernameEl = document.getElementById('signup-username');
+    const phoneEl = document.getElementById('signup-phone');
     const passwordEl = document.getElementById('signup-password');
     const confirmEl = document.getElementById('signup-confirm-password');
 
     const email = emailEl ? emailEl.value.trim() : '';
     const username = usernameEl ? usernameEl.value.trim() : '';
+    const phone = phoneEl ? phoneEl.value.trim() : '';
     const password = passwordEl ? passwordEl.value : '';
     const confirm = confirmEl ? confirmEl.value : '';
+
+    if (!phone) {
+        showToast('Nomor telepon wajib diisi untuk pendaftaran akun.', '⚠');
+        if (phoneEl) phoneEl.focus();
+        return;
+    }
 
     if (password !== confirm) {
         showToast('Kata sandi tidak cocok. Periksa kembali!', '⚠');
@@ -115,19 +123,45 @@ export function handleSignupSubmit(event) {
         return;
     }
 
+    // Simpan akun terdaftar ke database localStorage
+    try {
+        const storedUsers = JSON.parse(localStorage.getItem('dewasufa_accounts') || '{}');
+        const accountData = { email, username, phone, password };
+        if (email) storedUsers[email.toLowerCase()] = accountData;
+        if (phone) storedUsers[phone.replace(/\s+/g, '')] = accountData;
+        localStorage.setItem('dewasufa_accounts', JSON.stringify(storedUsers));
+    } catch (e) {
+        console.warn('Storage warning:', e);
+    }
+
+    // Simpan data kredensial aktif ke storage
+    if (phone) {
+        sessionStorage.setItem('dewasufa_phone', phone);
+        localStorage.setItem('dewasufa_phone', phone);
+    }
+    if (email) {
+        sessionStorage.setItem('dewasufa_email', email);
+        localStorage.setItem('dewasufa_email', email);
+    }
+    if (username) {
+        sessionStorage.setItem('dewasufa_user', username);
+        localStorage.setItem('dewasufa_user', username);
+    }
+
     // Clear fields after success
     if (emailEl) emailEl.value = '';
     if (usernameEl) usernameEl.value = '';
+    if (phoneEl) phoneEl.value = '';
     if (passwordEl) passwordEl.value = '';
     if (confirmEl) confirmEl.value = '';
 
     closeSignupModal();
     showToast(`Akun berhasil dibuat! Silakan masuk, ${username}.`, '✓');
 
-    // Pre-fill login email and switch to login modal
+    // Pre-fill login email/phone and switch to login modal
     setTimeout(() => {
         const loginEmail = document.getElementById('login-email');
-        if (loginEmail && email) loginEmail.value = email;
+        if (loginEmail && (email || phone)) loginEmail.value = email || phone;
         openLoginModal();
     }, 400);
 }
@@ -198,14 +232,47 @@ export function showToast(message, icon = '✓') {
 export function handleLoginSubmit(event) {
     if (event) event.preventDefault();
     const emailEl = document.getElementById('login-email');
-    const email = emailEl ? emailEl.value.trim() : '';
-    const username = email ? email.split('@')[0] : 'Wisatawan Bali';
+    const inputVal = emailEl ? emailEl.value.trim() : '';
+
+    let matchedAccount = null;
+    try {
+        const storedUsers = JSON.parse(localStorage.getItem('dewasufa_accounts') || '{}');
+        if (inputVal && storedUsers[inputVal.toLowerCase()]) {
+            matchedAccount = storedUsers[inputVal.toLowerCase()];
+        } else if (inputVal && storedUsers[inputVal.replace(/\s+/g, '')]) {
+            matchedAccount = storedUsers[inputVal.replace(/\s+/g, '')];
+        }
+    } catch (e) {
+        console.warn('Storage warning:', e);
+    }
+
+    let username = 'Wisatawan Bali';
+    let email = 'user@dewasufa.com';
+    let phone = localStorage.getItem('dewasufa_phone') || '+62 812-3456-7890';
+
+    if (matchedAccount) {
+        username = matchedAccount.username || username;
+        email = matchedAccount.email || email;
+        phone = matchedAccount.phone || phone;
+    } else if (inputVal) {
+        if (inputVal.includes('@')) {
+            email = inputVal;
+            username = inputVal.split('@')[0];
+        } else if (/^[0-9+ -]+$/.test(inputVal)) {
+            phone = inputVal;
+            username = 'Pengguna ' + inputVal.replace(/\D/g, '').slice(-4);
+        } else {
+            username = inputVal;
+        }
+    }
+
     sessionStorage.setItem('dewasufa_user', username);
     localStorage.setItem('dewasufa_user', username);
-    if (email) {
-        sessionStorage.setItem('dewasufa_email', email);
-        localStorage.setItem('dewasufa_email', email);
-    }
+    sessionStorage.setItem('dewasufa_email', email);
+    localStorage.setItem('dewasufa_email', email);
+    sessionStorage.setItem('dewasufa_phone', phone);
+    localStorage.setItem('dewasufa_phone', phone);
+
     closeLoginModal();
     showToast(`Selamat datang, ${username}! Mengalihkan ke dashboard...`, '');
     setTimeout(() => {
@@ -219,6 +286,9 @@ export function simulateGoogleLogin() {
     localStorage.setItem('dewasufa_user', 'Arya Wisatawan');
     sessionStorage.setItem('dewasufa_email', 'arya.wisatawan@gmail.com');
     localStorage.setItem('dewasufa_email', 'arya.wisatawan@gmail.com');
+    const defaultGooglePhone = localStorage.getItem('dewasufa_phone') || '+62 812-9876-5432';
+    sessionStorage.setItem('dewasufa_phone', defaultGooglePhone);
+    localStorage.setItem('dewasufa_phone', defaultGooglePhone);
     closeLoginModal();
     showToast('Login berhasil! Mengalihkan ke dashboard...', '');
     setTimeout(() => {
@@ -1295,6 +1365,14 @@ export function openSettingsModal() {
         emailInput.readOnly = true;
     }
 
+    // Prefill & lock Nomor Telepon (locked to registered phone number)
+    const phoneInput = document.getElementById('settings-phone');
+    const currentPhone = sessionStorage.getItem('dewasufa_phone') || localStorage.getItem('dewasufa_phone') || '+62 812-3456-7890';
+    if (phoneInput) {
+        phoneInput.value = currentPhone;
+        phoneInput.readOnly = true;
+    }
+
     // Prefill Status Akun (readonly - cannot be edited manually)
     const roleInput = document.getElementById('settings-role');
     const currentRole = sessionStorage.getItem('dewasufa_role') || 'User';
@@ -1595,6 +1673,16 @@ function initApp() {
             settingsEmailInput.value = savedEmail;
         }
         settingsEmailInput.readOnly = true;
+    }
+
+    // Initialize locked registered phone with active account
+    const settingsPhoneInput = document.getElementById('settings-phone');
+    if (settingsPhoneInput) {
+        const savedPhone = sessionStorage.getItem('dewasufa_phone') || localStorage.getItem('dewasufa_phone');
+        if (savedPhone) {
+            settingsPhoneInput.value = savedPhone;
+        }
+        settingsPhoneInput.readOnly = true;
     }
 
     // Initialize locked comment author name with active account
