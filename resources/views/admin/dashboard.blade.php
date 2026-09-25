@@ -59,17 +59,6 @@
                     <span class="admin-nav-label">Dashboard</span>
                 </a>
 
-                <a href="javascript:void(0)" class="admin-nav-item" data-nav="destinasi" onclick="handleNavClick(this, 'destinasi')">
-                    <div class="admin-nav-icon">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                    </div>
-                    <span class="admin-nav-label">Kelola Destinasi</span>
-                    <span class="admin-nav-pill">16</span>
-                </a>
-
                 <a href="javascript:void(0)" class="admin-nav-item" data-nav="ulasan" onclick="handleNavClick(this, 'ulasan')">
                     <div class="admin-nav-icon">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -80,19 +69,19 @@
                     <span class="admin-nav-pill">12</span>
                 </a>
 
-                <a href="javascript:void(0)" class="admin-nav-item" data-nav="kategori" onclick="handleNavClick(this, 'kategori')">
-                    <div class="admin-nav-icon">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="8" y1="6" x2="21" y2="6"></line>
-                            <line x1="8" y1="12" x2="21" y2="12"></line>
-                            <line x1="8" y1="18" x2="21" y2="18"></line>
-                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                <!-- Divider -->
+                <div class="admin-nav-divider"></div>
+
+                <!-- + Tambah Baru -->
+                <button type="button" class="admin-nav-add-btn" id="btn-open-create-modal" onclick="openAdminCreateModal()">
+                    <div class="admin-nav-add-icon">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
                         </svg>
                     </div>
-                    <span class="admin-nav-label">Kategori Alam</span>
-                </a>
+                    <span class="admin-nav-add-label">Tambah Baru</span>
+                </button>
 
             </nav>
         </aside>
@@ -114,13 +103,6 @@
                 </div>
 
                 <div class="admin-topbar-actions">
-                    <button type="button" class="btn-admin-add-new" id="btn-open-create-modal" onclick="openAdminCreateModal()">
-                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        <span>Tambah Baru</span>
-                    </button>
 
                     <!-- Icon Tools -->
                     <div class="admin-icon-tools">
