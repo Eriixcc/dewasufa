@@ -1311,160 +1311,438 @@
     </div>
 
 
-    <!-- ===== MODAL DETAIL DESTINASI (TANPA REDIRECT KE PORTAL USER) ===== -->
-    <div class="dash-modal-backdrop" id="dest-detail-modal" role="dialog" aria-modal="true" aria-labelledby="dest-detail-title" style="z-index:12000;">
-        <div class="dash-modal-card" style="max-width:920px;width:95%;max-height:90vh;overflow-y:auto;border-radius:28px;padding:28px;position:relative;">
-            <button type="button" onclick="closeAdminSpotDetail()" aria-label="Tutup" style="position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.8);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;">✕</button>
+    <!-- ===== MODAL DETAIL DESTINASI (SESUAI PORTAL PENGGUNA) ===== -->
+    <div class="dash-modal-backdrop" id="dest-detail-modal" role="dialog" aria-modal="true" aria-labelledby="dest-detail-title">
+        <div class="dash-modal-card dash-dest-detail-card">
+            <!-- Modal Close Button -->
+            <button type="button" class="dash-dest-close-btn" onclick="closeAdminSpotDetail()" id="btn-close-dest-detail" aria-label="Tutup Detail Destinasi">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
 
-            <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:24px;">
-                <!-- Left -->
-                <div>
-                    <!-- Photo Layout -->
-                    <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:8px;height:190px;border-radius:18px;overflow:hidden;margin-bottom:16px;">
-                        <img id="dest-detail-img" src="/images/waterfall.jpg" alt="Destinasi Utama" style="width:100%;height:100%;object-fit:cover;display:block;">
-                        <div style="display:grid;grid-template-rows:1fr 1fr;gap:6px;height:100%;">
-                            <img id="dest-detail-img-thumb-1" src="/images/waterfall.jpg" alt="Foto 2" style="width:100%;height:100%;object-fit:cover;display:block;">
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;height:100%;">
-                                <img id="dest-detail-img-thumb-2" src="/images/waterfall.jpg" alt="Foto 3" style="width:100%;height:100%;object-fit:cover;display:block;">
-                                <img id="dest-detail-img-thumb-3" src="/images/waterfall.jpg" alt="Foto 4" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <!-- Two Column Main Layout -->
+            <div class="dash-dest-main-layout">
+                <!-- Left Column (Layout & Photos matching user portal) -->
+                <div class="dash-dest-left-col">
+                    <!-- Photo Grid: 1 Tall Main Image (Left) + 1 Wide Top Right + 2 Small Bottom Right -->
+                    <div class="dash-dest-photo-grid">
+                        <div class="dash-dest-photo-tall">
+                            <img id="dest-detail-img" src="/images/waterfall.jpg" alt="Destinasi Utama" class="dash-dest-img-main">
+                        </div>
+                        <div class="dash-dest-photo-stack">
+                            <div class="dash-dest-photo-wide">
+                                <img id="dest-detail-img-thumb-1" src="/images/waterfall.jpg" alt="Foto Destinasi 2" class="dash-dest-img-thumb">
+                            </div>
+                            <div class="dash-dest-photo-row">
+                                <div class="dash-dest-photo-small">
+                                    <img id="dest-detail-img-thumb-2" src="/images/waterfall.jpg" alt="Foto Destinasi 3" class="dash-dest-img-thumb">
+                                </div>
+                                <div class="dash-dest-photo-small">
+                                    <img id="dest-detail-img-thumb-3" src="/images/waterfall.jpg" alt="Foto Destinasi 4" class="dash-dest-img-thumb">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <h2 id="dest-detail-title" style="font-size:22px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-0.02em;">Air Terjun Sekumpul</h2>
-                    <div style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:12px;">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                        <span id="dest-detail-location-text">Buleleng, Bali</span>
-                    </div>
-
-                    <!-- Category & Tags -->
-                    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px;">
-                        <span id="dest-detail-category" style="display:inline-block;padding:4px 12px;border-radius:20px;background:rgba(94,234,212,0.15);color:#5eead4;font-size:12px;font-weight:700;border:1px solid rgba(94,234,212,0.25);">Waterfall</span>
-                        <span id="dest-detail-status-pill" style="display:inline-block;padding:4px 12px;border-radius:20px;background:rgba(36,75,44,0.5);color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,0.1);">● Terbit Aktif</span>
-                        <div id="dest-detail-tags" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
-                    </div>
-
-                    <!-- 3 Feature Boxes: Rating, Jam Buka, Tiket -->
-                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;">
-                        <div style="padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;text-align:center;">
-                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">★ RATING</div>
-                            <div style="font-size:16px;font-weight:800;color:#f5b842;"><span id="dest-detail-score">4.9</span> / 5.0</div>
+                    <!-- Destination Header: Title & Badges -->
+                    <div class="dash-dest-header-info">
+                        <div class="dash-dest-title-row">
+                            <h2 class="dash-dest-detail-title" id="dest-detail-title">Air Terjun Sekumpul</h2>
+                            <span id="dest-detail-status-pill" style="display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid rgba(255,255,255,0.12);">● Terbit Aktif</span>
                         </div>
-                        <div style="padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;text-align:center;">
-                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">JAM BUKA</div>
-                            <div style="font-size:12px;font-weight:700;color:#fff;" id="dest-detail-time">07:00 - 16:00</div>
+                        <div class="dash-dest-location-row">
+                            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span id="dest-detail-location-text">Buleleng, Bali</span>
                         </div>
-                        <div style="padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;text-align:center;">
-                            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">TIKET MASUK</div>
-                            <div style="font-size:12px;font-weight:700;color:#fff;" id="dest-detail-ticket">Rp 20.000 / orang</div>
+                        <!-- Tag Pills & Category -->
+                        <div class="dash-dest-pills-row">
+                            <span class="dash-dest-cat-pill" id="dest-detail-category">Air Terjun</span>
+                            <div class="dash-dest-tags-wrap" id="dest-detail-tags"></div>
                         </div>
                     </div>
 
-                    <!-- Waktu Terbaik Banner -->
-                    <div style="padding:11px 15px;background:rgba(245,184,66,0.1);border:1px solid rgba(245,184,66,0.25);border-radius:14px;display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f5b842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="5"></circle>
-                            <line x1="12" y1="1" x2="12" y2="3"></line>
-                            <line x1="12" y1="21" x2="12" y2="23"></line>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        </svg>
-                        <div style="font-size:12.5px;color:#f1f5f9;">
-                            <strong style="color:#f5b842;text-transform:uppercase;font-size:11px;letter-spacing:0.5px;">Waktu Terbaik:</strong>
-                            <span id="dest-detail-best-visit" style="margin-left:6px;font-weight:600;">07:00 – 09:30 WITA (Suasana tenang dan udara sejuk)</span>
+                    <!-- Features & Info Strip (Rating, Jam Buka, Tiket Masuk) -->
+                    <div class="dash-dest-features-section">
+                        <h4 class="dash-dest-subheading">Informasi & Fasilitas Destinasi</h4>
+                        <div class="dash-dest-features-grid">
+                            <div class="dash-dest-feat-item">
+                                <div class="dash-dest-feat-icon">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </div>
+                                <div class="dash-dest-feat-text">
+                                    <span class="dash-dest-feat-label">Rating</span>
+                                    <span class="dash-dest-feat-val"><strong id="dest-detail-score">4.9</strong> / 5.0</span>
+                                </div>
+                            </div>
+                            <div class="dash-dest-feat-item">
+                                <div class="dash-dest-feat-icon">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                </div>
+                                <div class="dash-dest-feat-text">
+                                    <span class="dash-dest-feat-label">Jam Buka</span>
+                                    <span class="dash-dest-feat-val" id="dest-detail-time">07:00 - 16:00 WITA</span>
+                                </div>
+                            </div>
+                            <div class="dash-dest-feat-item">
+                                <div class="dash-dest-feat-icon">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                                </div>
+                                <div class="dash-dest-feat-text">
+                                    <span class="dash-dest-feat-label">Tiket Masuk</span>
+                                    <span class="dash-dest-feat-val" id="dest-detail-ticket">Rp 20.000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Waktu Terbaik Banner -->
+                        <div class="dash-dest-best-time-banner">
+                            <div class="dash-dest-best-time-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="5"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div class="dash-dest-best-time-content">
+                                <span class="dash-dest-best-time-label">Waktu Terbaik:</span>
+                                <span class="dash-dest-best-time-val" id="dest-detail-best-visit">Pagi Hari</span>
+                            </div>
                         </div>
                     </div>
 
-                    <h4 style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Tentang Destinasi</h4>
-                    <p id="dest-detail-desc" style="font-size:14px;line-height:1.65;color:rgba(255,255,255,0.8);margin:0 0 16px;">Deskripsi destinasi wisata ini.</p>
-
-                    <!-- Google Maps Link Button -->
-                    <a id="dest-detail-gmaps-link" href="https://maps.google.com" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:12px;background:rgba(255,255,255,0.08);color:#5eead4;border:1px solid rgba(94,234,212,0.3);text-decoration:none;font-size:13px;font-weight:700;transition:all 0.2s ease;">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
-                        </svg>
-                        <span>Buka di Google Maps</span>
-                    </a>
+                    <!-- Description & Mini Map Preview Section -->
+                    <div class="dash-dest-desc-and-map">
+                        <div class="dash-dest-desc-box">
+                            <h4 class="dash-dest-subheading">Tentang Destinasi</h4>
+                            <p class="dash-dest-desc-text" id="dest-detail-desc"></p>
+                        </div>
+                        <div class="dash-dest-map-card">
+                            <div class="dash-dest-map-bg">
+                                <div class="dash-dest-map-grid-pattern"></div>
+                                <div class="dash-dest-map-pin">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="#ef4444" stroke="#ffffff" stroke-width="1.5">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3" fill="#ffffff"></circle>
+                                    </svg>
+                                    <span class="dash-dest-map-pulse"></span>
+                                </div>
+                            </div>
+                            <div class="dash-dest-map-footer">
+                                <a id="dest-detail-gmaps-link" href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="dash-dest-gmaps-btn">
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                                    </svg>
+                                    <span>Buka di Google Maps</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- Right -->
-                <div style="display:flex;flex-direction:column;gap:14px;">
-                    <div style="padding:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;">
-                        <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 4px;">Ulasan Wisatawan</h3>
-                        <p style="font-size:12px;color:rgba(255,255,255,0.5);margin:0 0 12px;">Komentar dari pengunjung destinasi</p>
-                        <div style="display:flex;flex-direction:column;gap:10px;">
-                            <div style="padding:12px;background:rgba(0,0,0,0.2);border-radius:12px;">
-                                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                                    <div style="width:32px;height:32px;border-radius:50%;background:#244b2c;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">KD</div>
-                                    <div><div style="font-size:13px;font-weight:600;color:#fff;">Ketut Dharmayana</div><div style="font-size:11px;color:rgba(255,255,255,0.5);">2 jam lalu · ★ 5.0</div></div>
-                                </div>
-                                <p style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.75);margin:0;">Air terjunnya sangat megah dan asri! Pemandu lokal sangat ramah.</p>
+
+                <!-- Right Column (Comments & Reviews Section) -->
+                <div class="dash-dest-right-col">
+                    <div class="dash-dest-reviews-card">
+                        <!-- Card Header -->
+                        <div class="dash-dest-reviews-card-header">
+                            <div>
+                                <h3 class="dash-dest-card-title">Ulasan Pengunjung</h3>
+                                <p class="dash-dest-card-subtitle">Pengalaman wisatawan di destinasi ini</p>
                             </div>
-                            <div style="padding:12px;background:rgba(0,0,0,0.2);border-radius:12px;">
-                                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                                    <div style="width:32px;height:32px;border-radius:50%;background:#3b82f6;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">WS</div>
-                                    <div><div style="font-size:13px;font-weight:600;color:#fff;">Wayan Surya</div><div style="font-size:11px;color:rgba(255,255,255,0.5);">1 hari lalu · ★ 5.0</div></div>
-                                </div>
-                                <p style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.75);margin:0;">Sangat direkomendasikan dikunjungi saat pagi hari!</p>
+                            <div class="dash-dest-rating-pill">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <span id="dest-detail-score-side">4.9</span>
                             </div>
                         </div>
+
+                        <!-- Comments Counter & List -->
+                        <div class="dash-dest-comments-divider">
+                            <span class="dash-dest-comment-badge" id="dest-comments-counter">2 Komentar</span>
+                        </div>
+
+                        <div class="dash-comments-list dash-comments-list-compact" id="dest-comments-list">
+                            <!-- Injected dynamically via JavaScript -->
+                        </div>
                     </div>
-                    <button type="button" onclick="closeAdminSpotDetail()" style="padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.8);font-size:14px;font-weight:600;cursor:pointer;margin-top:auto;">Tutup Rincian</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ===== MODAL EDIT DESTINASI (IKON PENSIL) ===== -->
+    <!-- ===== MODAL EDIT DESTINASI (SESUAI DENGAN TAMBAH BARU & DETAIL DESTINASI) ===== -->
     <div class="admin-modal-backdrop" id="admin-edit-dest-modal" role="dialog" aria-modal="true" aria-labelledby="edit-dest-modal-title">
-        <div class="admin-modal-card">
+        <div class="admin-modal-card admin-modal-card-lg">
             <div class="admin-modal-header">
-                <div><span class="admin-modal-badge">Kelola Konten Admin</span><h3 id="edit-dest-modal-title" class="admin-modal-title">Edit Destinasi Wisata</h3></div>
-                <button type="button" class="admin-modal-close" onclick="closeEditDestModal()" aria-label="Tutup">&times;</button>
-            </div>
-            <form id="admin-edit-dest-form" onsubmit="handleEditDestSubmit(event)">
-                <div class="admin-form-group">
-                    <label for="edit-dest-title" class="admin-form-label">Nama Destinasi Wisata</label>
-                    <input type="text" id="edit-dest-title" class="admin-form-input" required>
+                <div>
+                    <span class="admin-modal-badge">Kelola Konten Dewasufa</span>
+                    <h3 id="edit-dest-modal-title" class="admin-modal-title">Edit Destinasi Wisata</h3>
+                    <p class="admin-modal-subtitle">Upload foto dari komputer, perbarui waktu operasional, dan sesuaikan detail destinasi sesuai tampilan pengunjung.</p>
                 </div>
+                <button type="button" class="admin-modal-close" onclick="closeEditDestModal()" aria-label="Tutup Modal">&times;</button>
+            </div>
+
+            <form id="admin-edit-dest-form" onsubmit="handleEditDestSubmit(event)">
+
+                <!-- 1. Galeri Foto & Visual Destinasi (Upload dari Komputer) -->
+                <div class="admin-form-section-title">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    <span>1. Foto &amp; Galeri Visual (Upload dari Komputer)</span>
+                </div>
+
+                <!-- Live Preview of User Destination Photo Layout (1 Tall + 1 Wide + 2 Small) -->
+                <div class="admin-preview-grid-wrap" title="Pratinjau galeri foto destinasi (sesuai tata letak detail destinasi pengguna)">
+                    <div class="admin-preview-tall">
+                        <img id="edit-preview-img-main" src="/images/waterfall.jpg" alt="Foto Utama">
+                    </div>
+                    <div class="admin-preview-stack">
+                        <div class="admin-preview-wide">
+                            <img id="edit-preview-img-thumb1" src="/images/waterfall.jpg" alt="Foto 2">
+                        </div>
+                        <div class="admin-preview-row-sm">
+                            <div class="admin-preview-sm">
+                                <img id="edit-preview-img-thumb2" src="/images/waterfall.jpg" alt="Foto 3">
+                            </div>
+                            <div class="admin-preview-sm">
+                                <img id="edit-preview-img-thumb3" src="/images/waterfall.jpg" alt="Foto 4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Foto Utama dari Komputer -->
+                <div class="admin-file-upload-card" onclick="document.getElementById('edit-dest-file-main').click()" role="button" tabindex="0">
+                    <input type="file" id="edit-dest-file-main" accept="image/*" onchange="handleEditPhotoFile(event, 'main')" style="display:none;">
+                    <div class="admin-file-upload-inner">
+                        <div class="admin-file-upload-icon">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="admin-file-upload-btn-text">Ganti Foto Utama / Cover dari Komputer</span>
+                            <p class="admin-file-upload-subtext" id="edit-dest-file-main-name">Klik di sini untuk memilih file gambar dari file komputer (JPG, PNG, WEBP)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload 3 Foto Tambahan dari Komputer -->
+                <div class="admin-form-row-3">
+                    <div class="admin-file-mini-upload" onclick="document.getElementById('edit-dest-file-thumb1').click()" role="button" tabindex="0">
+                        <input type="file" id="edit-dest-file-thumb1" accept="image/*" onchange="handleEditPhotoFile(event, 'thumb1')" style="display:none;">
+                        <span class="admin-file-mini-title">Foto Galeri 2 (Wide)</span>
+                        <span class="admin-file-mini-name" id="edit-dest-file-thumb1-name">+ Upload dari File</span>
+                    </div>
+                    <div class="admin-file-mini-upload" onclick="document.getElementById('edit-dest-file-thumb2').click()" role="button" tabindex="0">
+                        <input type="file" id="edit-dest-file-thumb2" accept="image/*" onchange="handleEditPhotoFile(event, 'thumb2')" style="display:none;">
+                        <span class="admin-file-mini-title">Foto Galeri 3</span>
+                        <span class="admin-file-mini-name" id="edit-dest-file-thumb2-name">+ Upload dari File</span>
+                    </div>
+                    <div class="admin-file-mini-upload" onclick="document.getElementById('edit-dest-file-thumb3').click()" role="button" tabindex="0">
+                        <input type="file" id="edit-dest-file-thumb3" accept="image/*" onchange="handleEditPhotoFile(event, 'thumb3')" style="display:none;">
+                        <span class="admin-file-mini-title">Foto Galeri 4</span>
+                        <span class="admin-file-mini-name" id="edit-dest-file-thumb3-name">+ Upload dari File</span>
+                    </div>
+                </div>
+                <span class="admin-input-hint" style="display:block; margin-top: 6px;">Pilih file gambar baru untuk memperbarui galeri visual destinasi ini.</span>
+
+                <!-- 2. Identitas Destinasi -->
+                <div class="admin-form-section-title">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>2. Identitas &amp; Klasifikasi Destinasi</span>
+                </div>
+
                 <div class="admin-form-row-2">
+                    <div class="admin-form-group">
+                        <label for="edit-dest-title" class="admin-form-label">Nama Destinasi Wisata</label>
+                        <input type="text" id="edit-dest-title" class="admin-form-input" placeholder="Contoh: Air Terjun Tegenungan" required>
+                    </div>
                     <div class="admin-form-group">
                         <label for="edit-dest-category" class="admin-form-label">Kategori Wisata</label>
                         <select id="edit-dest-category" class="admin-form-select" required>
-                            <option value="waterfall">Waterfall</option>
-                            <option value="sunset">Sunset Beach</option>
-                            <option value="sunrise">Sunrise Beach</option>
-                            <option value="mountain">Mountain</option>
-                        </select>
-                    </div>
-                    <div class="admin-form-group">
-                        <label for="edit-dest-status" class="admin-form-label">Status Destinasi</label>
-                        <select id="edit-dest-status" class="admin-form-select" required>
-                            <option value="post">Post (Terbit Publik)</option>
-                            <option value="draft">Draft (Konsep)</option>
+                            <option value="Waterfall">Waterfall (Air Terjun)</option>
+                            <option value="Sunset Beach">Sunset Beach (Pantai Senja)</option>
+                            <option value="Sunrise Beach">Sunrise Beach (Pantai Fajar)</option>
+                            <option value="Mountain">Mountain (Pegunungan)</option>
                         </select>
                     </div>
                 </div>
+
                 <div class="admin-form-row-2">
                     <div class="admin-form-group">
-                        <label for="edit-dest-ticket" class="admin-form-label">Harga Tiket Masuk</label>
-                        <input type="text" id="edit-dest-ticket" class="admin-form-input" required>
+                        <label for="edit-dest-loc" class="admin-form-label">Lokasi / Alamat Lengkap di Bali</label>
+                        <input type="text" id="edit-dest-loc" class="admin-form-input" placeholder="Contoh: Kemenuh, Sukawati, Gianyar" required>
                     </div>
                     <div class="admin-form-group">
-                        <label for="edit-dest-time" class="admin-form-label">Jam Operasional</label>
-                        <input type="text" id="edit-dest-time" class="admin-form-input" required>
+                        <label for="edit-dest-ticket" class="admin-form-label">Harga Tiket Masuk</label>
+                        <input type="text" id="edit-dest-ticket" class="admin-form-input" placeholder="Contoh: Rp 25.000 / orang" required>
                     </div>
                 </div>
+
                 <div class="admin-form-group">
-                    <label for="edit-dest-loc" class="admin-form-label">Lokasi di Bali</label>
-                    <input type="text" id="edit-dest-loc" class="admin-form-input" required>
+                    <label for="edit-dest-tags" class="admin-form-label">Tag / Sorotan Fitur Destinasi</label>
+                    <input type="text" id="edit-dest-tags" class="admin-form-input" placeholder="Contoh: Air Terjun, Akses Mudah, Spot Foto, Dekat Ubud">
+                    <span class="admin-input-hint">Pisahkan tag dengan tanda koma (,). Tag akan tampil sebagai badge fitur di halaman pengunjung.</span>
                 </div>
+
+                <!-- 3. Informasi Waktu & Fasilitas (Input Jam, Menit, & Zona Waktu) -->
+                <div class="admin-form-section-title">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>3. Waktu Operasional &amp; Kunjungan Terbaik</span>
+                </div>
+
+                <!-- Jam Buka / Operasional (Jam, Menit, Zona Waktu) -->
                 <div class="admin-form-group">
-                    <label for="edit-dest-desc" class="admin-form-label">Deskripsi Singkat Destinasi</label>
-                    <textarea id="edit-dest-desc" class="admin-form-textarea" rows="3" required></textarea>
+                    <label class="admin-form-label">Jam Buka / Operasional (Pilih Jam, Menit, &amp; Zona Waktu)</label>
+                    <div class="admin-time-picker-group">
+                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Buka:</span>
+                        <select id="edit-dest-time-open-h" class="admin-time-select" onchange="updateEditTimePreviews()">
+                            <option value="05">05</option>
+                            <option value="06" selected>06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                        </select>
+                        <span class="admin-time-separator">:</span>
+                        <select id="edit-dest-time-open-m" class="admin-time-select" onchange="updateEditTimePreviews()">
+                            <option value="00">00</option>
+                            <option value="15">15</option>
+                            <option value="30" selected>30</option>
+                            <option value="45">45</option>
+                        </select>
+
+                        <span class="admin-time-divider">s/d</span>
+
+                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Tutup:</span>
+                        <select id="edit-dest-time-close-h" class="admin-time-select" onchange="updateEditTimePreviews()">
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18" selected>18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                        </select>
+                        <span class="admin-time-separator">:</span>
+                        <select id="edit-dest-time-close-m" class="admin-time-select" onchange="updateEditTimePreviews()">
+                            <option value="00" selected>00</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                        </select>
+
+                        <select id="edit-dest-time-tz" class="admin-time-select" onchange="updateEditTimePreviews()">
+                            <option value="WITA" selected>WITA</option>
+                            <option value="WIB">WIB</option>
+                            <option value="WIT">WIT</option>
+                        </select>
+
+                        <span class="admin-time-preview-badge" id="edit-preview-time-badge">06:30 – 18:00 WITA</span>
+                    </div>
                 </div>
+
+                <!-- Waktu Terbaik Berkunjung (Jam, Menit, Zona Waktu, Suasana) -->
+                <div class="admin-form-group">
+                    <label class="admin-form-label">Waktu Terbaik Berkunjung (Pilih Jam, Menit, Zona Waktu, &amp; Kondisi)</label>
+                    <div class="admin-time-picker-group">
+                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Mulai:</span>
+                        <select id="edit-dest-best-start-h" class="admin-time-select" onchange="updateEditTimePreviews()">
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07" selected>07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                        </select>
+                        <span class="admin-time-separator">:</span>
+                        <select id="edit-dest-best-start-m" class="admin-time-select" onchange="updateEditTimePreviews()">
+                            <option value="00" selected>00</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                        </select>
+
+                        <span class="admin-time-divider">s/d</span>
+
+                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Selesai:</span>
+                        <select id="edit-dest-best-end-h" class="admin-time-select" onchange="updateEditTimePreviews()">
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09" selected>09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                        </select>
+                        <span class="admin-time-separator">:</span>
+                        <select id="edit-dest-best-end-m" class="admin-time-select" onchange="updateEditTimePreviews()">
+                            <option value="00">00</option>
+                            <option value="15">15</option>
+                            <option value="30" selected>30</option>
+                            <option value="45">45</option>
+                        </select>
+
+                        <select id="edit-dest-best-tz" class="admin-time-select" onchange="updateEditTimePreviews()">
+                            <option value="WITA" selected>WITA</option>
+                            <option value="WIB">WIB</option>
+                            <option value="WIT">WIT</option>
+                        </select>
+
+                        <select id="edit-dest-best-condition" class="admin-time-select" style="max-width:230px;" onchange="updateEditTimePreviews()">
+                            <option value="(Suasana tenang dan udara sejuk)" selected>Suasana tenang &amp; sejuk</option>
+                            <option value="(Matahari terbit yang cerah)">Sunrise yang cerah</option>
+                            <option value="(Matahari terbenam keemasan)">Sunset keemasan</option>
+                            <option value="(Pencahayaan foto optimal)">Pencahayaan foto optimal</option>
+                            <option value="(Debit air optimal dan jernih)">Debit air optimal &amp; jernih</option>
+                            <option value="">Tanpa catatan suasana</option>
+                        </select>
+
+                        <span class="admin-time-preview-badge" id="edit-preview-best-badge">07:00 – 09:30 WITA (Suasana tenang dan udara sejuk)</span>
+                    </div>
+                </div>
+
+                <!-- 4. Deskripsi & Peta Google Maps -->
+                <div class="admin-form-section-title">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span>4. Tentang Destinasi &amp; Tautan Peta</span>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="edit-dest-desc" class="admin-form-label">Tentang Destinasi (Deskripsi Lengkap)</label>
+                    <textarea id="edit-dest-desc" class="admin-form-textarea" rows="3" placeholder="Tuliskan deskripsi lengkap, daya tarik utama, akses jalan, dan fasilitas bagi wisatawan..." required></textarea>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="edit-dest-gmaps" class="admin-form-label">Tautan Google Maps</label>
+                    <input type="text" id="edit-dest-gmaps" class="admin-form-input" placeholder="Contoh: https://maps.google.com/?q=Air+Terjun+Tegenungan+Bali">
+                    <span class="admin-input-hint">Jika dikosongkan, tautan otomatis dicari berdasarkan nama destinasi di Google Maps.</span>
+                </div>
+
+                <!-- 5. Status Destinasi (Paling Bawah - Tanpa Dots) -->
+                <div class="admin-form-group" style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                    <label for="edit-dest-status" class="admin-form-label">Status Destinasi</label>
+                    <select id="edit-dest-status" class="admin-form-select" required>
+                        <option value="post">Post (Terbit Aktif ke Pengunjung)</option>
+                        <option value="draft">Draft (Konsep Tersimpan)</option>
+                    </select>
+                    <span class="admin-input-hint">Tentukan apakah destinasi langsung dipublikasikan ke katalog atau disimpan sebagai draft.</span>
+                </div>
+
                 <div class="admin-modal-actions">
                     <button type="button" class="btn-admin-cancel" onclick="closeEditDestModal()">Batal</button>
-                    <button type="submit" class="btn-admin-submit-save">Simpan Perubahan</button>
+                    <button type="submit" class="btn-admin-submit-save">Simpan Perubahan Destinasi</button>
                 </div>
             </form>
         </div>
@@ -1644,6 +1922,7 @@
         }
 
         // ===== DESTINATION DETAIL MODAL (NO PORTAL REDIRECT) =====
+        // ===== DESTINATION DETAIL MODAL (MATCHING USER PORTAL) =====
         function openAdminSpotDetail(key, btn) {
             const card = btn ? btn.closest('.dash-recom-card') : document.querySelector('.dash-recom-card[data-key="' + key + '"]');
             const modal = document.getElementById('dest-detail-modal');
@@ -1681,6 +1960,7 @@
             set('dest-detail-ticket', ticket);
             set('dest-detail-location-text', loc);
             set('dest-detail-score', rating);
+            set('dest-detail-score-side', rating);
             set('dest-detail-best-visit', bestVisit);
             set('dest-detail-category', cat.charAt(0).toUpperCase() + cat.slice(1));
 
@@ -1703,7 +1983,7 @@
             if (tagsContainer) {
                 if (tags) {
                     const tagArr = tags.split(',').map(t => t.trim()).filter(Boolean);
-                    tagsContainer.innerHTML = tagArr.map(t => `<span style="display:inline-block;padding:3px 10px;border-radius:14px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;border:1px solid rgba(255,255,255,0.12);">${t}</span>`).join(' ');
+                    tagsContainer.innerHTML = tagArr.map(t => `<span class="dash-dest-tag-pill" style="display:inline-block;padding:3px 10px;border-radius:14px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;border:1px solid rgba(255,255,255,0.12);">${t}</span>`).join(' ');
                 } else {
                     tagsContainer.innerHTML = '';
                 }
@@ -1723,6 +2003,59 @@
             const t3 = document.getElementById('dest-detail-img-thumb-3');
             if (t3) t3.src = thumb3 || imgSrc;
 
+            // Populate reviews in user portal style
+            const counterEl = document.getElementById('dest-comments-counter');
+            if (counterEl) counterEl.textContent = '2 Komentar';
+            const commentsListEl = document.getElementById('dest-comments-list');
+            if (commentsListEl) {
+                commentsListEl.innerHTML = `
+                    <div class="dash-comment-card">
+                        <div class="dash-comment-top">
+                            <div class="dash-comment-author-info">
+                                <div class="dash-comment-avatar">KD</div>
+                                <span class="dash-comment-author-name">
+                                    Ketut Dharmayana
+                                    <span class="dash-comment-badge-verified">Terverifikasi</span>
+                                </span>
+                            </div>
+                            <div class="dash-comment-meta-right">
+                                <span class="dash-comment-date">2 jam lalu</span>
+                                <div class="dash-comment-stars">
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="dash-comment-text">Air terjunnya sangat megah dan asri! Pemandu lokal sangat ramah dan jalur trekking sudah tertata rapi.</p>
+                    </div>
+                    <div class="dash-comment-card">
+                        <div class="dash-comment-top">
+                            <div class="dash-comment-author-info">
+                                <div class="dash-comment-avatar" style="background:#3b82f6;">WS</div>
+                                <span class="dash-comment-author-name">
+                                    Wayan Surya
+                                    <span class="dash-comment-badge-verified">Terverifikasi</span>
+                                </span>
+                            </div>
+                            <div class="dash-comment-meta-right">
+                                <span class="dash-comment-date">1 hari lalu</span>
+                                <div class="dash-comment-stars">
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="dash-comment-text">Sangat direkomendasikan dikunjungi saat pagi hari ketika suasana tenang dan udara masih sejuk!</p>
+                    </div>
+                `;
+            }
+
             modal.classList.add('active', 'show');
             document.body.style.overflow = 'hidden';
         }
@@ -1731,55 +2064,289 @@
             if (modal) { modal.classList.remove('active', 'show'); document.body.style.overflow = ''; }
         }
 
-        // ===== EDIT DESTINATION MODAL (PENCIL ICON) =====
+        // ===== EDIT DESTINATION MODAL LOGIC (IDENTICAL TO CREATE MODAL & DETAIL) =====
         let currentEditingCard = null;
+        let editUploadedPhotos = { main: '', thumb1: '', thumb2: '', thumb3: '' };
+
+        function setSelectVal(id, val) {
+            const el = document.getElementById(id);
+            if (!el || val === undefined || val === null) return;
+            for (let i = 0; i < el.options.length; i++) {
+                if (el.options[i].value === String(val)) {
+                    el.selectedIndex = i;
+                    return;
+                }
+            }
+        }
+
+        function initEditHourSelects() {
+            const populate = (id, def) => {
+                const el = document.getElementById(id);
+                if (!el || el.children.length > 10) return;
+                el.innerHTML = '';
+                for (let h = 0; h < 24; h++) {
+                    const val = String(h).padStart(2, '0');
+                    const opt = document.createElement('option');
+                    opt.value = val;
+                    opt.textContent = val;
+                    if (val === String(def).padStart(2, '0')) opt.selected = true;
+                    el.appendChild(opt);
+                }
+            };
+            populate('edit-dest-time-open-h', '06');
+            populate('edit-dest-time-close-h', '18');
+            populate('edit-dest-best-start-h', '07');
+            populate('edit-dest-best-end-h', '09');
+        }
+
+        function updateEditTimePreviews() {
+            const openH = document.getElementById('edit-dest-time-open-h')?.value || '06';
+            const openM = document.getElementById('edit-dest-time-open-m')?.value || '30';
+            const closeH = document.getElementById('edit-dest-time-close-h')?.value || '18';
+            const closeM = document.getElementById('edit-dest-time-close-m')?.value || '00';
+            const tz = document.getElementById('edit-dest-time-tz')?.value || 'WITA';
+
+            const badgeTime = document.getElementById('edit-preview-time-badge');
+            if (badgeTime) {
+                badgeTime.textContent = `${openH}:${openM} – ${closeH}:${closeM} ${tz}`;
+            }
+
+            const startH = document.getElementById('edit-dest-best-start-h')?.value || '07';
+            const startM = document.getElementById('edit-dest-best-start-m')?.value || '00';
+            const endH = document.getElementById('edit-dest-best-end-h')?.value || '09';
+            const endM = document.getElementById('edit-dest-best-end-m')?.value || '30';
+            const bestTz = document.getElementById('edit-dest-best-tz')?.value || 'WITA';
+            const cond = document.getElementById('edit-dest-best-condition')?.value || '';
+
+            const badgeBest = document.getElementById('edit-preview-best-badge');
+            if (badgeBest) {
+                badgeBest.textContent = `${startH}:${startM} – ${endH}:${endM} ${bestTz}` + (cond ? ` ${cond}` : '');
+            }
+        }
+
+        function handleEditPhotoFile(event, slot) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target.result;
+                editUploadedPhotos[slot] = dataUrl;
+
+                if (slot === 'main') {
+                    const pMain = document.getElementById('edit-preview-img-main');
+                    if (pMain) pMain.src = dataUrl;
+
+                    ['thumb1', 'thumb2', 'thumb3'].forEach(t => {
+                        if (!editUploadedPhotos[t]) {
+                            const pThumb = document.getElementById('edit-preview-img-' + t);
+                            if (pThumb) pThumb.src = dataUrl;
+                        }
+                    });
+
+                    const labelEl = document.getElementById('edit-dest-file-main-name');
+                    if (labelEl) labelEl.textContent = '✓ File terpilih: ' + file.name + ' (' + (file.size / 1024).toFixed(0) + ' KB)';
+                } else {
+                    const pThumb = document.getElementById('edit-preview-img-' + slot);
+                    if (pThumb) pThumb.src = dataUrl;
+                    const labelEl = document.getElementById('edit-dest-file-' + slot + '-name');
+                    if (labelEl) labelEl.textContent = '✓ ' + file.name;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function resetEditModalPhotos() {
+            editUploadedPhotos = { main: '', thumb1: '', thumb2: '', thumb3: '' };
+            const mainLabel = document.getElementById('edit-dest-file-main-name');
+            if (mainLabel) mainLabel.textContent = 'Klik di sini untuk memilih file gambar dari file komputer (JPG, PNG, WEBP)';
+            ['thumb1', 'thumb2', 'thumb3'].forEach(k => {
+                const l = document.getElementById('edit-dest-file-' + k + '-name');
+                if (l) l.textContent = '+ Upload dari File';
+            });
+            const fMain = document.getElementById('edit-dest-file-main');
+            if (fMain) fMain.value = '';
+            ['thumb1', 'thumb2', 'thumb3'].forEach(k => {
+                const f = document.getElementById('edit-dest-file-' + k);
+                if (f) f.value = '';
+            });
+        }
+
         function openEditDestModal(btn, e) {
             if (e) e.stopPropagation();
             const card = btn.closest('.dash-recom-card');
             if (!card) return;
             currentEditingCard = card;
-            const get = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
-            get('edit-dest-title',    card.dataset.title    || card.querySelector('.dash-recom-card-title')?.textContent || '');
-            get('edit-dest-category', card.dataset.category || 'waterfall');
-            get('edit-dest-status',   card.dataset.status   || 'post');
-            get('edit-dest-ticket',   card.dataset.ticket   || 'Rp 20.000 / orang');
-            get('edit-dest-time',     card.dataset.time     || '08:00 - 17:00');
-            get('edit-dest-loc',      card.dataset.loc      || 'Bali, Indonesia');
-            get('edit-dest-desc',     card.dataset.desc     || card.querySelector('.dash-recom-card-desc')?.textContent || '');
+
+            initEditHourSelects();
+            resetEditModalPhotos();
+
+            const title = card.dataset.title || card.querySelector('.dash-recom-card-title')?.textContent?.trim() || '';
+            const rawCat = card.dataset.category || 'Waterfall';
+            const status = card.dataset.status || 'post';
+            const ticket = card.dataset.ticket || 'Rp 25.000 / orang';
+            const loc = card.dataset.loc || 'Bali, Indonesia';
+            const desc = card.dataset.desc || card.querySelector('.dash-recom-card-desc')?.textContent?.trim() || '';
+            const tags = card.dataset.tags || '';
+            const gmaps = card.dataset.gmaps || '';
+            const timeStr = card.dataset.time || '06:30 - 18:00 WITA';
+            const bestVisitStr = card.dataset.bestVisit || '07:00 – 09:30 WITA (Suasana tenang dan udara sejuk)';
+
+            // Photos from card
+            const mainImg = card.querySelector('.dash-recom-img')?.src || '/images/waterfall.jpg';
+            const thumb1 = card.dataset.thumb1 || mainImg;
+            const thumb2 = card.dataset.thumb2 || mainImg;
+            const thumb3 = card.dataset.thumb3 || mainImg;
+
+            // Set previews in edit modal
+            const pMain = document.getElementById('edit-preview-img-main');
+            if (pMain) pMain.src = mainImg;
+            const pT1 = document.getElementById('edit-preview-img-thumb1');
+            if (pT1) pT1.src = thumb1;
+            const pT2 = document.getElementById('edit-preview-img-thumb2');
+            if (pT2) pT2.src = thumb2;
+            const pT3 = document.getElementById('edit-preview-img-thumb3');
+            if (pT3) pT3.src = thumb3;
+
+            // Form inputs
+            const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+            setVal('edit-dest-title', title);
+            setVal('edit-dest-loc', loc);
+            setVal('edit-dest-ticket', ticket);
+            setVal('edit-dest-tags', tags);
+            setVal('edit-dest-desc', desc);
+            setVal('edit-dest-gmaps', gmaps);
+            setSelectVal('edit-dest-status', status);
+
+            // Normalize category to Match options: Waterfall, Sunset Beach, Sunrise Beach, Mountain
+            let catNormalized = 'Waterfall';
+            const catLower = rawCat.toLowerCase();
+            if (catLower.includes('sunset')) catNormalized = 'Sunset Beach';
+            else if (catLower.includes('sunrise')) catNormalized = 'Sunrise Beach';
+            else if (catLower.includes('mountain') || catLower.includes('gunung')) catNormalized = 'Mountain';
+            else if (catLower.includes('waterfall') || catLower.includes('terjun')) catNormalized = 'Waterfall';
+            setSelectVal('edit-dest-category', catNormalized);
+
+            // Parse operational time (e.g. "06:30 – 18:00 WITA" or "07:00 - 16:00")
+            const timeMatch = timeStr.match(/(\d{1,2}):(\d{2})\s*[-–]\s*(\d{1,2}):(\d{2})(?:\s*([A-Za-z]+))?/);
+            if (timeMatch) {
+                setSelectVal('edit-dest-time-open-h', String(timeMatch[1]).padStart(2, '0'));
+                setSelectVal('edit-dest-time-open-m', String(timeMatch[2]).padStart(2, '0'));
+                setSelectVal('edit-dest-time-close-h', String(timeMatch[3]).padStart(2, '0'));
+                setSelectVal('edit-dest-time-close-m', String(timeMatch[4]).padStart(2, '0'));
+                if (timeMatch[5]) setSelectVal('edit-dest-time-tz', timeMatch[5].toUpperCase());
+            }
+
+            // Parse best visit (e.g. "07:00 – 09:30 WITA (Suasana tenang dan udara sejuk)")
+            const bestMatch = bestVisitStr.match(/(\d{1,2}):(\d{2})\s*[-–]\s*(\d{1,2}):(\d{2})(?:\s*([A-Za-z]+))?(?:\s*(\([^)]+\)))?/);
+            if (bestMatch) {
+                setSelectVal('edit-dest-best-start-h', String(bestMatch[1]).padStart(2, '0'));
+                setSelectVal('edit-dest-best-start-m', String(bestMatch[2]).padStart(2, '0'));
+                setSelectVal('edit-dest-best-end-h', String(bestMatch[3]).padStart(2, '0'));
+                setSelectVal('edit-dest-best-end-m', String(bestMatch[4]).padStart(2, '0'));
+                if (bestMatch[5]) setSelectVal('edit-dest-best-tz', bestMatch[5].toUpperCase());
+                if (bestMatch[6]) {
+                    setSelectVal('edit-dest-best-condition', bestMatch[6].trim());
+                }
+            }
+
+            updateEditTimePreviews();
+
             const modal = document.getElementById('admin-edit-dest-modal');
             if (modal) { modal.classList.add('show'); document.body.style.overflow = 'hidden'; }
         }
+
         function closeEditDestModal() {
             const modal = document.getElementById('admin-edit-dest-modal');
             if (modal) { modal.classList.remove('show'); document.body.style.overflow = ''; }
             currentEditingCard = null;
         }
+
+        function updateDestCounts() {
+            const allCards = document.querySelectorAll('#admin-cards-container .dash-recom-card');
+            const total = allCards.length;
+            let postCount = 0;
+            let draftCount = 0;
+            allCards.forEach(c => {
+                if (c.dataset.status === 'draft') draftCount++;
+                else postCount++;
+            });
+            const badge = document.getElementById('admin-dest-count-badge');
+            if (badge) badge.textContent = `${total} Destinasi`;
+            const statPost = document.getElementById('stat-post-count');
+            if (statPost) statPost.textContent = postCount;
+            const statDraft = document.getElementById('stat-draft-count');
+            if (statDraft) statDraft.textContent = draftCount;
+        }
+
         function handleEditDestSubmit(e) {
             e.preventDefault();
             if (!currentEditingCard) return;
-            const val = id => document.getElementById(id)?.value || '';
-            const newTitle  = val('edit-dest-title'),
-                  newCat    = val('edit-dest-category'),
-                  newStatus = val('edit-dest-status'),
-                  newTicket = val('edit-dest-ticket'),
-                  newTime   = val('edit-dest-time'),
-                  newLoc    = val('edit-dest-loc'),
-                  newDesc   = val('edit-dest-desc');
+            const val = id => document.getElementById(id)?.value?.trim() || '';
 
+            const newTitle  = val('edit-dest-title'),
+                  newCat    = document.getElementById('edit-dest-category')?.value || 'Waterfall',
+                  newStatus = document.getElementById('edit-dest-status')?.value || 'post',
+                  newTicket = val('edit-dest-ticket'),
+                  newLoc    = val('edit-dest-loc'),
+                  newTags   = val('edit-dest-tags'),
+                  newDesc   = val('edit-dest-desc'),
+                  newGmaps  = val('edit-dest-gmaps');
+
+            // Format time string
+            const openH = document.getElementById('edit-dest-time-open-h')?.value || '06';
+            const openM = document.getElementById('edit-dest-time-open-m')?.value || '30';
+            const closeH = document.getElementById('edit-dest-time-close-h')?.value || '18';
+            const closeM = document.getElementById('edit-dest-time-close-m')?.value || '00';
+            const tz = document.getElementById('edit-dest-time-tz')?.value || 'WITA';
+            const newTime = `${openH}:${openM} – ${closeH}:${closeM} ${tz}`;
+
+            // Format best visit string
+            const startH = document.getElementById('edit-dest-best-start-h')?.value || '07';
+            const startM = document.getElementById('edit-dest-best-start-m')?.value || '00';
+            const endH = document.getElementById('edit-dest-best-end-h')?.value || '09';
+            const endM = document.getElementById('edit-dest-best-end-m')?.value || '30';
+            const bestTz = document.getElementById('edit-dest-best-tz')?.value || 'WITA';
+            const cond = document.getElementById('edit-dest-best-condition')?.value || '';
+            const newBestVisit = `${startH}:${startM} – ${endH}:${endM} ${bestTz}` + (cond ? ` ${cond}` : '');
+
+            // Normalize category key for filtering
+            let catKey = 'waterfall';
+            if (newCat === 'Sunset Beach') catKey = 'sunset';
+            else if (newCat === 'Sunrise Beach') catKey = 'sunrise';
+            else if (newCat === 'Mountain') catKey = 'mountain';
+
+            // Update card dataset
             currentEditingCard.dataset.title    = newTitle;
-            currentEditingCard.dataset.category = newCat;
+            currentEditingCard.dataset.category = catKey;
             currentEditingCard.dataset.status   = newStatus;
             currentEditingCard.dataset.ticket   = newTicket;
             currentEditingCard.dataset.time     = newTime;
             currentEditingCard.dataset.loc      = newLoc;
+            currentEditingCard.dataset.tags     = newTags;
             currentEditingCard.dataset.desc     = newDesc;
+            currentEditingCard.dataset.gmaps    = newGmaps;
+            currentEditingCard.dataset.bestVisit = newBestVisit;
 
+            // Update photos if newly uploaded
+            if (editUploadedPhotos.main) {
+                const cardImg = currentEditingCard.querySelector('.dash-recom-img');
+                if (cardImg) cardImg.src = editUploadedPhotos.main;
+            }
+            if (editUploadedPhotos.thumb1) currentEditingCard.dataset.thumb1 = editUploadedPhotos.thumb1;
+            if (editUploadedPhotos.thumb2) currentEditingCard.dataset.thumb2 = editUploadedPhotos.thumb2;
+            if (editUploadedPhotos.thumb3) currentEditingCard.dataset.thumb3 = editUploadedPhotos.thumb3;
+
+            // Update Card DOM
             const t = currentEditingCard.querySelector('.dash-recom-card-title');
             if (t) t.textContent = newTitle;
             const d = currentEditingCard.querySelector('.dash-recom-card-desc');
             if (d) d.textContent = newDesc;
             const b = currentEditingCard.querySelector('.dash-recom-badge');
-            if (b) b.textContent = newCat.charAt(0).toUpperCase() + newCat.slice(1);
+            if (b) {
+                b.textContent = newCat;
+                b.className = 'dash-recom-badge' + (catKey === 'sunset' ? ' badge-sunset' : (catKey === 'sunrise' ? ' badge-sunrise' : (catKey === 'mountain' ? ' badge-mountain' : '')));
+            }
 
             // Update status pill badge on card
             const statusPill = currentEditingCard.querySelector('.admin-card-status-pill');
@@ -1793,8 +2360,8 @@
                 }
             }
 
-            updateDestCounts();
             closeEditDestModal();
+            updateDestCounts();
             showAdminToast('Destinasi "' + newTitle + '" berhasil diperbarui! ✨');
         }
 
