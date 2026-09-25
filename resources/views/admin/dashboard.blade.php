@@ -165,7 +165,7 @@
             <section class="admin-status-section" id="admin-status-section" aria-label="Status Ringkasan Destinasi">
                 <div class="admin-status-grid">
                     <!-- 1. POST (Terbit) -->
-                    <div class="admin-status-card stat-card-post" onclick="handleNavClick(document.querySelector('.admin-nav-item[data-nav=destinasi]'), 'destinasi', 'status-post')" role="button" tabindex="0" title="Klik untuk mengelola destinasi aktif yang tayang">
+                    <div class="admin-status-card stat-card-post" onclick="filterByStatus('post')" role="button" tabindex="0" title="Klik untuk memfilter destinasi aktif yang terbit">
                         <div class="stat-card-icon-wrap icon-post">
                             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
@@ -186,7 +186,7 @@
                     </div>
 
                     <!-- 2. DRAFT (Konsep / Siap Rilis) -->
-                    <div class="admin-status-card stat-card-draft" onclick="handleNavClick(document.querySelector('.admin-nav-item[data-nav=destinasi]'), 'destinasi', 'status-draft')" role="button" tabindex="0" title="Klik untuk melihat draft destinasi">
+                    <div class="admin-status-card stat-card-draft" onclick="filterByStatus('draft')" role="button" tabindex="0" title="Klik untuk memfilter draft destinasi">
                         <div class="stat-card-icon-wrap icon-draft">
                             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -219,7 +219,7 @@
 
                 <div class="admin-category-grid">
                     <!-- Waterfall -->
-                    <div class="admin-cat-card" onclick="filterByCategory('Waterfall')">
+                    <div class="admin-cat-card" data-cat="waterfall" onclick="filterByCategory('waterfall')" role="button" tabindex="0" title="Filter Destinasi Waterfall">
                         <div class="admin-cat-icon-box cat-waterfall">
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
@@ -232,7 +232,7 @@
                     </div>
 
                     <!-- Sunset Beach -->
-                    <div class="admin-cat-card" onclick="filterByCategory('Sunset Beach')">
+                    <div class="admin-cat-card" data-cat="sunset" onclick="filterByCategory('sunset')" role="button" tabindex="0" title="Filter Destinasi Sunset Beach">
                         <div class="admin-cat-icon-box cat-sunset">
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="5"></circle>
@@ -253,7 +253,7 @@
                     </div>
 
                     <!-- Sunrise Beach -->
-                    <div class="admin-cat-card" onclick="filterByCategory('Sunrise Beach')">
+                    <div class="admin-cat-card" data-cat="sunrise" onclick="filterByCategory('sunrise')" role="button" tabindex="0" title="Filter Destinasi Sunrise Beach">
                         <div class="admin-cat-icon-box cat-sunrise">
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M17 18a5 5 0 0 0-10 0"></path>
@@ -272,7 +272,7 @@
                     </div>
 
                     <!-- Mountain -->
-                    <div class="admin-cat-card" onclick="filterByCategory('Mountain')">
+                    <div class="admin-cat-card" data-cat="mountain" onclick="filterByCategory('mountain')" role="button" tabindex="0" title="Filter Destinasi Mountain">
                         <div class="admin-cat-icon-box cat-mountain">
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                                 <polygon points="3 20 9 7 13 14 17 9 21 20 3 20"></polygon>
@@ -285,7 +285,7 @@
                     </div>
 
                     <!-- Lihat Semua -->
-                    <div class="admin-cat-card" onclick="filterByCategory('all')" role="button" tabindex="0" title="Tampilkan Semua Destinasi">
+                    <div class="admin-cat-card" data-cat="all" onclick="filterByCategory('all')" role="button" tabindex="0" title="Tampilkan Semua Kategori Destinasi">
                         <div class="admin-cat-icon-box cat-all">
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
@@ -311,15 +311,6 @@
                         <h2 class="dash-section-title">Destinasi Wisata</h2>
                         <span class="admin-table-count-badge" id="admin-dest-count-badge">16 Destinasi</span>
                     </div>
-
-                    <!-- Category Filter Pills (Hanya muncul saat Kelola Destinasi) -->
-                    <nav class="dash-category-nav" id="admin-dest-cat-nav" aria-label="Filter Kategori Destinasi" style="display: none;">
-                        <button type="button" class="dash-cat-pill active" onclick="filterDestCards('all', this)">Semua</button>
-                        <button type="button" class="dash-cat-pill" onclick="filterDestCards('waterfall', this)">Waterfall</button>
-                        <button type="button" class="dash-cat-pill" onclick="filterDestCards('sunset', this)">Sunset Beach</button>
-                        <button type="button" class="dash-cat-pill" onclick="filterDestCards('sunrise', this)">Sunrise Beach</button>
-                        <button type="button" class="dash-cat-pill" onclick="filterDestCards('mountain', this)">Mountain</button>
-                    </nav>
                 </div>
 
                 <div class="dash-recom-grid admin-dest-cards-grid" id="admin-cards-container">
@@ -1877,8 +1868,12 @@
         // ==============================================
         // IN-PLACE SECTION FILTERING (NO SCROLL, FILTER & HIDE OTHERS)
         // ==============================================
-        function handleNavClick(element, type, filterArg) {
-            // Update active sidebar nav item
+        // State filtering global destinasi admin
+        let _currentStatusFilter = 'all';
+        let _currentCategoryFilter = 'all';
+
+        // Navigasi Utama Sidebar (Dashboard vs Moderasi Ulasan)
+        function handleNavClick(element, type) {
             document.querySelectorAll('.admin-nav-item').forEach(item => item.classList.remove('active'));
             if (element) {
                 element.classList.add('active');
@@ -1891,53 +1886,27 @@
             const secCategories = document.getElementById('admin-categories-section');
             const secDestinasi  = document.getElementById('admin-destinasi-section');
             const secUlasan     = document.getElementById('admin-table-container');
-            const destCatNav    = document.getElementById('admin-dest-cat-nav');
 
             if (type === 'all' || type === 'dashboard') {
-                // Dashboard: Tampilkan SEMUANYA
                 if (secStatus)     secStatus.classList.remove('admin-section-hidden');
                 if (secCategories) secCategories.classList.remove('admin-section-hidden');
                 if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
                 if (secUlasan)     secUlasan.classList.remove('admin-section-hidden');
-                if (destCatNav)    destCatNav.style.display = 'none';
 
-                filterDestCards('all');
+                // Reset filter saat klik Dashboard
+                _currentStatusFilter = 'all';
+                _currentCategoryFilter = 'all';
+                applyDestFilters();
                 filterCommentsTable('all');
                 showAdminToast('Dashboard: Menampilkan seluruh ringkasan panel');
-            } else if (type === 'destinasi') {
-                // Kelola Destinasi: Tampilkan kotak post & draft di atas, dan seluruh destinasi
-                if (secStatus)     secStatus.classList.remove('admin-section-hidden');
-                if (secCategories) secCategories.classList.add('admin-section-hidden');
-                if (secUlasan)     secUlasan.classList.add('admin-section-hidden');
-                if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
-                if (destCatNav)    destCatNav.style.display = 'flex';
-
-                if (filterArg) {
-                    filterDestCards(filterArg);
-                } else {
-                    filterDestCards('all');
-                }
-                showAdminToast('Kelola Destinasi: Menampilkan katalog destinasi');
             } else if (type === 'ulasan') {
-                // Moderasi Ulasan: Hanya menampilkan komentar-komentar tanpa menampilkan yang lain
                 if (secStatus)     secStatus.classList.add('admin-section-hidden');
                 if (secCategories) secCategories.classList.add('admin-section-hidden');
                 if (secDestinasi)  secDestinasi.classList.add('admin-section-hidden');
                 if (secUlasan)     secUlasan.classList.remove('admin-section-hidden');
-                if (destCatNav)    destCatNav.style.display = 'none';
 
                 filterCommentsTable('all');
                 showAdminToast('Moderasi Ulasan: Menampilkan daftar komentar pengunjung');
-            } else if (type === 'kategori') {
-                // Kategori Alam: tampilkan kategori dan destinasi, sembunyikan status dan ulasan
-                if (secStatus)     secStatus.classList.add('admin-section-hidden');
-                if (secUlasan)     secUlasan.classList.add('admin-section-hidden');
-                if (secCategories) secCategories.classList.remove('admin-section-hidden');
-                if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
-                if (destCatNav)    destCatNav.style.display = 'none';
-
-                filterDestCards('all');
-                showAdminToast('Kategori Alam Dewasufa');
             }
         }
 
@@ -1950,88 +1919,141 @@
             }
         }
 
-        // Filter Destination Cards by Category or Status (Post / Draft)
-        function filterDestCards(filter, clickedBtn) {
-            if (clickedBtn) {
-                document.querySelectorAll('#admin-destinasi-section .dash-cat-pill').forEach(btn => btn.classList.remove('active'));
-                clickedBtn.classList.add('active');
+        // Filter Destinasi berdasarkan Status (Post / Draft) - Tetap menampilkan Kategori
+        function filterByStatus(status) {
+            if (_currentStatusFilter === status) {
+                _currentStatusFilter = 'all';
             } else {
-                document.querySelectorAll('#admin-destinasi-section .dash-cat-pill').forEach(btn => {
-                    const fn = btn.getAttribute('onclick') || '';
-                    if (fn.includes(`'${filter}'`)) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                });
+                _currentStatusFilter = status;
             }
 
+            // Pastikan Kategori dan Destinasi TIDAK disembunyikan
+            const secStatus     = document.getElementById('admin-status-section');
+            const secCategories = document.getElementById('admin-categories-section');
+            const secDestinasi  = document.getElementById('admin-destinasi-section');
+
+            if (secStatus)     secStatus.classList.remove('admin-section-hidden');
+            if (secCategories) secCategories.classList.remove('admin-section-hidden');
+            if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
+
+            applyDestFilters();
+
+            if (_currentStatusFilter === 'all') {
+                showAdminToast('Menampilkan semua status destinasi');
+            } else if (_currentStatusFilter === 'post') {
+                showAdminToast('Menampilkan destinasi berstatus Post (Terbit)');
+            } else if (_currentStatusFilter === 'draft') {
+                showAdminToast('Menampilkan destinasi berstatus Draft (Konsep)');
+            }
+
+            if (secDestinasi) {
+                secDestinasi.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Filter Destinasi dari Shortcut Kategori Destinasi Wisata
+        function filterByCategory(cat) {
+            let filterKey = 'all';
+            const catLower = (cat || '').toLowerCase();
+            if (catLower.includes('waterfall') || catLower.includes('terjun')) filterKey = 'waterfall';
+            else if (catLower.includes('sunset')) filterKey = 'sunset';
+            else if (catLower.includes('sunrise')) filterKey = 'sunrise';
+            else if (catLower.includes('mountain') || catLower.includes('gunung')) filterKey = 'mountain';
+            else if (catLower === 'all' || catLower.includes('semua')) filterKey = 'all';
+
+            if (_currentCategoryFilter === filterKey && filterKey !== 'all') {
+                _currentCategoryFilter = 'all';
+            } else {
+                _currentCategoryFilter = filterKey;
+            }
+
+            // Pastikan Kategori dan Destinasi terlihat
+            const secCategories = document.getElementById('admin-categories-section');
+            const secDestinasi  = document.getElementById('admin-destinasi-section');
+            if (secCategories) secCategories.classList.remove('admin-section-hidden');
+            if (secDestinasi)  secDestinasi.classList.remove('admin-section-hidden');
+
+            applyDestFilters();
+
+            const catTitle = _currentCategoryFilter === 'all' ? 'Semua Kategori' : cat;
+            showAdminToast(`Filter kategori: ${catTitle}`);
+
+            if (secDestinasi) {
+                secDestinasi.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Terapkan Filter Gabungan (Status + Kategori) ke Kartu Destinasi
+        function applyDestFilters() {
+            // 1. Update status cards active state
+            const postCard = document.querySelector('.admin-status-card.stat-card-post');
+            const draftCard = document.querySelector('.admin-status-card.stat-card-draft');
+            if (postCard) {
+                if (_currentStatusFilter === 'post') postCard.classList.add('active');
+                else postCard.classList.remove('active');
+            }
+            if (draftCard) {
+                if (_currentStatusFilter === 'draft') draftCard.classList.add('active');
+                else draftCard.classList.remove('active');
+            }
+
+            // 2. Update category cards active state
+            document.querySelectorAll('.admin-cat-card').forEach(card => {
+                const cardCat = card.getAttribute('data-cat') || '';
+                if (_currentCategoryFilter === 'all') {
+                    if (cardCat === 'all') card.classList.add('active');
+                    else card.classList.remove('active');
+                } else {
+                    if (cardCat === _currentCategoryFilter) card.classList.add('active');
+                    else card.classList.remove('active');
+                }
+            });
+
+            // 3. Filter cards
             const cards = document.querySelectorAll('#admin-cards-container .dash-recom-card');
-            let count = 0;
-            let postCount = 0;
-            let draftCount = 0;
+            let visibleCount = 0;
 
             cards.forEach(card => {
-                const cardCat = card.dataset.category;
-                const cardStatus = card.dataset.status || 'post';
+                const cardCat = (card.dataset.category || '').toLowerCase();
+                const cardStatus = (card.dataset.status || 'post').toLowerCase();
 
-                let isMatch = false;
-                if (filter === 'all') {
-                    isMatch = true;
-                } else if (filter === 'status-post') {
-                    isMatch = (cardStatus === 'post');
-                } else if (filter === 'status-draft') {
-                    isMatch = (cardStatus === 'draft');
-                } else {
-                    isMatch = (cardCat === filter);
-                }
+                const matchStatus = (_currentStatusFilter === 'all') || (cardStatus === _currentStatusFilter);
+                const matchCategory = (_currentCategoryFilter === 'all') || (cardCat === _currentCategoryFilter);
 
-                if (isMatch) {
+                if (matchStatus && matchCategory) {
                     card.style.display = 'flex';
-                    count++;
-                    if (cardStatus === 'post') postCount++;
-                    if (cardStatus === 'draft') draftCount++;
+                    visibleCount++;
                 } else {
                     card.style.display = 'none';
                 }
             });
 
+            // 4. Update count badge
             const badge = document.getElementById('admin-dest-count-badge');
             if (badge) {
-                if (filter === 'all') {
-                    badge.textContent = `${count} Destinasi`;
-                } else if (filter === 'status-post') {
-                    badge.textContent = `${count} Destinasi (Post)`;
-                } else if (filter === 'status-draft') {
-                    badge.textContent = `${count} Destinasi (Draft)`;
-                } else {
-                    badge.textContent = `${count} Destinasi`;
+                let badgeText = `${visibleCount} Destinasi`;
+                const statusLabel = _currentStatusFilter === 'post' ? 'Post' : (_currentStatusFilter === 'draft' ? 'Draft' : '');
+                const catLabel = _currentCategoryFilter !== 'all' ? (_currentCategoryFilter.charAt(0).toUpperCase() + _currentCategoryFilter.slice(1)) : '';
+
+                if (statusLabel && catLabel) {
+                    badgeText = `${visibleCount} Destinasi (${statusLabel} • ${catLabel})`;
+                } else if (statusLabel) {
+                    badgeText = `${visibleCount} Destinasi (${statusLabel})`;
+                } else if (catLabel) {
+                    badgeText = `${visibleCount} Destinasi (${catLabel})`;
                 }
+                badge.textContent = badgeText;
             }
         }
 
-        // Filter by Category from Category Grid
-        function filterByCategory(cat) {
-            let filterKey = 'all';
-            if (cat === 'Waterfall' || cat === 'Air Terjun') filterKey = 'waterfall';
-            else if (cat === 'Sunset Beach') filterKey = 'sunset';
-            else if (cat === 'Sunrise Beach') filterKey = 'sunrise';
-            else if (cat === 'Mountain' || cat === 'Pegunungan') filterKey = 'mountain';
-
-            // Ensure destination section is visible
-            const secDestinasi = document.getElementById('admin-destinasi-section');
-            if (secDestinasi) secDestinasi.classList.remove('admin-section-hidden');
-
-            filterDestCards(filterKey);
-
-            if (filterKey === 'all') {
-                showAdminToast('Menampilkan seluruh destinasi wisata');
+        // Backward compatibility wrapper
+        function filterDestCards(filter, clickedBtn) {
+            if (filter === 'status-post') {
+                filterByStatus('post');
+            } else if (filter === 'status-draft') {
+                filterByStatus('draft');
             } else {
-                showAdminToast(`Memfilter kategori: ${cat}`);
-            }
-
-            if (secDestinasi) {
-                secDestinasi.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                filterByCategory(filter);
             }
         }
 

@@ -5569,7 +5569,7 @@ html[data-theme="dark"] .dest-spot-time {
     font-size: 13.5px;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(245, 184, 66, 0.38), inset 0 1px 0 rgba(255,255,255,0.25);
+    box-shadow: 0 4px 20px rgba(245, 184, 66, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     letter-spacing: 0.1px;
     position: relative;
@@ -5591,7 +5591,7 @@ html[data-theme="dark"] .dest-spot-time {
 
 .admin-nav-add-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(245, 184, 66, 0.52), inset 0 1px 0 rgba(255,255,255,0.3);
+    box-shadow: 0 8px 28px rgba(245, 184, 66, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .admin-nav-add-btn:active {
@@ -6011,6 +6011,21 @@ html[data-theme="dark"] .dest-spot-time {
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38);
 }
 
+.admin-status-card.active {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+}
+.admin-status-card.stat-card-post.active {
+    background: rgba(20, 48, 28, 0.85);
+    border-color: #4ade80;
+    box-shadow: 0 0 24px rgba(74, 222, 128, 0.3), 0 16px 36px rgba(0, 0, 0, 0.45);
+}
+.admin-status-card.stat-card-draft.active {
+    background: rgba(16, 40, 56, 0.85);
+    border-color: #38bdf8;
+    box-shadow: 0 0 24px rgba(56, 189, 248, 0.3), 0 16px 36px rgba(0, 0, 0, 0.45);
+}
+
 .stat-card-icon-wrap {
     width: 48px;
     height: 48px;
@@ -6186,6 +6201,22 @@ html[data-theme="dark"] .dest-spot-time {
     background: rgba(24, 42, 28, 0.72);
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4);
     border-color: rgba(255, 255, 255, 0.2);
+}
+
+.admin-cat-card.active {
+    transform: translateY(-3px);
+    background: rgba(30, 56, 36, 0.88);
+    border-color: #f5b842;
+    box-shadow: 0 0 22px rgba(245, 184, 66, 0.35), 0 14px 34px rgba(0, 0, 0, 0.45);
+}
+
+.admin-cat-card.active .admin-cat-name {
+    color: #f5b842;
+    font-weight: 700;
+}
+
+.admin-cat-card.active .admin-cat-icon-box {
+    transform: scale(1.12);
 }
 
 .admin-cat-icon-box {
@@ -7171,14 +7202,17 @@ html[data-theme="dark"] .dest-spot-time {
 .admin-modal-card.admin-modal-card-lg::-webkit-scrollbar {
     width: 6px;
 }
+
 .admin-modal-card.admin-modal-card-lg::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
 }
+
 .admin-modal-card.admin-modal-card-lg::-webkit-scrollbar-thumb {
     background: rgba(245, 184, 66, 0.35);
     border-radius: 8px;
 }
+
 .admin-modal-card.admin-modal-card-lg::-webkit-scrollbar-thumb:hover {
     background: rgba(245, 184, 66, 0.6);
 }
@@ -7201,6 +7235,7 @@ html[data-theme="dark"] .dest-spot-time {
     align-items: center;
     gap: 8px;
 }
+
 .admin-form-section-title::after {
     content: '';
     flex: 1;
@@ -7219,42 +7254,50 @@ html[data-theme="dark"] .dest-spot-time {
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: rgba(0, 0, 0, 0.35);
 }
+
 .admin-preview-tall {
     height: 100%;
     position: relative;
 }
+
 .admin-preview-tall img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
+
 .admin-preview-stack {
     display: grid;
     grid-template-rows: 1fr 1fr;
     gap: 6px;
     height: 100%;
 }
+
 .admin-preview-wide {
     height: 100%;
     overflow: hidden;
 }
+
 .admin-preview-wide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
+
 .admin-preview-row-sm {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 6px;
     height: 100%;
 }
+
 .admin-preview-sm {
     height: 100%;
     overflow: hidden;
 }
+
 .admin-preview-sm img {
     width: 100%;
     height: 100%;
@@ -7420,6 +7463,7 @@ html[data-theme="dark"] .dest-spot-time {
     grid-template-columns: 1fr 1fr 1fr;
     gap: 12px;
 }
+
 .admin-input-hint {
     font-size: 11px;
     color: rgba(255, 255, 255, 0.5);
