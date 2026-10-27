@@ -2146,6 +2146,8 @@ html[data-theme="dark"] .dest-spot-time {
     gap: 8px;
     overflow-x: auto;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
 }
 
 .dash-category-nav::-webkit-scrollbar {
@@ -2166,6 +2168,7 @@ html[data-theme="dark"] .dest-spot-time {
     cursor: pointer;
     white-space: nowrap;
     transition: var(--transition-fast);
+    flex-shrink: 0;
 }
 
 .dash-cat-pill:hover {
@@ -3031,67 +3034,373 @@ html[data-theme="dark"] .dest-spot-time {
     position: static;
 }
 
-/* ===== RESPONSIVE BREAKPOINTS ===== */
-@media (max-width: 1120px) {
-    .dash-main-grid {
-        grid-template-columns: 1fr;
+/* ===== RESPONSIVE BREAKPOINTS (TABLET & MOBILE) ===== */
+
+/* Large Tablets & Laptops (max-width: 1199px) */
+@media (max-width: 1199px) {
+    .dashboard-container {
+        padding: 18px 20px 36px;
     }
 
-    .dash-sidebar {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+    .dash-main-grid {
+        grid-template-columns: 280px 1fr;
+        gap: 20px;
     }
 
     .dash-recom-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
     }
 }
 
-@media (max-width: 768px) {
-    .dash-topbar {
-        flex-wrap: wrap;
+/* Medium Tablets & iPads (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .dash-main-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
     }
 
-    .dash-search-pill {
-        flex: 1 1 100%;
+    /* Content Area (Hero + Recommendations) ALWAYS FIRST ON TABLET & MOBILE */
+    .dash-content-area {
         order: 1;
     }
 
-    .dash-category-nav {
-        order: 3;
-        width: 100%;
-        padding-bottom: 6px;
-    }
-
-    .dash-top-actions {
-        order: 2;
-        margin-left: auto;
-    }
-
+    /* Sidebar Widgets (Destinasi Baru + Riwayat) PLACED BELOW MAIN CONTENT */
     .dash-sidebar {
-        grid-template-columns: 1fr;
+        order: 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .dash-topbar {
+        gap: 14px;
+    }
+
+    .dash-search-pill {
+        flex: 0 1 240px;
+    }
+
+    .dash-category-nav {
+        flex: 1;
+        min-width: 0;
+        -webkit-overflow-scrolling: touch;
     }
 
     .dash-hero-card {
-        min-height: 380px;
-        padding: 24px 20px 70px;
+        min-height: 330px;
+        padding: 28px 28px 26px;
     }
 
     .dash-hero-title {
-        font-size: 22px;
+        font-size: 26px;
+    }
+}
+
+/* Tablets (portrait) & Large Mobile Phones (max-width: 768px) */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 14px 16px 32px;
     }
 
-    .dash-hero-actions {
+    /* Modern 3-tier App Header on Mobile */
+    .dash-topbar {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    /* Row 1: Profile on the left, Notification on the right */
+    .dash-top-actions {
+        order: 1;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0;
+    }
+
+    .dash-top-actions .dash-user-dropdown-wrap {
+        order: 1;
+    }
+
+    .dash-top-actions .dash-notif-wrap {
+        order: 2;
+    }
+
+    /* Row 2: Full Width Search input */
+    .dash-search-pill {
+        order: 2;
+        width: 100%;
+        flex: none;
+        height: 44px;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    /* Row 3: Horizontal scrollable Category Chips */
+    .dash-category-nav {
+        order: 3;
+        width: 100%;
+        padding: 2px 2px 6px;
+        margin: 0;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x proximity;
+        gap: 8px;
+    }
+
+    .dash-cat-pill {
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        padding: 8px 16px;
+        font-size: 12.5px;
+    }
+
+    /* Sidebar stack on mobile */
+    .dash-sidebar {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Featured Hero Card on mobile */
+    .dash-hero-card {
+        min-height: auto;
+        padding: 22px 18px 22px;
+        border-radius: 20px;
+    }
+
+    .dash-hero-overlay {
+        background: linear-gradient(180deg,
+                rgba(8, 18, 11, 0.40) 0%,
+                rgba(8, 18, 11, 0.78) 45%,
+                rgba(10, 22, 14, 0.96) 100%);
+    }
+
+    .dash-hero-badge {
+        font-size: 11px;
+        padding: 4px 10px;
+        margin-bottom: 8px;
+    }
+
+    .dash-hero-tags {
+        margin-bottom: 8px;
+        gap: 6px;
         flex-wrap: wrap;
     }
 
-    .dash-slider-controls {
-        bottom: 16px;
-        right: 16px;
+    .dash-hero-tag {
+        font-size: 11px;
+        padding: 3px 10px;
     }
 
+    .dash-hero-title {
+        font-size: clamp(19px, 5.2vw, 22px);
+        line-height: 1.25;
+        margin-bottom: 8px;
+    }
+
+    .dash-hero-desc {
+        font-size: 12.5px;
+        line-height: 1.5;
+        margin-bottom: 16px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .dash-hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .dash-btn-primary {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+
+    .dash-btn-bookmark {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Position slider controls top-right to prevent any overlapping with buttons */
+    .dash-slider-controls {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        bottom: auto;
+        gap: 6px;
+    }
+
+    .dash-slider-arrow {
+        width: 34px;
+        height: 34px;
+    }
+
+    .dash-slider-arrow svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* Recommendations Grid */
+    .dash-recom-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    /* Sidebar Glass Cards */
+    .dash-glass-card {
+        padding: 16px 14px;
+        border-radius: 18px;
+    }
+
+    .dash-mini-spot-card,
+    .dash-history-mini-card {
+        height: 98px;
+        border-radius: 14px;
+    }
+
+    .dash-mini-spot-card .dash-mini-info,
+    .dash-history-mini-card .dash-mini-info {
+        padding: 8px 70px 8px 12px;
+    }
+
+    .dash-mini-title {
+        font-size: 12px;
+        line-height: 1.25;
+    }
+
+    .dash-mini-spot-card .dash-btn-lihat,
+    .dash-history-mini-card .dash-btn-lihat {
+        bottom: 8px;
+        right: 10px;
+        padding: 5px 12px;
+        font-size: 11px;
+    }
+
+    /* Popover & Dropdown positioning on mobile */
+    .dash-notif-popover {
+        width: min(320px, calc(100vw - 32px));
+        right: 0;
+        left: auto;
+    }
+
+    .dash-dropdown-menu {
+        width: min(240px, calc(100vw - 32px));
+        left: 0;
+        right: auto;
+    }
+
+    /* Base Modals on mobile */
+    .dash-modal-backdrop {
+        padding: 12px;
+    }
+
+    .dash-modal-card {
+        padding: 20px 16px;
+        border-radius: 20px;
+        max-height: 92vh;
+    }
+}
+
+/* Small Mobile Screens (max-width: 480px) */
+@media (max-width: 480px) {
+    .dashboard-container {
+        padding: 10px 12px 24px;
+    }
+
+    .dash-user-pill {
+        padding: 4px 10px 4px 5px;
+        gap: 8px;
+    }
+
+    .dash-user-name {
+        max-width: 115px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 12px;
+    }
+
+    .dash-user-role {
+        display: none;
+    }
+
+    .dash-chevron-icon {
+        width: 12px;
+        height: 12px;
+    }
+
+    .dash-hero-card {
+        padding: 18px 14px 18px;
+        border-radius: 18px;
+    }
+
+    .dash-hero-title {
+        font-size: 19px;
+    }
+
+    .dash-hero-desc {
+        -webkit-line-clamp: 2;
+        font-size: 12px;
+        margin-bottom: 14px;
+    }
+
+    /* 1 Column for Recommendations on small phones */
     .dash-recom-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .dash-recom-img-wrap {
+        height: 145px;
+    }
+
+    .dash-recom-card-title {
+        font-size: 13.5px;
+    }
+
+    .dash-mini-spot-card,
+    .dash-history-mini-card {
+        height: 92px;
+    }
+
+    .dash-mini-spot-card .dash-mini-info,
+    .dash-history-mini-card .dash-mini-info {
+        padding: 6px 65px 6px 10px;
+    }
+
+    .dash-mini-title {
+        font-size: 11.5px;
+    }
+
+    .dash-mini-spot-card .dash-btn-lihat,
+    .dash-history-mini-card .dash-btn-lihat {
+        padding: 4px 10px;
+        font-size: 10.5px;
+    }
+
+    .dash-modal-card {
+        padding: 18px 14px;
+    }
+
+    .dash-modal-title {
+        font-size: 18px;
+    }
+
+    .dash-modal-actions {
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+
+    .dash-modal-actions button,
+    .dash-modal-actions a {
+        width: 100%;
+        justify-content: center;
     }
 }
 
@@ -5115,8 +5424,13 @@ html[data-theme="dark"] .dest-spot-time {
     margin: 0;
 }
 
-/* Responsive Breakpoint for Destination Modal */
+/* Responsive Breakpoint for Destination Modal (Tablet & Mobile) */
 @media (max-width: 900px) {
+    .dash-dest-detail-card {
+        width: 96vw;
+        max-height: 90vh;
+    }
+
     .dash-dest-main-layout {
         grid-template-columns: 1fr;
         max-height: 85vh;
@@ -5134,6 +5448,18 @@ html[data-theme="dark"] .dest-spot-time {
         min-height: 240px;
     }
 
+    .dash-dest-photo-tall,
+    .dash-dest-photo-stack {
+        height: 240px;
+        max-height: 240px;
+    }
+
+    .dash-dest-photo-wide,
+    .dash-dest-photo-row {
+        height: 114px;
+        max-height: 114px;
+    }
+
     .dash-dest-features-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -5143,7 +5469,29 @@ html[data-theme="dark"] .dest-spot-time {
     }
 }
 
-@media (max-width: 580px) {
+@media (max-width: 680px) {
+    .dash-dest-detail-card {
+        width: 98vw;
+        max-height: 94vh;
+        border-radius: 20px;
+    }
+
+    .dash-dest-close-btn {
+        top: 10px;
+        right: 10px;
+        width: 34px;
+        height: 34px;
+    }
+
+    .dash-dest-left-col {
+        padding: 16px 14px 16px;
+        gap: 12px;
+    }
+
+    .dash-dest-right-col {
+        padding: 16px 14px 20px;
+    }
+
     .dash-dest-photo-grid {
         grid-template-columns: 1fr;
         height: auto;
@@ -5152,14 +5500,48 @@ html[data-theme="dark"] .dest-spot-time {
 
     .dash-dest-photo-tall {
         height: 180px;
+        max-height: 180px;
     }
 
     .dash-dest-photo-stack {
         display: none;
     }
 
+    .dash-dest-title-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .dash-dest-save-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 8px 14px;
+    }
+
+    .dash-dest-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .dash-dest-desc-and-map {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 420px) {
+    .dash-dest-detail-title {
+        font-size: 18px;
+    }
+
     .dash-dest-features-grid {
         grid-template-columns: 1fr;
+    }
+
+    .dash-dest-left-col,
+    .dash-dest-right-col {
+        padding: 14px 12px;
     }
 }
 
