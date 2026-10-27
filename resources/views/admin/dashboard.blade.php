@@ -798,10 +798,9 @@
 
             <!-- Tabel Moderasi Ulasan & Komentar Destinasi -->
             <section class="admin-table-section" id="admin-table-container">
-                <div class="admin-section-header">
+                <div class="admin-section-header admin-comments-section-header">
                     <div class="admin-table-title-group">
                         <h2 class="admin-section-title">Moderasi Komentar &amp; Ulasan Destinasi</h2>
-                        <span class="admin-table-count-badge" id="admin-table-count">6 Komentar Pengunjung</span>
                     </div>
 
                     <!-- Filter Tabs -->
@@ -1170,48 +1169,53 @@
                 <div class="admin-form-group">
                     <label class="admin-form-label">Jam Buka / Operasional (Pilih Jam, Menit, &amp; Zona Waktu)</label>
                     <div class="admin-time-picker-group">
-                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Buka:</span>
-                        <select id="dest-time-open-h" class="admin-time-select" onchange="updateTimePreviews()">
-                            <option value="05">05</option>
-                            <option value="06" selected>06</option>
-                            <option value="07">07</option>
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="10">10</option>
-                        </select>
-                        <span class="admin-time-separator">:</span>
-                        <select id="dest-time-open-m" class="admin-time-select" onchange="updateTimePreviews()">
-                            <option value="00">00</option>
-                            <option value="15">15</option>
-                            <option value="30" selected>30</option>
-                            <option value="45">45</option>
-                        </select>
+                        <div class="admin-time-range-row">
+                            <div class="admin-time-block">
+                                <span class="admin-time-tag-lbl">Buka:</span>
+                                <select id="dest-time-open-h" class="admin-time-select" onchange="updateTimePreviews()">
+                                    <option value="05">05</option>
+                                    <option value="06" selected>06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                </select>
+                                <span class="admin-time-separator">:</span>
+                                <select id="dest-time-open-m" class="admin-time-select" onchange="updateTimePreviews()">
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30" selected>30</option>
+                                    <option value="45">45</option>
+                                </select>
+                            </div>
 
-                        <span class="admin-time-divider">s/d</span>
+                            <span class="admin-time-divider">s/d</span>
 
-                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Tutup:</span>
-                        <select id="dest-time-close-h" class="admin-time-select" onchange="updateTimePreviews()">
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18" selected>18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                        </select>
-                        <span class="admin-time-separator">:</span>
-                        <select id="dest-time-close-m" class="admin-time-select" onchange="updateTimePreviews()">
-                            <option value="00" selected>00</option>
-                            <option value="15">15</option>
-                            <option value="30">30</option>
-                            <option value="45">45</option>
-                        </select>
-
-                        <select id="dest-time-tz" class="admin-time-select" onchange="updateTimePreviews()">
-                            <option value="WITA" selected>WITA</option>
-                            <option value="WIB">WIB</option>
-                            <option value="WIT">WIT</option>
-                        </select>
+                            <div class="admin-time-block">
+                                <span class="admin-time-tag-lbl">Tutup:</span>
+                                <select id="dest-time-close-h" class="admin-time-select" onchange="updateTimePreviews()">
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18" selected>18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                </select>
+                                <span class="admin-time-separator">:</span>
+                                <select id="dest-time-close-m" class="admin-time-select" onchange="updateTimePreviews()">
+                                    <option value="00" selected>00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                                <select id="dest-time-tz" class="admin-time-select" onchange="updateTimePreviews()">
+                                    <option value="WITA" selected>WITA</option>
+                                    <option value="WIB">WIB</option>
+                                    <option value="WIT">WIT</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <span class="admin-time-preview-badge" id="preview-time-badge">06:30 – 18:00 WITA</span>
                     </div>
@@ -1221,52 +1225,57 @@
                 <div class="admin-form-group">
                     <label class="admin-form-label">Waktu Terbaik Berkunjung (Pilih Jam, Menit, Zona Waktu, &amp; Kondisi)</label>
                     <div class="admin-time-picker-group">
-                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Mulai:</span>
-                        <select id="dest-best-start-h" class="admin-time-select" onchange="updateTimePreviews()">
-                            <option value="05">05</option>
-                            <option value="06">06</option>
-                            <option value="07" selected>07</option>
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                        </select>
-                        <span class="admin-time-separator">:</span>
-                        <select id="dest-best-start-m" class="admin-time-select" onchange="updateTimePreviews()">
-                            <option value="00" selected>00</option>
-                            <option value="15">15</option>
-                            <option value="30">30</option>
-                            <option value="45">45</option>
-                        </select>
+                        <div class="admin-time-range-row">
+                            <div class="admin-time-block">
+                                <span class="admin-time-tag-lbl">Mulai:</span>
+                                <select id="dest-best-start-h" class="admin-time-select" onchange="updateTimePreviews()">
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07" selected>07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                </select>
+                                <span class="admin-time-separator">:</span>
+                                <select id="dest-best-start-m" class="admin-time-select" onchange="updateTimePreviews()">
+                                    <option value="00" selected>00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                            </div>
 
-                        <span class="admin-time-divider">s/d</span>
+                            <span class="admin-time-divider">s/d</span>
 
-                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Selesai:</span>
-                        <select id="dest-best-end-h" class="admin-time-select" onchange="updateTimePreviews()">
-                            <option value="07">07</option>
-                            <option value="08">08</option>
-                            <option value="09" selected>09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                        </select>
-                        <span class="admin-time-separator">:</span>
-                        <select id="dest-best-end-m" class="admin-time-select" onchange="updateTimePreviews()">
-                            <option value="00">00</option>
-                            <option value="15">15</option>
-                            <option value="30" selected>30</option>
-                            <option value="45">45</option>
-                        </select>
+                            <div class="admin-time-block">
+                                <span class="admin-time-tag-lbl">Selesai:</span>
+                                <select id="dest-best-end-h" class="admin-time-select" onchange="updateTimePreviews()">
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09" selected>09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                </select>
+                                <span class="admin-time-separator">:</span>
+                                <select id="dest-best-end-m" class="admin-time-select" onchange="updateTimePreviews()">
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30" selected>30</option>
+                                    <option value="45">45</option>
+                                </select>
+                                <select id="dest-best-tz" class="admin-time-select" onchange="updateTimePreviews()">
+                                    <option value="WITA" selected>WITA</option>
+                                    <option value="WIB">WIB</option>
+                                    <option value="WIT">WIT</option>
+                                </select>
+                            </div>
+                        </div>
 
-                        <select id="dest-best-tz" class="admin-time-select" onchange="updateTimePreviews()">
-                            <option value="WITA" selected>WITA</option>
-                            <option value="WIB">WIB</option>
-                            <option value="WIT">WIT</option>
-                        </select>
-
-                        <select id="dest-best-condition" class="admin-time-select" style="max-width:230px;" onchange="updateTimePreviews()">
+                        <select id="dest-best-condition" class="admin-time-select admin-time-condition-select" onchange="updateTimePreviews()">
                             <option value="(Suasana tenang dan udara sejuk)" selected>Suasana tenang &amp; sejuk</option>
                             <option value="(Matahari terbit yang cerah)">Sunrise yang cerah</option>
                             <option value="(Matahari terbenam keemasan)">Sunset keemasan</option>
@@ -1612,48 +1621,53 @@
                 <div class="admin-form-group">
                     <label class="admin-form-label">Jam Buka / Operasional (Pilih Jam, Menit, &amp; Zona Waktu)</label>
                     <div class="admin-time-picker-group">
-                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Buka:</span>
-                        <select id="edit-dest-time-open-h" class="admin-time-select" onchange="updateEditTimePreviews()">
-                            <option value="05">05</option>
-                            <option value="06" selected>06</option>
-                            <option value="07">07</option>
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="10">10</option>
-                        </select>
-                        <span class="admin-time-separator">:</span>
-                        <select id="edit-dest-time-open-m" class="admin-time-select" onchange="updateEditTimePreviews()">
-                            <option value="00">00</option>
-                            <option value="15">15</option>
-                            <option value="30" selected>30</option>
-                            <option value="45">45</option>
-                        </select>
+                        <div class="admin-time-range-row">
+                            <div class="admin-time-block">
+                                <span class="admin-time-tag-lbl">Buka:</span>
+                                <select id="edit-dest-time-open-h" class="admin-time-select" onchange="updateEditTimePreviews()">
+                                    <option value="05">05</option>
+                                    <option value="06" selected>06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                </select>
+                                <span class="admin-time-separator">:</span>
+                                <select id="edit-dest-time-open-m" class="admin-time-select" onchange="updateEditTimePreviews()">
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30" selected>30</option>
+                                    <option value="45">45</option>
+                                </select>
+                            </div>
 
-                        <span class="admin-time-divider">s/d</span>
+                            <span class="admin-time-divider">s/d</span>
 
-                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Tutup:</span>
-                        <select id="edit-dest-time-close-h" class="admin-time-select" onchange="updateEditTimePreviews()">
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18" selected>18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                        </select>
-                        <span class="admin-time-separator">:</span>
-                        <select id="edit-dest-time-close-m" class="admin-time-select" onchange="updateEditTimePreviews()">
-                            <option value="00" selected>00</option>
-                            <option value="15">15</option>
-                            <option value="30">30</option>
-                            <option value="45">45</option>
-                        </select>
-
-                        <select id="edit-dest-time-tz" class="admin-time-select" onchange="updateEditTimePreviews()">
-                            <option value="WITA" selected>WITA</option>
-                            <option value="WIB">WIB</option>
-                            <option value="WIT">WIT</option>
-                        </select>
+                            <div class="admin-time-block">
+                                <span class="admin-time-tag-lbl">Tutup:</span>
+                                <select id="edit-dest-time-close-h" class="admin-time-select" onchange="updateEditTimePreviews()">
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18" selected>18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                </select>
+                                <span class="admin-time-separator">:</span>
+                                <select id="edit-dest-time-close-m" class="admin-time-select" onchange="updateEditTimePreviews()">
+                                    <option value="00" selected>00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                                <select id="edit-dest-time-tz" class="admin-time-select" onchange="updateEditTimePreviews()">
+                                    <option value="WITA" selected>WITA</option>
+                                    <option value="WIB">WIB</option>
+                                    <option value="WIT">WIT</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <span class="admin-time-preview-badge" id="edit-preview-time-badge">06:30 – 18:00 WITA</span>
                     </div>
@@ -1663,52 +1677,57 @@
                 <div class="admin-form-group">
                     <label class="admin-form-label">Waktu Terbaik Berkunjung (Pilih Jam, Menit, Zona Waktu, &amp; Kondisi)</label>
                     <div class="admin-time-picker-group">
-                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Mulai:</span>
-                        <select id="edit-dest-best-start-h" class="admin-time-select" onchange="updateEditTimePreviews()">
-                            <option value="05">05</option>
-                            <option value="06">06</option>
-                            <option value="07" selected>07</option>
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                        </select>
-                        <span class="admin-time-separator">:</span>
-                        <select id="edit-dest-best-start-m" class="admin-time-select" onchange="updateEditTimePreviews()">
-                            <option value="00" selected>00</option>
-                            <option value="15">15</option>
-                            <option value="30">30</option>
-                            <option value="45">45</option>
-                        </select>
+                        <div class="admin-time-range-row">
+                            <div class="admin-time-block">
+                                <span class="admin-time-tag-lbl">Mulai:</span>
+                                <select id="edit-dest-best-start-h" class="admin-time-select" onchange="updateEditTimePreviews()">
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07" selected>07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                </select>
+                                <span class="admin-time-separator">:</span>
+                                <select id="edit-dest-best-start-m" class="admin-time-select" onchange="updateEditTimePreviews()">
+                                    <option value="00" selected>00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                            </div>
 
-                        <span class="admin-time-divider">s/d</span>
+                            <span class="admin-time-divider">s/d</span>
 
-                        <span style="font-size:11.5px;color:rgba(255,255,255,0.7);font-weight:600;">Selesai:</span>
-                        <select id="edit-dest-best-end-h" class="admin-time-select" onchange="updateEditTimePreviews()">
-                            <option value="07">07</option>
-                            <option value="08">08</option>
-                            <option value="09" selected>09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                        </select>
-                        <span class="admin-time-separator">:</span>
-                        <select id="edit-dest-best-end-m" class="admin-time-select" onchange="updateEditTimePreviews()">
-                            <option value="00">00</option>
-                            <option value="15">15</option>
-                            <option value="30" selected>30</option>
-                            <option value="45">45</option>
-                        </select>
+                            <div class="admin-time-block">
+                                <span class="admin-time-tag-lbl">Selesai:</span>
+                                <select id="edit-dest-best-end-h" class="admin-time-select" onchange="updateEditTimePreviews()">
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09" selected>09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                </select>
+                                <span class="admin-time-separator">:</span>
+                                <select id="edit-dest-best-end-m" class="admin-time-select" onchange="updateEditTimePreviews()">
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30" selected>30</option>
+                                    <option value="45">45</option>
+                                </select>
+                                <select id="edit-dest-best-tz" class="admin-time-select" onchange="updateEditTimePreviews()">
+                                    <option value="WITA" selected>WITA</option>
+                                    <option value="WIB">WIB</option>
+                                    <option value="WIT">WIT</option>
+                                </select>
+                            </div>
+                        </div>
 
-                        <select id="edit-dest-best-tz" class="admin-time-select" onchange="updateEditTimePreviews()">
-                            <option value="WITA" selected>WITA</option>
-                            <option value="WIB">WIB</option>
-                            <option value="WIT">WIT</option>
-                        </select>
-
-                        <select id="edit-dest-best-condition" class="admin-time-select" style="max-width:230px;" onchange="updateEditTimePreviews()">
+                        <select id="edit-dest-best-condition" class="admin-time-select admin-time-condition-select" onchange="updateEditTimePreviews()">
                             <option value="(Suasana tenang dan udara sejuk)" selected>Suasana tenang &amp; sejuk</option>
                             <option value="(Matahari terbit yang cerah)">Sunrise yang cerah</option>
                             <option value="(Matahari terbenam keemasan)">Sunset keemasan</option>
