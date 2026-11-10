@@ -8,6 +8,7 @@
     <meta property="og:title" content="Dewasufa - Eksplorasi Keindahan Alam Bali">
     <meta property="og:description" content="Jelajahi 4 kategori alam Bali terbaik: Waterfall, Sunset Beach, Sunrise Beach, dan Mountain.">
     <meta property="og:type" content="website">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Dewasufa</title>
 

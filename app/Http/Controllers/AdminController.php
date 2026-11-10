@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Destination;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -16,18 +17,20 @@ class AdminController extends Controller
     public function index(): View
     {
         $destinations = Destination::orderBy('id', 'desc')->get();
+        $comments = Comment::with('destination')->orderBy('id', 'desc')->get();
 
         $stats = [
             'total' => $destinations->count(),
             'post' => $destinations->count(),
             'draft' => 0,
+            'comments' => $comments->count(),
             'waterfall' => $destinations->filter(fn (Destination $d) => stripos($d->category, 'waterfall') !== false)->count(),
             'sunset' => $destinations->filter(fn (Destination $d) => stripos($d->category, 'sunset') !== false)->count(),
             'sunrise' => $destinations->filter(fn (Destination $d) => stripos($d->category, 'sunrise') !== false)->count(),
             'mountain' => $destinations->filter(fn (Destination $d) => stripos($d->category, 'mountain') !== false || stripos($d->category, 'gunung') !== false)->count(),
         ];
 
-        return view('admin.dashboard', compact('destinations', 'stats'));
+        return view('admin.dashboard', compact('destinations', 'stats', 'comments'));
     }
 
     /**
@@ -52,13 +55,13 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
             $targetDir = public_path('images/uploads');
             if (! file_exists($targetDir)) {
                 mkdir($targetDir, 0755, true);
             }
             $file->move($targetDir, $fileName);
-            $data['image'] = 'images/uploads/' . $fileName;
+            $data['image'] = 'images/uploads/'.$fileName;
         } elseif ($request->filled('image') && is_string($request->input('image'))) {
             $data['image'] = $request->input('image');
         }
@@ -68,7 +71,7 @@ class AdminController extends Controller
         if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Destinasi "' . $destination->name . '" berhasil ditambahkan ke database!',
+                'message' => 'Destinasi "'.$destination->name.'" berhasil ditambahkan ke database!',
                 'destination' => $destination,
             ], 201);
         }
@@ -98,13 +101,13 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
             $targetDir = public_path('images/uploads');
             if (! file_exists($targetDir)) {
                 mkdir($targetDir, 0755, true);
             }
             $file->move($targetDir, $fileName);
-            $data['image'] = 'images/uploads/' . $fileName;
+            $data['image'] = 'images/uploads/'.$fileName;
         } elseif ($request->filled('image') && is_string($request->input('image')) && ! str_starts_with($request->input('image'), 'data:')) {
             $data['image'] = $request->input('image');
         }
@@ -114,7 +117,7 @@ class AdminController extends Controller
         if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Destinasi "' . $destination->name . '" berhasil diperbarui di database!',
+                'message' => 'Destinasi "'.$destination->name.'" berhasil diperbarui di database!',
                 'destination' => $destination->fresh(),
             ]);
         }
@@ -133,11 +136,42 @@ class AdminController extends Controller
         if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Destinasi "' . $name . '" berhasil dihapus dari database.',
+                'message' => 'Destinasi "'.$name.'" berhasil dihapus dari database.',
             ]);
         }
 
         return redirect()->route('admin.dashboard')->with('success', 'Destinasi berhasil dihapus!');
+    }
+
+    /**
+     * Remove the specified comment from database.
+     */
+    public function destroyComment(Request $request, Comment $comment): JsonResponse|RedirectResponse
+    {
+        $author = $comment->author_name;
+
+        // Clean up uploaded comment photos if stored in public/images/uploads/comments
+        if (! empty($comment->photos) && is_array($comment->photos)) {
+            foreach ($comment->photos as $photo) {
+                if (is_string($photo) && str_starts_with($photo, 'images/uploads/comments/')) {
+                    $fullPath = public_path($photo);
+                    if (file_exists($fullPath)) {
+                        @unlink($fullPath);
+                    }
+                }
+            }
+        }
+
+        $comment->delete();
+
+        if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Komentar dari "'.$author.'" berhasil dihapus dari database.',
+            ]);
+        }
+
+        return redirect()->route('admin.dashboard')->with('success', 'Komentar berhasil dihapus!');
     }
 
     /**

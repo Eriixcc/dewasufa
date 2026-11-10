@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\DestinationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Destination extends Model
 {
@@ -108,6 +109,14 @@ class Destination extends Model
         }
 
         return 'Rp '.number_format($val, 0, ',', '.').' / orang';
+    }
+
+    /**
+     * Get the comments for the destination.
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 
     /**

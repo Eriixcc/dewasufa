@@ -1182,58 +1182,105 @@ export function closeCommentPhotoModal() {
 export const openPhotoModal = openCommentPhotoModal;
 export const closePhotoModal = closeCommentPhotoModal;
 
-export function renderDestinationComments(key) {
+export async function renderDestinationComments(key) {
     const commentsList = document.getElementById('dest-comments-list');
     const counterEl = document.getElementById('dest-comments-counter');
     if (!commentsList) return;
 
-    const comments = getStoredComments(key);
+    // First render existing/cached comments immediately for snappy UI
+    let comments = getStoredComments(key);
 
-    if (counterEl) {
-        counterEl.textContent = `${comments.length} Komentar`;
-    }
+    const renderList = (items) => {
+        if (counterEl) {
+            counterEl.textContent = `${items.length} Komentar`;
+        }
 
-    if (comments.length === 0) {
-        commentsList.innerHTML = '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.45); font-size: 13px;">Belum ada ulasan untuk destinasi ini. Jadilah yang pertama memberikan ulasan!</div>';
-        return;
-    }
+        if (items.length === 0) {
+            commentsList.innerHTML = '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.45); font-size: 13px;">Belum ada ulasan untuk destinasi ini. Jadilah yang pertama memberikan ulasan!</div>';
+            return;
+        }
 
-    commentsList.innerHTML = comments.map(c => {
-        const initial = (c.name || 'W').charAt(0).toUpperCase();
-        const photosHtml = (c.photos && Array.isArray(c.photos) && c.photos.length > 0)
-            ? `
-                <div class="dash-comment-photos-grid">
-                    ${c.photos.map((photoUrl, idx) => `
-                        <div class="dash-comment-photo-thumb" onclick="openCommentPhotoModal('${photoUrl}')" title="Klik untuk memperbesar foto">
-                            <img src="${photoUrl}" alt="Foto ulasan ${idx + 1}" loading="lazy">
-                        </div>
-                    `).join('')}
-                </div>
-            `
-            : '';
-
-        return `
-            <div class="dash-comment-card">
-                <div class="dash-comment-top">
-                    <div class="dash-comment-author-info">
-                        <div class="dash-comment-avatar">${initial}</div>
-                        <span class="dash-comment-author-name">
-                            ${c.name}
-                            <span class="dash-comment-badge-verified">Terverifikasi</span>
-                        </span>
+        commentsList.innerHTML = items.map(c => {
+            const initial = (c.name || 'W').charAt(0).toUpperCase();
+            const photos = c.photos || c.photo_urls || [];
+            const photosHtml = (Array.isArray(photos) && photos.length > 0)
+                ? `
+                    <div class="dash-comment-photos-grid">
+                        ${photos.map((photoUrl, idx) => `
+                            <div class="dash-comment-photo-thumb" onclick="openCommentPhotoModal('${photoUrl}')" title="Klik untuk memperbesar foto">
+                                <img src="${photoUrl}" alt="Foto ulasan ${idx + 1}" loading="lazy">
+                            </div>
+                        `).join('')}
                     </div>
-                    <div class="dash-comment-meta-right">
-                        <span class="dash-comment-date">${c.date || 'Baru saja'}</span>
-                        <div class="dash-comment-stars">
-                            ${generateStarIconsHtml(c.rating || 5, 5, 13)}
+                `
+                : '';
+
+            return `
+                <div class="dash-comment-card">
+                    <div class="dash-comment-top">
+                        <div class="dash-comment-author-info">
+                            <div class="dash-comment-avatar">${initial}</div>
+                            <span class="dash-comment-author-name">
+                                ${c.name}
+                                <span class="dash-comment-badge-verified">Terverifikasi</span>
+                            </span>
+                        </div>
+                        <div class="dash-comment-meta-right">
+                            <span class="dash-comment-date">${c.date || c.formatted_date || 'Baru saja'}</span>
+                            <div class="dash-comment-stars">
+                                ${generateStarIconsHtml(c.rating || 5, 5, 13)}
+                            </div>
                         </div>
                     </div>
+                    <p class="dash-comment-text">${c.comment}</p>
+                    ${photosHtml}
                 </div>
-                <p class="dash-comment-text">${c.comment}</p>
-                ${photosHtml}
-            </div>
-        `;
-    }).join('');
+            `;
+        }).join('');
+    };
+
+    renderList(comments);
+
+    // Fetch realtime comments from database API
+    try {
+        let destId = null;
+        if (window.dbDestinations && Array.isArray(window.dbDestinations)) {
+            const found = window.dbDestinations.find(d => String(d.id) === String(key) || d.category_slug === key || (d.name && d.name.toLowerCase().includes(String(key).toLowerCase())));
+            if (found) {
+                destId = found.id;
+            }
+        }
+
+        let apiUrl = `/api/comments?destination_slug=${encodeURIComponent(key)}`;
+        if (destId) {
+            apiUrl += `&destination_id=${encodeURIComponent(destId)}`;
+        }
+
+        const res = await fetch(apiUrl, {
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (res.ok) {
+            const json = await res.json();
+            if (json.success && Array.isArray(json.comments) && json.comments.length > 0) {
+                const dbMapped = json.comments.map(c => ({
+                    id: c.id,
+                    name: c.author_name,
+                    date: c.formatted_date || 'Baru saja',
+                    rating: c.rating || 5,
+                    comment: c.comment,
+                    photos: c.photo_urls || c.photos || []
+                }));
+                // Update local storage cache and re-render with fresh DB data
+                saveStoredComments(key, dbMapped);
+                renderList(dbMapped);
+            }
+        }
+    } catch (err) {
+        console.warn('Realtime comments sync error:', err);
+    }
 }
 
 export function setCommentRating(rating) {
@@ -1271,7 +1318,7 @@ export function getCurrentUsername() {
     return 'Wisatawan Bali';
 }
 
-export function handleCommentSubmit(event) {
+export async function handleCommentSubmit(event) {
     if (event) event.preventDefault();
 
     const textarea = document.getElementById('comment-textarea');
@@ -1292,32 +1339,89 @@ export function handleCommentSubmit(event) {
         nameInput.readOnly = true;
     }
 
-    const newComment = {
-        name: authorName,
-        date: 'Baru saja',
+    const submitBtn = document.getElementById('btn-submit-comment');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.7';
+    }
+
+    // Identify current destination from window.dbDestinations
+    let destId = null;
+    let destName = null;
+    if (window.dbDestinations && Array.isArray(window.dbDestinations)) {
+        const found = window.dbDestinations.find(d => String(d.id) === String(currentDetailSpotKey) || d.category_slug === currentDetailSpotKey || (d.name && d.name.toLowerCase().includes(String(currentDetailSpotKey).toLowerCase())));
+        if (found) {
+            destId = found.id;
+            destName = found.name;
+        }
+    }
+
+    const payload = {
+        destination_id: destId,
+        destination_slug: currentDetailSpotKey,
+        destination_name: destName,
+        author_name: authorName,
         rating: currentCommentRating,
         comment: commentText,
         photos: [...currentCommentPhotos]
     };
 
-    const comments = getStoredComments(currentDetailSpotKey);
-    comments.unshift(newComment);
-    saveStoredComments(currentDetailSpotKey, comments);
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
-    // Reset photo uploads
-    resetCommentPhotoUpload();
+    try {
+        const res = await fetch('/api/comments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
 
-    // Re-render
-    renderDestinationComments(currentDetailSpotKey);
+        const data = await res.json();
 
-    // Highlight the newly added comment
-    const listEl = document.getElementById('dest-comments-list');
-    if (listEl && listEl.firstElementChild) {
-        listEl.firstElementChild.classList.add('newly-added');
+        if (res.ok && data.success) {
+            // Reset photo uploads & form
+            resetCommentPhotoUpload();
+            textarea.value = '';
+
+            // Update UI with fresh DB comments
+            await renderDestinationComments(currentDetailSpotKey);
+
+            // Highlight newly added comment
+            const listEl = document.getElementById('dest-comments-list');
+            if (listEl && listEl.firstElementChild) {
+                listEl.firstElementChild.classList.add('newly-added');
+            }
+
+            showToast(data.message || 'Ulasan Anda berhasil disimpan ke database!', '');
+        } else {
+            showToast(data.message || 'Gagal mengirimkan ulasan.', '⚠️');
+        }
+    } catch (err) {
+        console.error('Error submitting comment:', err);
+        // Fallback local storage
+        const newComment = {
+            name: authorName,
+            date: 'Baru saja',
+            rating: currentCommentRating,
+            comment: commentText,
+            photos: [...currentCommentPhotos]
+        };
+        const comments = getStoredComments(currentDetailSpotKey);
+        comments.unshift(newComment);
+        saveStoredComments(currentDetailSpotKey, comments);
+        resetCommentPhotoUpload();
+        textarea.value = '';
+        renderDestinationComments(currentDetailSpotKey);
+        showToast('Ulasan Anda berhasil dikirimkan.', '');
+    } finally {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+        }
     }
-
-    textarea.value = '';
-    showToast('Ulasan Anda berhasil dikirimkan.', '');
 }
 
 // Modal Daftar sebagai Author

@@ -71,7 +71,7 @@
                         </svg>
                     </div>
                     <span class="admin-nav-label">Moderasi Ulasan</span>
-                    <span class="admin-nav-pill">12</span>
+                    <span class="admin-nav-pill">{{ count($comments ?? []) }}</span>
                 </a>
 
                 <!-- Divider -->
@@ -387,6 +387,7 @@
                 <div class="admin-section-header admin-comments-section-header">
                     <div class="admin-table-title-group">
                         <h2 class="admin-section-title">Moderasi Komentar &amp; Ulasan Destinasi</h2>
+                        <span class="admin-table-count-badge" id="admin-table-count">{{ count($comments ?? []) }} Komentar Pengunjung</span>
                     </div>
 
                     <!-- Filter Tabs -->
@@ -412,203 +413,72 @@
                                 </tr>
                             </thead>
                             <tbody id="admin-comments-tbody">
-                                <!-- Comment 1 -->
-                                <tr data-category="waterfall" data-user="Ketut Dharmayana" data-dest="Air Terjun Sekumpul" data-rating="5.0" data-time="2 jam lalu" data-comment="Air terjun Sekumpul sangat megah dan asri! Trekking tangganya menantang tapi terbayar lunas dengan kesegaran air dan keindahan tebing hijau. Pemandu lokal sangat ramah dan sigap.">
-                                    <td>
-                                        <div class="admin-user-cell">
-                                            <div class="admin-avatar-mini" style="background: #244b2c; color: #ffffff;">KD</div>
-                                            <div>
-                                                <div class="admin-cell-title">Ketut Dharmayana</div>
-                                                <div class="admin-cell-sub">
-                                                    <span style="color: #f5b842;">★ 5.0</span> • Wisatawan Terverifikasi
+                                @forelse($comments as $comment)
+                                    @php
+                                        $catSlug = strtolower($comment->destination?->category_slug ?? $comment->destination_slug ?? 'waterfall');
+                                        if (str_contains($catSlug, 'waterfall') || str_contains($catSlug, 'terjun')) {
+                                            $catClass = 'waterfall';
+                                            $tagStyle = 'background: rgba(36, 75, 44, 0.4); color: #5eead4; border-color: rgba(36, 75, 44, 0.6);';
+                                        } elseif (str_contains($catSlug, 'sunset') || str_contains($catSlug, 'kuta') || str_contains($catSlug, 'melasti')) {
+                                            $catClass = 'sunset';
+                                            $tagStyle = 'background: rgba(251, 146, 60, 0.18); color: #fb923c; border-color: rgba(251, 146, 60, 0.3);';
+                                        } elseif (str_contains($catSlug, 'sunrise') || str_contains($catSlug, 'sanur')) {
+                                            $catClass = 'sunrise';
+                                            $tagStyle = 'background: rgba(245, 184, 66, 0.18); color: #f5b842; border-color: rgba(245, 184, 66, 0.3);';
+                                        } elseif (str_contains($catSlug, 'mountain') || str_contains($catSlug, 'gunung') || str_contains($catSlug, 'batur')) {
+                                            $catClass = 'mountain';
+                                            $tagStyle = 'background: rgba(168, 85, 247, 0.18); color: #c084fc; border-color: rgba(168, 85, 247, 0.3);';
+                                        } else {
+                                            $catClass = 'waterfall';
+                                            $tagStyle = 'background: rgba(36, 75, 44, 0.4); color: #5eead4; border-color: rgba(36, 75, 44, 0.6);';
+                                        }
+                                        $destName = $comment->destination?->name ?? $comment->destination_name ?? 'Destinasi Wisata';
+                                        $photosJson = json_encode($comment->photo_urls ?? []);
+                                    @endphp
+                                    <tr data-id="{{ $comment->id }}" data-category="{{ $catClass }}" data-user="{{ $comment->author_name }}" data-dest="{{ $destName }}" data-rating="{{ number_format($comment->rating, 1) }}" data-time="{{ $comment->formatted_date }}" data-comment="{{ $comment->comment }}" data-photos="{{ $photosJson }}">
+                                        <td>
+                                            <div class="admin-user-cell">
+                                                <div class="admin-avatar-mini" style="background: {{ $comment->avatar_bg }}; color: #ffffff;">{{ $comment->avatar_text }}</div>
+                                                <div>
+                                                    <div class="admin-cell-title">{{ $comment->author_name }}</div>
+                                                    <div class="admin-cell-sub">
+                                                        <span style="color: #f5b842;">★ {{ number_format($comment->rating, 1) }}</span> • {{ $comment->author_role }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <span class="admin-role-tag role-dest">Air Terjun Sekumpul</span>
-                                            <div class="admin-cell-sub" style="margin-top: 2px;">Buleleng, Bali</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="admin-comment-snippet" style="max-width: 320px; font-size: 12.5px; color: rgba(255,255,255,0.85); line-height: 1.4;">
-                                            "Air terjun Sekumpul sangat megah dan asri! Trekking tangganya menantang tapi terbayar lunas dengan kesegaran air..."
-                                        </div>
-                                    </td>
-                                    <td><span class="admin-location-cell">2 jam lalu</span></td>
-                                    <td style="text-align: right;">
-                                        <div class="admin-row-actions">
-                                            <button type="button" class="btn-action-view" onclick="openReviewDetailModal(this)">Detail</button>
-                                            <button type="button" class="btn-action-reject" onclick="deleteCommentRow(this, event)">Hapus</button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- Comment 2 -->
-                                <tr data-category="sunset" data-user="Ni Made Ayu Lestari" data-dest="Pantai Melasti Ungasan" data-rating="4.9" data-time="5 jam lalu" data-comment="Sunset tercantik di semenanjung Bukit Bali! Tebing kapur putihnya spektakuler, akses jalan berliku sangat estetik untuk spot foto, dan pantainya bersih terawat.">
-                                    <td>
-                                        <div class="admin-user-cell">
-                                            <div class="admin-avatar-mini" style="background: #e59b2b; color: #122115;">MA</div>
+                                        </td>
+                                        <td>
                                             <div>
-                                                <div class="admin-cell-title">Ni Made Ayu Lestari</div>
-                                                <div class="admin-cell-sub">
-                                                    <span style="color: #f5b842;">★ 4.9</span> • Wisatawan Terverifikasi
-                                                </div>
+                                                <span class="admin-role-tag role-dest" style="{{ $tagStyle }}">{{ $destName }}</span>
+                                                <div class="admin-cell-sub" style="margin-top: 2px;">{{ $comment->destination?->category ?? 'Bali, Indonesia' }}</div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <span class="admin-role-tag role-review" style="background: rgba(251, 146, 60, 0.18); color: #fb923c; border-color: rgba(251, 146, 60, 0.3);">Pantai Melasti Ungasan</span>
-                                            <div class="admin-cell-sub" style="margin-top: 2px;">Badung, Bali</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="admin-comment-snippet" style="max-width: 320px; font-size: 12.5px; color: rgba(255,255,255,0.85); line-height: 1.4;">
-                                            "Sunset tercantik di semenanjung Bukit Bali! Tebing kapur putihnya spektakuler, akses jalan berliku sangat estetik..."
-                                        </div>
-                                    </td>
-                                    <td><span class="admin-location-cell">5 jam lalu</span></td>
-                                    <td style="text-align: right;">
-                                        <div class="admin-row-actions">
-                                            <button type="button" class="btn-action-view" onclick="openReviewDetailModal(this)">Detail</button>
-                                            <button type="button" class="btn-action-reject" onclick="deleteCommentRow(this, event)">Hapus</button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- Comment 3 -->
-                                <tr data-category="mountain" data-user="Wayan Surya Putra" data-dest="Gunung Batur (1.717 mdpl)" data-rating="4.8" data-time="1 hari lalu" data-comment="Pendakian sunrise yang magis. Pemandangan samudera awan dari puncak sungguh luar biasa spektakuler. Pastikan membawa jaket tebal karena angin pagi cukup kencang.">
-                                    <td>
-                                        <div class="admin-user-cell">
-                                            <div class="admin-avatar-mini" style="background: #3b82f6; color: #ffffff;">WS</div>
-                                            <div>
-                                                <div class="admin-cell-title">Wayan Surya Putra</div>
-                                                <div class="admin-cell-sub">
-                                                    <span style="color: #f5b842;">★ 4.8</span> • Pendaki Terverifikasi
-                                                </div>
+                                        </td>
+                                        <td>
+                                            <div class="admin-comment-snippet" style="max-width: 320px; font-size: 12.5px; color: rgba(255,255,255,0.85); line-height: 1.4;">
+                                                "{{ \Illuminate\Support\Str::limit($comment->comment, 90) }}"
+                                                @if(!empty($comment->photos) && count($comment->photos) > 0)
+                                                    <span style="display:inline-flex; align-items:center; gap:3px; margin-left:4px; font-size:11px; padding:1px 6px; border-radius:4px; background:rgba(94,234,212,0.15); color:#5eead4;">
+                                                        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                                        {{ count($comment->photos) }} Foto
+                                                    </span>
+                                                @endif
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <span class="admin-role-tag role-dest" style="background: rgba(168, 85, 247, 0.18); color: #c084fc; border-color: rgba(168, 85, 247, 0.3);">Gunung Batur (1.717 mdpl)</span>
-                                            <div class="admin-cell-sub" style="margin-top: 2px;">Kintamani, Bangli</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="admin-comment-snippet" style="max-width: 320px; font-size: 12.5px; color: rgba(255,255,255,0.85); line-height: 1.4;">
-                                            "Pendakian sunrise yang magis. Pemandangan samudera awan dari puncak sungguh luar biasa spektakuler..."
-                                        </div>
-                                    </td>
-                                    <td><span class="admin-location-cell">1 hari lalu</span></td>
-                                    <td style="text-align: right;">
-                                        <div class="admin-row-actions">
-                                            <button type="button" class="btn-action-view" onclick="openReviewDetailModal(this)">Detail</button>
-                                            <button type="button" class="btn-action-reject" onclick="deleteCommentRow(this, event)">Hapus</button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- Comment 4 -->
-                                <tr data-category="sunrise" data-user="Sarah Wijaya" data-dest="Pantai Sanur Denpasar" data-rating="4.7" data-time="2 hari lalu" data-comment="Suasana fajar nan tenang di tepi pantai Sanur. Sangat menyenangkan untuk jogging pagi dan bersepeda santai di jalur pantai sambil menunggu terbit matahari.">
-                                    <td>
-                                        <div class="admin-user-cell">
-                                            <div class="admin-avatar-mini" style="background: #ec4899; color: #ffffff;">SW</div>
-                                            <div>
-                                                <div class="admin-cell-title">Sarah Wijaya</div>
-                                                <div class="admin-cell-sub">
-                                                    <span style="color: #f5b842;">★ 4.7</span> • Wisatawan Terverifikasi
-                                                </div>
+                                        </td>
+                                        <td><span class="admin-location-cell">{{ $comment->formatted_date }}</span></td>
+                                        <td style="text-align: right;">
+                                            <div class="admin-row-actions">
+                                                <button type="button" class="btn-action-view" onclick="openReviewDetailModal(this)">Detail</button>
+                                                <button type="button" class="btn-action-reject" onclick="deleteCommentRow(this, event)">Hapus</button>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <span class="admin-role-tag role-review" style="background: rgba(245, 184, 66, 0.18); color: #f5b842; border-color: rgba(245, 184, 66, 0.3);">Pantai Sanur Denpasar</span>
-                                            <div class="admin-cell-sub" style="margin-top: 2px;">Denpasar, Bali</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="admin-comment-snippet" style="max-width: 320px; font-size: 12.5px; color: rgba(255,255,255,0.85); line-height: 1.4;">
-                                            "Suasana fajar nan tenang di tepi pantai Sanur. Sangat menyenangkan untuk jogging pagi dan bersepeda santai..."
-                                        </div>
-                                    </td>
-                                    <td><span class="admin-location-cell">2 hari lalu</span></td>
-                                    <td style="text-align: right;">
-                                        <div class="admin-row-actions">
-                                            <button type="button" class="btn-action-view" onclick="openReviewDetailModal(this)">Detail</button>
-                                            <button type="button" class="btn-action-reject" onclick="deleteCommentRow(this, event)">Hapus</button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- Comment 5 -->
-                                <tr data-category="waterfall" data-user="Budi Santoso" data-dest="Air Terjun Tegenungan" data-rating="4.6" data-time="3 hari lalu" data-comment="Kolam alaminya segar sekali dan lokasinya sangat dekat dari Ubud. Datang pagi hari jauh lebih sepi dan nyaman untuk berfoto tanpa antrean panjang.">
-                                    <td>
-                                        <div class="admin-user-cell">
-                                            <div class="admin-avatar-mini" style="background: #14b8a6; color: #ffffff;">BS</div>
-                                            <div>
-                                                <div class="admin-cell-title">Budi Santoso</div>
-                                                <div class="admin-cell-sub">
-                                                    <span style="color: #f5b842;">★ 4.6</span> • Wisatawan Terverifikasi
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <span class="admin-role-tag role-dest">Air Terjun Tegenungan</span>
-                                            <div class="admin-cell-sub" style="margin-top: 2px;">Gianyar, Bali</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="admin-comment-snippet" style="max-width: 320px; font-size: 12.5px; color: rgba(255,255,255,0.85); line-height: 1.4;">
-                                            "Kolam alaminya segar sekali dan lokasinya sangat dekat dari Ubud. Datang pagi hari jauh lebih sepi dan nyaman..."
-                                        </div>
-                                    </td>
-                                    <td><span class="admin-location-cell">3 hari lalu</span></td>
-                                    <td style="text-align: right;">
-                                        <div class="admin-row-actions">
-                                            <button type="button" class="btn-action-view" onclick="openReviewDetailModal(this)">Detail</button>
-                                            <button type="button" class="btn-action-reject" onclick="deleteCommentRow(this, event)">Hapus</button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- Comment 6 -->
-                                <tr data-category="mountain" data-user="Komang Gede" data-dest="Gunung Agung (3.142 mdpl)" data-rating="5.0" data-time="4 hari lalu" data-comment="Trekking via jalur Pura Pasar Agung sangat menantang dan memacu adrenalin. Panorama matahari terbit di atas puncak tertinggi Bali sungguh membuat takjub!">
-                                    <td>
-                                        <div class="admin-user-cell">
-                                            <div class="admin-avatar-mini" style="background: #8b5cf6; color: #ffffff;">KG</div>
-                                            <div>
-                                                <div class="admin-cell-title">Komang Gede</div>
-                                                <div class="admin-cell-sub">
-                                                    <span style="color: #f5b842;">★ 5.0</span> • Pendaki Berpengalaman
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <span class="admin-role-tag role-dest" style="background: rgba(168, 85, 247, 0.18); color: #c084fc; border-color: rgba(168, 85, 247, 0.3);">Gunung Agung (3.142 mdpl)</span>
-                                            <div class="admin-cell-sub" style="margin-top: 2px;">Karangasem, Bali</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="admin-comment-snippet" style="max-width: 320px; font-size: 12.5px; color: rgba(255,255,255,0.85); line-height: 1.4;">
-                                            "Trekking via jalur Pura Pasar Agung sangat menantang dan memacu adrenalin. Panorama matahari terbit sungguh membuat takjub!"
-                                        </div>
-                                    </td>
-                                    <td><span class="admin-location-cell">4 hari lalu</span></td>
-                                    <td style="text-align: right;">
-                                        <div class="admin-row-actions">
-                                            <button type="button" class="btn-action-view" onclick="openReviewDetailModal(this)">Detail</button>
-                                            <button type="button" class="btn-action-reject" onclick="deleteCommentRow(this, event)">Hapus</button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; padding: 35px 20px; color: rgba(255,255,255,0.5); font-size: 13.5px;">
+                                            Belum ada komentar wisatawan di database.
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -1387,6 +1257,7 @@
                 <div style="padding:16px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.08);border-radius:14px;">
                     <label style="display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:rgba(255,255,255,0.5);margin-bottom:8px;">Isi Ulasan:</label>
                     <p id="review-detail-comment" style="font-size:14px;line-height:1.6;color:#f1f5f9;margin:0;font-style:italic;"></p>
+                    <div id="review-detail-photos" style="display:none;gap:10px;margin-top:14px;flex-wrap:wrap;"></div>
                 </div>
             </div>
             <div class="admin-modal-actions" style="justify-content:space-between;">
@@ -2469,6 +2340,29 @@
             set('review-detail-comment', '"' + comment + '"');
             const av = document.getElementById('review-detail-avatar');
             if (av) { av.textContent = avatarText; av.style.background = avatarBg; }
+
+            // Handle photos preview in detail modal
+            const photosContainer = document.getElementById('review-detail-photos');
+            if (photosContainer) {
+                let photos = [];
+                try {
+                    photos = JSON.parse(row.dataset.photos || '[]');
+                } catch (e) {
+                    photos = [];
+                }
+                if (Array.isArray(photos) && photos.length > 0) {
+                    photosContainer.innerHTML = photos.map((p, idx) => `
+                        <a href="${p}" target="_blank" rel="noopener" style="display:inline-block;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.15);width:64px;height:64px;">
+                            <img src="${p}" alt="Foto ulasan ${idx+1}" style="width:100%;height:100%;object-fit:cover;">
+                        </a>
+                    `).join('');
+                    photosContainer.style.display = 'flex';
+                } else {
+                    photosContainer.innerHTML = '';
+                    photosContainer.style.display = 'none';
+                }
+            }
+
             const modal = document.getElementById('admin-review-detail-modal');
             if (modal) { modal.classList.add('show', 'active'); document.body.style.overflow = 'hidden'; }
         }
@@ -2481,12 +2375,14 @@
 
         function deleteCurrentReviewFromModal() {
             if (!currentCommentRow) return;
-            const user    = currentCommentRow.dataset.user    || currentCommentRow.querySelector('.admin-cell-title')?.textContent || 'Pengguna';
-            const dest    = currentCommentRow.dataset.dest    || currentCommentRow.querySelector('.admin-role-tag')?.textContent   || 'Destinasi';
-            const rating  = currentCommentRow.dataset.rating  || '5.0';
-            const time    = currentCommentRow.dataset.time    || 'Baru saja';
-            const comment = currentCommentRow.dataset.comment || currentCommentRow.querySelector('.admin-comment-snippet')?.textContent?.replace(/"/g,'').trim() || '';
-            const avatarMini = currentCommentRow.querySelector('.admin-avatar-mini');
+            const targetRow = currentCommentRow;
+            const commentId = targetRow.dataset.id;
+            const user    = targetRow.dataset.user    || targetRow.querySelector('.admin-cell-title')?.textContent || 'Pengguna';
+            const dest    = targetRow.dataset.dest    || targetRow.querySelector('.admin-role-tag')?.textContent   || 'Destinasi';
+            const rating  = targetRow.dataset.rating  || '5.0';
+            const time    = targetRow.dataset.time    || 'Baru saja';
+            const comment = targetRow.dataset.comment || targetRow.querySelector('.admin-comment-snippet')?.textContent?.replace(/"/g,'').trim() || '';
+            const avatarMini = targetRow.querySelector('.admin-avatar-mini');
             const avatarText = avatarMini ? avatarMini.textContent.trim() : user.slice(0,2).toUpperCase();
             const avatarBg   = avatarMini ? (avatarMini.style.background || '#244b2c') : '#244b2c';
             const avatarColor= avatarMini ? (avatarMini.style.color || '#ffffff') : '#ffffff';
@@ -2515,21 +2411,30 @@
                 desc: `Apakah Anda yakin ingin menghapus komentar dari "${user}"?`,
                 previewHtml: previewHtml,
                 btnText: 'Ya, Hapus Komentar',
-                onConfirm: () => {
+                onConfirm: async () => {
                     closeAdminDeleteConfirmModal();
-                    if (currentCommentRow) {
-                        const targetRow = currentCommentRow;
-                        targetRow.style.transition = 'all 0.3s ease';
-                        targetRow.style.opacity = '0';
-                        setTimeout(() => {
-                            targetRow.remove();
-                            updateCommentsCount();
-                            closeReviewDetailModal();
-                            showAdminToast('Ulasan dari ' + user + ' berhasil dihapus.');
-                        }, 300);
-                    } else {
-                        closeReviewDetailModal();
+                    if (commentId) {
+                        try {
+                            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+                            await fetch(`/admin/comments/${commentId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': csrf,
+                                    'Accept': 'application/json'
+                                }
+                            });
+                        } catch (err) {
+                            console.error('Gagal menghapus komentar dari server:', err);
+                        }
                     }
+                    targetRow.style.transition = 'all 0.3s ease';
+                    targetRow.style.opacity = '0';
+                    setTimeout(() => {
+                        targetRow.remove();
+                        updateCommentsCount();
+                        closeReviewDetailModal();
+                        showAdminToast('Ulasan dari ' + user + ' berhasil dihapus.');
+                    }, 300);
                 }
             });
         }
@@ -2539,6 +2444,7 @@
             const row = btn.closest('tr');
             if (!row) return;
 
+            const commentId = row.dataset.id;
             const user    = row.dataset.user    || row.querySelector('.admin-cell-title')?.textContent || 'Pengguna';
             const dest    = row.dataset.dest    || row.querySelector('.admin-role-tag')?.textContent   || 'Destinasi';
             const rating  = row.dataset.rating  || '5.0';
@@ -2573,8 +2479,22 @@
                 desc: `Apakah Anda yakin ingin menghapus komentar dari "${user}"?`,
                 previewHtml: previewHtml,
                 btnText: 'Ya, Hapus Komentar',
-                onConfirm: () => {
+                onConfirm: async () => {
                     closeAdminDeleteConfirmModal();
+                    if (commentId) {
+                        try {
+                            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+                            await fetch(`/admin/comments/${commentId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': csrf,
+                                    'Accept': 'application/json'
+                                }
+                            });
+                        } catch (err) {
+                            console.error('Gagal menghapus komentar dari server:', err);
+                        }
+                    }
                     row.style.transition = 'all 0.3s ease';
                     row.style.opacity = '0';
                     setTimeout(() => {
