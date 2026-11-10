@@ -15,6 +15,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        window.dbDestinations = @json($destinations ?? []);
+    </script>
 </head>
 
 <body>
@@ -297,7 +300,7 @@
                         <div class="cat-card-badge">
                             <span>Waterfall</span>
                         </div>
-                        <div class="cat-card-count">15+ Destinasi</div>
+                        <div class="cat-card-count">{{ $counts['waterfall'] ?? 0 }}+ Destinasi</div>
                     </div>
                     <div class="cat-card-body">
                         <h3 class="cat-card-title">Waterfall</h3>
@@ -328,7 +331,7 @@
                         <div class="cat-card-badge">
                             <span>Sunset Beach</span>
                         </div>
-                        <div class="cat-card-count">18+ Destinasi</div>
+                        <div class="cat-card-count">{{ $counts['sunset'] ?? 0 }}+ Destinasi</div>
                     </div>
                     <div class="cat-card-body">
                         <h3 class="cat-card-title">Sunset Beach</h3>
@@ -359,7 +362,7 @@
                         <div class="cat-card-badge">
                             <span>Sunrise Beach</span>
                         </div>
-                        <div class="cat-card-count">12+ Destinasi</div>
+                        <div class="cat-card-count">{{ $counts['sunrise'] ?? 0 }}+ Destinasi</div>
                     </div>
                     <div class="cat-card-body">
                         <h3 class="cat-card-title">Sunrise Beach</h3>
@@ -390,7 +393,7 @@
                         <div class="cat-card-badge">
                             <span>Mountain</span>
                         </div>
-                        <div class="cat-card-count">8+ Destinasi</div>
+                        <div class="cat-card-count">{{ $counts['mountain'] ?? 0 }}+ Destinasi</div>
                     </div>
                     <div class="cat-card-body">
                         <h3 class="cat-card-title">Mountain</h3>

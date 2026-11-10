@@ -1,15 +1,22 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DestinationController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+// Public Front Page
+Route::get('/', [DestinationController::class, 'welcome'])->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// User Dashboard
+Route::get('/dashboard', [DestinationController::class, 'dashboard'])->name('dashboard');
 
+// Admin Dashboard & Destination CRUD
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 Route::get('/admin/dashboard', [AdminController::class, 'index']);
+Route::post('/admin/destinations', [AdminController::class, 'store'])->name('admin.destinations.store');
+Route::post('/admin/destinations/{destination}', [AdminController::class, 'update'])->name('admin.destinations.update');
+Route::delete('/admin/destinations/{destination}', [AdminController::class, 'destroy'])->name('admin.destinations.destroy');
+
+// Public JSON Endpoints for realtime frontend sync
+Route::get('/api/destinations', [DestinationController::class, 'apiIndex'])->name('api.destinations.index');
+Route::get('/api/destinations/{destination}', [DestinationController::class, 'apiShow'])->name('api.destinations.show');

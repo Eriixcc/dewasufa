@@ -10,7 +10,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        window.dbDestinations = @json($destinations ?? []);
+    </script>
 </head>
 
 <body class="dashboard-body admin-body">
@@ -178,7 +183,7 @@
                                 <span class="stat-pill-badge badge-published">● Terbit</span>
                             </div>
                             <div class="stat-card-value-group">
-                                <span class="stat-main-number" id="stat-post-count">13</span>
+                                <span class="stat-main-number" id="stat-post-count">{{ $stats['post'] ?? count($destinations) }}</span>
                                 <span class="stat-unit">Destinasi</span>
                             </div>
                             <p class="stat-card-desc">Konten aktif tayang di katalog publik Dewasufa</p>
@@ -202,7 +207,7 @@
                                 <span class="stat-pill-badge badge-draft">● Konsep</span>
                             </div>
                             <div class="stat-card-value-group">
-                                <span class="stat-main-number" id="stat-draft-count">3</span>
+                                <span class="stat-main-number" id="stat-draft-count">{{ $stats['draft'] ?? 0 }}</span>
                                 <span class="stat-unit">Tersimpan</span>
                             </div>
                             <p class="stat-card-desc">Destinasi siap uji &amp; rilis ke publik</p>
@@ -227,7 +232,7 @@
                         </div>
                         <div class="admin-cat-info">
                             <h3 class="admin-cat-name">Waterfall</h3>
-                            <span class="admin-cat-count">(15 Destinasi)</span>
+                            <span class="admin-cat-count" id="admin-count-waterfall">({{ $stats['waterfall'] ?? 0 }} Destinasi)</span>
                         </div>
                     </div>
 
@@ -248,7 +253,7 @@
                         </div>
                         <div class="admin-cat-info">
                             <h3 class="admin-cat-name">Sunset Beach</h3>
-                            <span class="admin-cat-count">(18 Destinasi)</span>
+                            <span class="admin-cat-count" id="admin-count-sunset">({{ $stats['sunset'] ?? 0 }} Destinasi)</span>
                         </div>
                     </div>
 
@@ -267,7 +272,7 @@
                         </div>
                         <div class="admin-cat-info">
                             <h3 class="admin-cat-name">Sunrise Beach</h3>
-                            <span class="admin-cat-count">(12 Destinasi)</span>
+                            <span class="admin-cat-count" id="admin-count-sunrise">({{ $stats['sunrise'] ?? 0 }} Destinasi)</span>
                         </div>
                     </div>
 
@@ -280,7 +285,7 @@
                         </div>
                         <div class="admin-cat-info">
                             <h3 class="admin-cat-name">Mountain</h3>
-                            <span class="admin-cat-count">(8 Destinasi)</span>
+                            <span class="admin-cat-count" id="admin-count-mountain">({{ $stats['mountain'] ?? 0 }} Destinasi)</span>
                         </div>
                     </div>
 
@@ -296,7 +301,7 @@
                         </div>
                         <div class="admin-cat-info">
                             <h3 class="admin-cat-name">Lihat Semua</h3>
-                            <span class="admin-cat-count">(Semua Destinasi)</span>
+                            <span class="admin-cat-count" id="admin-count-all">({{ count($destinations) }} Destinasi)</span>
                         </div>
                     </div>
                 </div>
@@ -309,490 +314,71 @@
                 <div class="dash-section-header">
                     <div class="admin-table-title-group">
                         <h2 class="dash-section-title">Destinasi Wisata</h2>
-                        <span class="admin-table-count-badge" id="admin-dest-count-badge">16 Destinasi</span>
+                        <span class="admin-table-count-badge" id="admin-dest-count-badge">{{ count($destinations) }} Destinasi</span>
                     </div>
                 </div>
 
                 <div class="dash-recom-grid admin-dest-cards-grid" id="admin-cards-container">
-                    <!-- Waterfall 1 -->
-                    <div class="dash-recom-card" data-category="waterfall" data-status="post" data-key="sekumpul" data-title="Air Terjun Sekumpul" data-desc="Gugusan air terjun kembar megah berketinggian 80m di lembah Buleleng." data-time="07:00 - 16:00" data-ticket="Rp 20.000 / orang" data-loc="Sawan, Buleleng, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/waterfall.jpg" alt="Air Terjun Sekumpul" class="dash-recom-img">
-                            <span class="dash-recom-badge">Waterfall</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Air Terjun Sekumpul</h3>
-                            <p class="dash-recom-card-desc">Gugusan air terjun kembar megah berketinggian 80m di lembah Buleleng.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('sekumpul', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
+                    @forelse($destinations as $dest)
+                        @php
+                            $catSlug = $dest->category_slug;
+                            $badgeClass = match($catSlug) {
+                                'sunset' => 'badge-sunset',
+                                'sunrise' => 'badge-sunrise',
+                                'mountain' => 'badge-mountain',
+                                default => '',
+                            };
+                        @endphp
+                        <div class="dash-recom-card"
+                            data-id="{{ $dest->id }}"
+                            data-category="{{ $catSlug }}"
+                            data-status="post"
+                            data-key="{{ $dest->id }}"
+                            data-title="{{ $dest->name }}"
+                            data-desc="{{ $dest->description }}"
+                            data-time="07:00 - 18:00 WITA"
+                            data-ticket="{{ $dest->formatted_price }}"
+                            data-price="{{ $dest->price }}"
+                            data-loc="Bali, Indonesia"
+                            data-rating="5.0"
+                            data-best-visit="07:00 – 09:30 WITA"
+                            data-tags="{{ $dest->category }}, Bali, Spot Foto"
+                            data-gmaps="https://maps.google.com/?q={{ urlencode($dest->name . ' Bali') }}"
+                            data-thumb1="{{ $dest->image_url }}"
+                            data-thumb2="{{ $dest->image_url }}"
+                            data-thumb3="{{ $dest->image_url }}">
+                            <div class="dash-recom-img-wrap">
+                                <img src="{{ $dest->image_url }}" alt="{{ $dest->name }}" class="dash-recom-img" loading="lazy">
+                                <span class="dash-recom-badge {{ $badgeClass }}">{{ $dest->category }}</span>
+                                <span class="admin-card-status-pill badge-status-post">● Post</span>
+                            </div>
+                            <div class="dash-recom-body">
+                                <h3 class="dash-recom-card-title">{{ $dest->name }}</h3>
+                                <p class="dash-recom-card-desc">{{ $dest->description }}</p>
+                                <div class="dash-recom-footer">
+                                    <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('{{ $dest->id }}', this)">Detail</button>
+                                    <div class="admin-card-actions">
+                                        <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Waterfall 2 -->
-                    <div class="dash-recom-card" data-category="waterfall" data-status="post" data-key="waterfall" data-title="Air Terjun Tegenungan" data-desc="Kolam alami segar di lembah Gianyar dengan akses mudah dekat Ubud." data-time="06:30 - 18:00" data-ticket="Rp 25.000 / orang" data-loc="Kemenuh, Gianyar, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/waterfall.jpg" alt="Air Terjun Tegenungan" class="dash-recom-img">
-                            <span class="dash-recom-badge">Waterfall</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
+                    @empty
+                        <div class="admin-empty-state" style="grid-column: 1 / -1; padding: 48px; text-align: center; color: rgba(255,255,255,0.6);">
+                            <p>Belum ada destinasi tersimpan di database dewasufa.</p>
                         </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Air Terjun Tegenungan</h3>
-                            <p class="dash-recom-card-desc">Kolam alami segar di lembah Gianyar dengan akses mudah dekat Ubud.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('waterfall', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Waterfall 3 -->
-                    <div class="dash-recom-card" data-category="waterfall" data-status="post" data-key="sekumpul" data-title="Air Terjun Gitgit" data-desc="Air terjun legendaris dengan ketinggian 35 meter di lereng perbukitan Singaraja." data-time="08:00 - 17:00" data-ticket="Rp 20.000 / orang" data-loc="Sukasada, Buleleng, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/waterfall.jpg" alt="Air Terjun Gitgit" class="dash-recom-img">
-                            <span class="dash-recom-badge">Waterfall</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Air Terjun Gitgit</h3>
-                            <p class="dash-recom-card-desc">Air terjun legendaris dengan ketinggian 35 meter di Singaraja.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('sekumpul', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Waterfall 4 -->
-                    <div class="dash-recom-card" data-category="waterfall" data-status="post" data-key="sekumpul" data-title="Air Terjun Aling-Aling" data-desc="Sensasi seluncur alami dan cliff jumping yang menantang di Sambangan." data-time="08:00 - 16:30" data-ticket="Rp 30.000 / orang" data-loc="Sambangan, Buleleng, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/waterfall.jpg" alt="Air Terjun Aling-Aling" class="dash-recom-img">
-                            <span class="dash-recom-badge">Waterfall</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Air Terjun Aling-Aling</h3>
-                            <p class="dash-recom-card-desc">Sensasi seluncur alami dan cliff jumping yang menantang di Sambangan.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('sekumpul', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sunset Beach 1 -->
-                    <div class="dash-recom-card" data-category="sunset" data-status="post" data-key="sunset" data-title="Pantai Tanah Lot" data-desc="Siluet pura agung di atas karang laut saat matahari terbenam." data-time="17:00 - 18:45" data-ticket="Rp 20.000 / orang" data-loc="Beraban, Tabanan, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/sunset-beach.jpg" alt="Pantai Tanah Lot" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Pantai Tanah Lot</h3>
-                            <p class="dash-recom-card-desc">Siluet pura agung di atas karang laut saat matahari terbenam.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('sunset', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sunset Beach 2 -->
-                    <div class="dash-recom-card" data-category="sunset" data-status="post" data-key="sunset" data-title="Pantai Melasti Ungasan" data-desc="Tebing kapur menjulang tinggi dengan pasir putih bersih dan sunset magis." data-time="16:00 - 19:00" data-ticket="Rp 10.000 / orang" data-loc="Ungasan, Badung, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/sunset-beach.jpg" alt="Pantai Melasti & Tebing Karang" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Pantai Melasti Ungasan</h3>
-                            <p class="dash-recom-card-desc">Tebing kapur menjulang tinggi dengan pasir putih bersih dan sunset magis.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('sunset', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sunset Beach 3 -->
-                    <div class="dash-recom-card" data-category="sunset" data-status="post" data-key="sunset" data-title="Pantai Uluwatu / Suluban" data-desc="Tebing karang megah dengan ombak peselancar kelas dunia di Bukit." data-time="16:30 - 18:30" data-ticket="Rp 15.000 / orang" data-loc="Pecatu, Badung, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/sunset-beach.jpg" alt="Pantai Uluwatu / Suluban" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Pantai Uluwatu / Suluban</h3>
-                            <p class="dash-recom-card-desc">Tebing karang megah dengan ombak peselancar kelas dunia di Bukit.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('sunset', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sunset Beach 4 -->
-                    <div class="dash-recom-card" data-category="sunset" data-status="post" data-key="sunset" data-title="Pantai Kuta & Legian" data-desc="Garis pantai ikonik nan landai untuk menikmati senja santai Bali." data-time="17:00 - 18:30" data-ticket="Gratis" data-loc="Kuta, Badung, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/sunset-beach.jpg" alt="Pantai Kuta & Legian" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Pantai Kuta &amp; Legian</h3>
-                            <p class="dash-recom-card-desc">Garis pantai ikonik nan landai untuk menikmati senja santai Bali.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('sunset', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sunrise Beach 1 -->
-                    <div class="dash-recom-card" data-category="sunrise" data-status="post" data-key="sunrise" data-title="Pantai Sanur Denpasar" data-desc="Fajar hening nan damai dengan gazebo klasik dan jalur sepeda tepi laut." data-time="05:45 - 06:45" data-ticket="Gratis" data-loc="Sanur, Denpasar, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/sunrise-beach.jpg" alt="Pantai Sanur" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Pantai Sanur Denpasar</h3>
-                            <p class="dash-recom-card-desc">Fajar hening nan damai dengan gazebo klasik dan jalur sepeda tepi laut.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('sunrise', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sunrise Beach 2 -->
-                    <div class="dash-recom-card" data-category="sunrise" data-status="post" data-key="sunrise" data-title="Pantai Candidasa" data-desc="Ketenangan pesisir Karangasem dengan pemandangan pulau karang." data-time="05:30 - 06:30" data-ticket="Rp 10.000 / orang" data-loc="Candidasa, Karangasem, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/sunrise-beach.jpg" alt="Pantai Candidasa" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Pantai Candidasa</h3>
-                            <p class="dash-recom-card-desc">Ketenangan pesisir Karangasem dengan pemandangan pulau karang.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('sunrise', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sunrise Beach 3 (DRAFT) -->
-                    <div class="dash-recom-card" data-category="sunrise" data-status="draft" data-key="sunrise" data-title="Pantai Kusamba Klungkung" data-desc="Pasir hitam eksotis dan aktivitas pembuat garam tradisional saat fajar." data-time="05:30 - 06:30" data-ticket="Gratis" data-loc="Dawan, Klungkung, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/sunrise-beach.jpg" alt="Pantai Kusamba" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
-                            <span class="admin-card-status-pill badge-status-draft">● Draft</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Pantai Kusamba Klungkung</h3>
-                            <p class="dash-recom-card-desc">Pasir hitam eksotis dan aktivitas pembuat garam tradisional saat fajar.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('sunrise', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sunrise Beach 4 (DRAFT) -->
-                    <div class="dash-recom-card" data-category="sunrise" data-status="draft" data-key="sunrise" data-title="Pantai Amed" data-desc="Perahu jukung tradisional bersandar dengan latar fajar Gunung Agung." data-time="05:15 - 06:30" data-ticket="Rp 10.000 / orang" data-loc="Abang, Karangasem, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/sunrise-beach.jpg" alt="Pantai Amed" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
-                            <span class="admin-card-status-pill badge-status-draft">● Draft</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Pantai Amed</h3>
-                            <p class="dash-recom-card-desc">Perahu jukung tradisional bersandar dengan latar fajar Gunung Agung.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('sunrise', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Mountain 1 -->
-                    <div class="dash-recom-card" data-category="mountain" data-status="post" data-key="mountain" data-title="Gunung Batur (1.717 mdpl)" data-desc="Sunrise trekking paling populer dengan kaldera luas dan Danau Batur." data-time="03:30 - 09:00" data-ticket="Rp 100.000 / guide" data-loc="Kintamani, Bangli, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/mountain.jpg" alt="Gunung Batur" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-mountain">Mountain</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Gunung Batur (1.717 mdpl)</h3>
-                            <p class="dash-recom-card-desc">Sunrise trekking paling populer dengan kaldera luas dan Danau Batur.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('mountain', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Mountain 2 -->
-                    <div class="dash-recom-card" data-category="mountain" data-status="post" data-key="mountain" data-title="Gunung Agung (3.142 mdpl)" data-desc="Titik tertinggi dan tersuci di Bali untuk pendaki berpengalaman." data-time="Malam Hari" data-ticket="Rp 150.000 / guide" data-loc="Rendang, Karangasem, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/mountain.jpg" alt="Gunung Agung" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-mountain">Mountain</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Gunung Agung (3.142 mdpl)</h3>
-                            <p class="dash-recom-card-desc">Titik tertinggi dan tersuci di Bali untuk pendaki berpengalaman.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('mountain', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Mountain 3 -->
-                    <div class="dash-recom-card" data-category="mountain" data-status="post" data-key="mountain" data-title="Bukit Campuhan Ubud" data-desc="Jalur punggung bukit ilalang hijau yang sejuk dan ramah keluarga." data-time="06:00 - 08:30" data-ticket="Gratis" data-loc="Ubud, Gianyar, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/mountain.jpg" alt="Bukit Campuhan Ubud" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-mountain">Mountain</span>
-                            <span class="admin-card-status-pill badge-status-post">● Post</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Bukit Campuhan Ubud</h3>
-                            <p class="dash-recom-card-desc">Jalur punggung bukit ilalang hijau yang sejuk dan ramah keluarga.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('mountain', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Mountain 4 (DRAFT) -->
-                    <div class="dash-recom-card" data-category="mountain" data-status="draft" data-key="mountain" data-title="Gunung Abang (2.152 mdpl)" data-desc="Puncak berhutan rindang di seberang Kaldera Batur yang damai." data-time="03:00 - 10:00" data-ticket="Rp 50.000 / orang" data-loc="Kintamani, Bangli, Bali">
-                        <div class="dash-recom-img-wrap">
-                            <img src="/images/mountain.jpg" alt="Gunung Abang" class="dash-recom-img">
-                            <span class="dash-recom-badge badge-mountain">Mountain</span>
-                            <span class="admin-card-status-pill badge-status-draft">● Draft</span>
-                        </div>
-                        <div class="dash-recom-body">
-                            <h3 class="dash-recom-card-title">Gunung Abang (2.152 mdpl)</h3>
-                            <p class="dash-recom-card-desc">Puncak berhutan rindang di seberang Kaldera Batur yang damai.</p>
-                            <div class="dash-recom-footer">
-                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('mountain', this)">Detail</button>
-                                <div class="admin-card-actions">
-                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             </section>
 
@@ -2362,6 +1948,7 @@
         // ===== EDIT DESTINATION MODAL LOGIC (IDENTICAL TO CREATE MODAL & DETAIL) =====
         let currentEditingCard = null;
         let editUploadedPhotos = { main: '', thumb1: '', thumb2: '', thumb3: '' };
+        let editUploadedPhotoFiles = { main: null, thumb1: null, thumb2: null, thumb3: null };
 
         function setSelectVal(id, val) {
             const el = document.getElementById(id);
@@ -2422,6 +2009,7 @@
         function handleEditPhotoFile(event, slot) {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
+            editUploadedPhotoFiles[slot] = file;
 
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -2453,6 +2041,7 @@
 
         function resetEditModalPhotos() {
             editUploadedPhotos = { main: '', thumb1: '', thumb2: '', thumb3: '' };
+            editUploadedPhotoFiles = { main: null, thumb1: null, thumb2: null, thumb3: null };
             const mainLabel = document.getElementById('edit-dest-file-main-name');
             if (mainLabel) mainLabel.textContent = 'Klik di sini untuk memilih file gambar dari file komputer (JPG, PNG, WEBP)';
             ['thumb1', 'thumb2', 'thumb3'].forEach(k => {
@@ -2574,9 +2163,10 @@
             if (statDraft) statDraft.textContent = draftCount;
         }
 
-        function handleEditDestSubmit(e) {
+        async function handleEditDestSubmit(e) {
             e.preventDefault();
             if (!currentEditingCard) return;
+            const destId = currentEditingCard.dataset.id;
             const val = id => document.getElementById(id)?.value?.trim() || '';
 
             const newTitle  = val('edit-dest-title'),
@@ -2607,57 +2197,92 @@
 
             // Normalize category key for filtering
             let catKey = 'waterfall';
-            if (newCat === 'Sunset Beach') catKey = 'sunset';
-            else if (newCat === 'Sunrise Beach') catKey = 'sunrise';
-            else if (newCat === 'Mountain') catKey = 'mountain';
+            if (newCat === 'Sunset Beach' || newCat.toLowerCase().includes('sunset')) catKey = 'sunset';
+            else if (newCat === 'Sunrise Beach' || newCat.toLowerCase().includes('sunrise')) catKey = 'sunrise';
+            else if (newCat === 'Mountain' || newCat.toLowerCase().includes('mountain')) catKey = 'mountain';
 
-            // Update card dataset
-            currentEditingCard.dataset.title    = newTitle;
-            currentEditingCard.dataset.category = catKey;
-            currentEditingCard.dataset.status   = newStatus;
-            currentEditingCard.dataset.ticket   = newTicket;
-            currentEditingCard.dataset.time     = newTime;
-            currentEditingCard.dataset.loc      = newLoc;
-            currentEditingCard.dataset.tags     = newTags;
-            currentEditingCard.dataset.desc     = newDesc;
-            currentEditingCard.dataset.gmaps    = newGmaps;
-            currentEditingCard.dataset.bestVisit = newBestVisit;
-
-            // Update photos if newly uploaded
-            if (editUploadedPhotos.main) {
-                const cardImg = currentEditingCard.querySelector('.dash-recom-img');
-                if (cardImg) cardImg.src = editUploadedPhotos.main;
-            }
-            if (editUploadedPhotos.thumb1) currentEditingCard.dataset.thumb1 = editUploadedPhotos.thumb1;
-            if (editUploadedPhotos.thumb2) currentEditingCard.dataset.thumb2 = editUploadedPhotos.thumb2;
-            if (editUploadedPhotos.thumb3) currentEditingCard.dataset.thumb3 = editUploadedPhotos.thumb3;
-
-            // Update Card DOM
-            const t = currentEditingCard.querySelector('.dash-recom-card-title');
-            if (t) t.textContent = newTitle;
-            const d = currentEditingCard.querySelector('.dash-recom-card-desc');
-            if (d) d.textContent = newDesc;
-            const b = currentEditingCard.querySelector('.dash-recom-badge');
-            if (b) {
-                b.textContent = newCat;
-                b.className = 'dash-recom-badge' + (catKey === 'sunset' ? ' badge-sunset' : (catKey === 'sunrise' ? ' badge-sunrise' : (catKey === 'mountain' ? ' badge-mountain' : '')));
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const formData = new FormData();
+            formData.append('name', newTitle);
+            formData.append('category', newCat);
+            formData.append('description', newDesc);
+            formData.append('price', newTicket);
+            if (editUploadedPhotoFiles.main) {
+                formData.append('image', editUploadedPhotoFiles.main);
             }
 
-            // Update status pill badge on card
-            const statusPill = currentEditingCard.querySelector('.admin-card-status-pill');
-            if (statusPill) {
-                if (newStatus === 'draft') {
-                    statusPill.className = 'admin-card-status-pill badge-status-draft';
-                    statusPill.textContent = '● Draft';
-                } else {
-                    statusPill.className = 'admin-card-status-pill badge-status-post';
-                    statusPill.textContent = '● Post';
+            try {
+                if (destId) {
+                    const response = await fetch(`/admin/destinations/${destId}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    });
+                    const res = await response.json();
+                    if (!response.ok) {
+                        showAdminToast(res.message || 'Gagal memperbarui di database.', '✕');
+                        return;
+                    }
+                    if (res.destination && res.destination.image_url) {
+                        const cardImg = currentEditingCard.querySelector('.dash-recom-img');
+                        if (cardImg) cardImg.src = res.destination.image_url;
+                    }
                 }
-            }
 
-            closeEditDestModal();
-            updateDestCounts();
-            showAdminToast('Destinasi "' + newTitle + '" berhasil diperbarui! ✨');
+                // Update card dataset
+                currentEditingCard.dataset.title    = newTitle;
+                currentEditingCard.dataset.category = catKey;
+                currentEditingCard.dataset.status   = newStatus;
+                currentEditingCard.dataset.ticket   = newTicket;
+                currentEditingCard.dataset.time     = newTime;
+                currentEditingCard.dataset.loc      = newLoc;
+                currentEditingCard.dataset.tags     = newTags;
+                currentEditingCard.dataset.desc     = newDesc;
+                currentEditingCard.dataset.gmaps    = newGmaps;
+                currentEditingCard.dataset.bestVisit = newBestVisit;
+
+                // Update photos if newly uploaded
+                if (editUploadedPhotos.main) {
+                    const cardImg = currentEditingCard.querySelector('.dash-recom-img');
+                    if (cardImg) cardImg.src = editUploadedPhotos.main;
+                }
+                if (editUploadedPhotos.thumb1) currentEditingCard.dataset.thumb1 = editUploadedPhotos.thumb1;
+                if (editUploadedPhotos.thumb2) currentEditingCard.dataset.thumb2 = editUploadedPhotos.thumb2;
+                if (editUploadedPhotos.thumb3) currentEditingCard.dataset.thumb3 = editUploadedPhotos.thumb3;
+
+                // Update Card DOM
+                const t = currentEditingCard.querySelector('.dash-recom-card-title');
+                if (t) t.textContent = newTitle;
+                const d = currentEditingCard.querySelector('.dash-recom-card-desc');
+                if (d) d.textContent = newDesc;
+                const b = currentEditingCard.querySelector('.dash-recom-badge');
+                if (b) {
+                    b.textContent = newCat;
+                    b.className = 'dash-recom-badge ' + (catKey === 'sunset' ? 'badge-sunset' : (catKey === 'sunrise' ? 'badge-sunrise' : (catKey === 'mountain' ? 'badge-mountain' : '')));
+                }
+
+                // Update status pill badge on card
+                const statusPill = currentEditingCard.querySelector('.admin-card-status-pill');
+                if (statusPill) {
+                    if (newStatus === 'draft') {
+                        statusPill.className = 'admin-card-status-pill badge-status-draft';
+                        statusPill.textContent = '● Draft';
+                    } else {
+                        statusPill.className = 'admin-card-status-pill badge-status-post';
+                        statusPill.textContent = '● Post';
+                    }
+                }
+
+                closeEditDestModal();
+                updateDestCounts();
+                showAdminToast('Destinasi "' + newTitle + '" berhasil diperbarui di database! ✨');
+            } catch (err) {
+                console.error(err);
+                showAdminToast('Gagal memperbarui di database.', '✕');
+            }
         }
 
         // ===== CUSTOM CONFIRMATION POPUP MODAL =====
@@ -2749,15 +2374,39 @@
                 desc: `Apakah Anda yakin ingin menghapus "${title}" dari katalog destinasi?`,
                 previewHtml: previewHtml,
                 btnText: 'Ya, Hapus Destinasi',
-                onConfirm: () => {
+                onConfirm: async () => {
                     closeAdminDeleteConfirmModal();
+                    const destId = card.dataset.id;
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                    if (destId) {
+                        try {
+                            const res = await fetch(`/admin/destinations/${destId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken,
+                                    'Accept': 'application/json'
+                                }
+                            });
+                            const result = await res.json();
+                            if (!res.ok) {
+                                showAdminToast(result.message || 'Gagal menghapus dari database.', '✕');
+                                return;
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            showAdminToast('Gagal menghubungi database.', '✕');
+                            return;
+                        }
+                    }
+
                     card.style.transition = 'all 0.35s ease';
                     card.style.opacity = '0';
                     card.style.transform = 'scale(0.88)';
                     setTimeout(() => {
                         card.remove();
                         updateDestCounts();
-                        showAdminToast('Destinasi "' + title + '" berhasil dihapus.');
+                        showAdminToast('Destinasi "' + title + '" berhasil dihapus dari database.');
                     }, 350);
                 }
             });
@@ -2766,10 +2415,18 @@
         function updateDestCounts() {
             const allCards = document.querySelectorAll('#admin-cards-container .dash-recom-card');
             let postCount = 0, draftCount = 0;
+            let wfCount = 0, sunCount = 0, sriCount = 0, mtnCount = 0;
+
             allCards.forEach(c => {
                 if (c.dataset.status === 'draft') draftCount++;
                 else postCount++;
+                const cat = (c.dataset.category || '').toLowerCase();
+                if (cat === 'waterfall' || cat.includes('terjun')) wfCount++;
+                else if (cat === 'sunset') sunCount++;
+                else if (cat === 'sunrise') sriCount++;
+                else if (cat === 'mountain' || cat.includes('gunung')) mtnCount++;
             });
+
             const statPost = document.getElementById('stat-post-count');
             if (statPost) statPost.textContent = postCount;
             const statDraft = document.getElementById('stat-draft-count');
@@ -2778,6 +2435,16 @@
             if (navPill) navPill.textContent = allCards.length;
             const badge = document.getElementById('admin-dest-count-badge');
             if (badge) badge.textContent = `${allCards.length} Destinasi`;
+
+            const setCat = (id, count) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = `(${count} Destinasi)`;
+            };
+            setCat('admin-count-waterfall', wfCount);
+            setCat('admin-count-sunset', sunCount);
+            setCat('admin-count-sunrise', sriCount);
+            setCat('admin-count-mountain', mtnCount);
+            setCat('admin-count-all', allCards.length);
         }
 
         // ===== REVIEW MODERATION DETAIL MODAL =====
@@ -3296,10 +2963,12 @@
 
         // ===== FILE UPLOAD & PREVIEWS FOR CREATE MODAL =====
         let uploadedPhotos = { main: '', thumb1: '', thumb2: '', thumb3: '' };
+        let uploadedPhotoFiles = { main: null, thumb1: null, thumb2: null, thumb3: null };
 
         function handleAdminPhotoFile(event, slot) {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
+            uploadedPhotoFiles[slot] = file;
 
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -3332,6 +3001,7 @@
 
         function resetCreateModalPhotos() {
             uploadedPhotos = { main: '', thumb1: '', thumb2: '', thumb3: '' };
+            uploadedPhotoFiles = { main: null, thumb1: null, thumb2: null, thumb3: null };
             const defaultImg = '/images/waterfall.jpg';
             ['main', 'thumb1', 'thumb2', 'thumb3'].forEach(k => {
                 const img = document.getElementById('create-preview-img-' + k);
@@ -3401,7 +3071,7 @@
         document.addEventListener('DOMContentLoaded', initAdminHourSelects);
 
         // Handle Add New Destination Form Submit (Synced with User Destination View)
-        function handleAdminAddDest(event) {
+        async function handleAdminAddDest(event) {
             event.preventDefault();
             const name = document.getElementById('dest-input-name')?.value.trim();
             const cat = document.getElementById('dest-input-category')?.value || 'Waterfall';
@@ -3411,6 +3081,8 @@
             const desc = document.getElementById('dest-input-desc')?.value.trim() || '';
             const gmaps = document.getElementById('dest-input-gmaps')?.value.trim() || '';
             const status = document.getElementById('dest-input-status')?.value || 'post';
+
+            if (!name) return;
 
             // Automatic time calculations from dropdowns (Jam, Menit, Zona Waktu)
             const openH = document.getElementById('dest-time-open-h')?.value || '06';
@@ -3429,99 +3101,122 @@
             const cond = document.getElementById('dest-best-condition')?.value || '';
             const bestVisit = `${startH}:${startM} – ${endH}:${endM} ${bestTz}` + (cond ? ` ${cond}` : '');
 
-            // Rating: removed from form, defaulted to '5.0'
-            const rating = '5.0';
-
-            // Photos from computer upload
-            const imgMain = uploadedPhotos.main || '/images/waterfall.jpg';
-            const thumb1 = uploadedPhotos.thumb1 || imgMain;
-            const thumb2 = uploadedPhotos.thumb2 || imgMain;
-            const thumb3 = uploadedPhotos.thumb3 || imgMain;
-
-            if (!name) return;
-
-            // Normalize category key
-            let catKey = 'waterfall';
-            if (cat === 'Sunset Beach') catKey = 'sunset';
-            else if (cat === 'Sunrise Beach') catKey = 'sunrise';
-            else if (cat === 'Mountain') catKey = 'mountain';
-
-            const slug = 'dest-' + Date.now();
-
-            // Create new destination card in #admin-cards-container
-            const container = document.getElementById('admin-cards-container');
-            if (container) {
-                const card = document.createElement('div');
-                card.className = 'dash-recom-card';
-                card.dataset.category = catKey;
-                card.dataset.status = status;
-                card.dataset.key = slug;
-                card.dataset.title = name;
-                card.dataset.desc = desc;
-                card.dataset.time = time;
-                card.dataset.ticket = ticket;
-                card.dataset.loc = location;
-                card.dataset.rating = rating;
-                card.dataset.bestVisit = bestVisit;
-                card.dataset.tags = tags;
-                card.dataset.gmaps = gmaps;
-                card.dataset.thumb1 = thumb1;
-                card.dataset.thumb2 = thumb2;
-                card.dataset.thumb3 = thumb3;
-
-                const statusPillClass = status === 'draft' ? 'badge-status-draft' : 'badge-status-post';
-                const statusPillText  = status === 'draft' ? 'Draft' : 'Post';
-
-                card.innerHTML = `
-                    <div class="dash-recom-img-wrap">
-                        <img src="${imgMain}" alt="${name}" class="dash-recom-img">
-                        <span class="dash-recom-badge">${cat}</span>
-                        <span class="admin-card-status-pill ${statusPillClass}">${statusPillText}</span>
-                    </div>
-                    <div class="dash-recom-body">
-                        <h3 class="dash-recom-card-title">${name}</h3>
-                        <p class="dash-recom-card-desc">${desc}</p>
-                        <div class="dash-recom-footer">
-                            <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('${slug}', this)">Detail</button>
-                            <div class="admin-card-actions">
-                                <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
-                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                    </svg>
-                                </button>
-                                <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
-                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                container.prepend(card);
-
-                // Update counter badge
-                const allCardsCount = container.querySelectorAll('.dash-recom-card').length;
-                const badge = document.getElementById('admin-dest-count-badge');
-                if (badge) badge.textContent = `${allCardsCount} Destinasi`;
-
-                // Update Post / Draft stats
-                if (status === 'post') {
-                    const postStat = document.getElementById('stat-post-count');
-                    if (postStat) postStat.textContent = parseInt(postStat.textContent || '0') + 1;
-                } else {
-                    const draftStat = document.getElementById('stat-draft-count');
-                    if (draftStat) draftStat.textContent = parseInt(draftStat.textContent || '0') + 1;
-                }
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('category', cat);
+            formData.append('description', desc);
+            formData.append('price', ticket);
+            if (uploadedPhotoFiles.main) {
+                formData.append('image', uploadedPhotoFiles.main);
             }
 
-            closeAdminCreateModal();
-            document.getElementById('admin-add-dest-form')?.reset();
-            resetCreateModalPhotos();
-            showAdminToast(`Destinasi "${name}" berhasil ditambahkan ke katalog Dewasufa! 🌿`);
+            try {
+                const response = await fetch('/admin/destinations', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (!response.ok) {
+                    showAdminToast(result.message || 'Gagal menyimpan ke database.', '✕');
+                    return;
+                }
+
+                const newDest = result.destination;
+                const destId = newDest.id;
+                const resolvedImg = newDest.image_url || uploadedPhotos.main || '/images/waterfall.jpg';
+                const formattedPrice = newDest.formatted_price || ticket;
+
+                // Normalize category key
+                let catKey = 'waterfall';
+                if (cat === 'Sunset Beach' || cat.toLowerCase().includes('sunset')) catKey = 'sunset';
+                else if (cat === 'Sunrise Beach' || cat.toLowerCase().includes('sunrise')) catKey = 'sunrise';
+                else if (cat === 'Mountain' || cat.toLowerCase().includes('mountain')) catKey = 'mountain';
+
+                // Create new destination card in #admin-cards-container
+                const container = document.getElementById('admin-cards-container');
+                if (container) {
+                    const emptyState = container.querySelector('.admin-empty-state');
+                    if (emptyState) emptyState.remove();
+
+                    const card = document.createElement('div');
+                    card.className = 'dash-recom-card';
+                    card.dataset.id = destId;
+                    card.dataset.category = catKey;
+                    card.dataset.status = status;
+                    card.dataset.key = destId;
+                    card.dataset.title = name;
+                    card.dataset.desc = desc;
+                    card.dataset.time = time;
+                    card.dataset.ticket = formattedPrice;
+                    card.dataset.price = newDest.price;
+                    card.dataset.loc = location;
+                    card.dataset.rating = '5.0';
+                    card.dataset.bestVisit = bestVisit;
+                    card.dataset.tags = tags || `${cat}, Bali, Spot Foto`;
+                    card.dataset.gmaps = gmaps || `https://maps.google.com/?q=${encodeURIComponent(name + ' Bali')}`;
+                    card.dataset.thumb1 = resolvedImg;
+                    card.dataset.thumb2 = resolvedImg;
+                    card.dataset.thumb3 = resolvedImg;
+
+                    const statusPillClass = status === 'draft' ? 'badge-status-draft' : 'badge-status-post';
+                    const statusPillText  = status === 'draft' ? '● Draft' : '● Post';
+                    const badgeClass = catKey === 'sunset' ? 'badge-sunset' : (catKey === 'sunrise' ? 'badge-sunrise' : (catKey === 'mountain' ? 'badge-mountain' : ''));
+
+                    card.innerHTML = `
+                        <div class="dash-recom-img-wrap">
+                            <img src="${resolvedImg}" alt="${name}" class="dash-recom-img" loading="lazy">
+                            <span class="dash-recom-badge ${badgeClass}">${cat}</span>
+                            <span class="admin-card-status-pill ${statusPillClass}">${statusPillText}</span>
+                        </div>
+                        <div class="dash-recom-body">
+                            <h3 class="dash-recom-card-title">${name}</h3>
+                            <p class="dash-recom-card-desc">${desc}</p>
+                            <div class="dash-recom-footer">
+                                <button type="button" class="dash-btn-lihat" aria-label="Detail" onclick="openAdminSpotDetail('${destId}', this)">Detail</button>
+                                <div class="admin-card-actions">
+                                    <button type="button" class="admin-card-action-btn btn-card-edit" onclick="openEditDestModal(this, event)" title="Edit Destinasi" aria-label="Edit Destinasi">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="admin-card-action-btn btn-card-delete" onclick="confirmDeleteCard(this, event)" title="Hapus Destinasi" aria-label="Hapus Destinasi">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    container.prepend(card);
+                    updateDestCounts();
+                }
+
+                closeAdminCreateModal();
+                document.getElementById('admin-add-dest-form')?.reset();
+                resetCreateModalPhotos();
+                showAdminToast(`Destinasi "${name}" berhasil disimpan ke database dewasufa! 🌿`);
+
+                // Scroll to destination section
+                const secDest = document.getElementById('admin-destinasi-section');
+                if (secDest) {
+                    secDest.classList.remove('admin-section-hidden');
+                    setTimeout(() => secDest.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+                }
+            } catch (err) {
+                console.error(err);
+                showAdminToast('Terjadi gangguan saat menyimpan ke database.', '✕');
+            }
+        }
 
             // Scroll to destination section
             const secDest = document.getElementById('admin-destinasi-section');

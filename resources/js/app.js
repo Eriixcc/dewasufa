@@ -184,7 +184,29 @@ export function openDestModal(categoryKey) {
 
     if (container) {
         container.innerHTML = '';
-        data.spots.forEach(spot => {
+        let spotsToRender = [];
+        if (window.dbDestinations && Array.isArray(window.dbDestinations)) {
+            const dbFiltered = window.dbDestinations.filter(d => {
+                const cat = (d.category || '').toLowerCase();
+                if (categoryKey === 'waterfall') return cat.includes('waterfall') || cat.includes('terjun');
+                if (categoryKey === 'sunset') return cat.includes('sunset');
+                if (categoryKey === 'sunrise') return cat.includes('sunrise');
+                if (categoryKey === 'mountain') return cat.includes('mountain') || cat.includes('gunung');
+                return false;
+            });
+            if (dbFiltered.length > 0) {
+                spotsToRender = dbFiltered.map(d => ({
+                    name: d.name,
+                    desc: d.description,
+                    time: d.formatted_price || (d.price > 0 ? `Rp ${Number(d.price).toLocaleString('id-ID')} / orang` : 'Gratis')
+                }));
+            }
+        }
+        if (spotsToRender.length === 0 && data.spots) {
+            spotsToRender = data.spots;
+        }
+
+        spotsToRender.forEach(spot => {
             const item = document.createElement('div');
             item.className = 'dest-spot-card';
             item.innerHTML = `
@@ -192,7 +214,7 @@ export function openDestModal(categoryKey) {
                     <h5>${spot.name}</h5>
                     <p>${spot.desc}</p>
                 </div>
-                <div class="dest-spot-time">⏱ ${spot.time}</div>
+                <div class="dest-spot-time">🏷 ${spot.time}</div>
             `;
             container.appendChild(item);
         });
@@ -712,7 +734,28 @@ export function openDashSpotDetail(key) {
     // Bring history card to top
     bringHistoryCardToTop(key);
 
-    const data = spotDetailsData[key] || spotDetailsData.waterfall;
+    let data = spotDetailsData[key];
+    if (window.dbDestinations && Array.isArray(window.dbDestinations)) {
+        const found = window.dbDestinations.find(d => String(d.id) === String(key) || d.category_slug === key || (d.name && d.name.toLowerCase().includes(String(key).toLowerCase())));
+        if (found) {
+            const img = found.image_url || '/images/waterfall.jpg';
+            data = {
+                title: found.name,
+                category: found.category,
+                location: 'Bali, Indonesia',
+                image: img,
+                gallery: [img, img, img, img],
+                desc: found.description,
+                rating: 5.0,
+                bestTime: '07:00 - 18:00 WITA',
+                bestVisit: '07:00 – 09:30 WITA (Suasana tenang dan sejuk)',
+                ticket: found.formatted_price || (found.price > 0 ? `Rp ${Number(found.price).toLocaleString('id-ID')} / orang` : 'Gratis'),
+                tags: [found.category, 'Bali', 'Wisata Alam'],
+                gmapsUrl: `https://maps.google.com/?q=${encodeURIComponent(found.name + ' Bali')}`
+            };
+        }
+    }
+    if (!data) data = spotDetailsData.waterfall;
     currentDetailSpotKey = key;
 
     const modal = document.getElementById('dest-detail-modal');

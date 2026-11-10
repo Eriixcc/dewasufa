@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        window.dbDestinations = @json($destinations ?? []);
+    </script>
 </head>
 
 <body class="dashboard-body">
@@ -150,23 +153,25 @@
                     </div>
 
                     <div class="dash-new-spots-list" id="dash-new-spots-container">
-                        <!-- Spot 1 -->
-                        <div class="dash-mini-spot-card" onclick="openDashSpotDetail('sekumpul')">
-                            <img src="/images/waterfall.jpg" alt="Air Terjun Sekumpul" class="dash-mini-img">
-                            <div class="dash-mini-info">
-                                <span class="dash-mini-title">Air Terjun Sekumpul Buleleng</span>
+                        @if($latestDestinations->isNotEmpty())
+                            @foreach($latestDestinations as $dest)
+                                <div class="dash-mini-spot-card" onclick="openDashSpotDetail('{{ $dest->id }}')">
+                                    <img src="{{ $dest->image_url }}" alt="{{ $dest->name }}" class="dash-mini-img" loading="lazy">
+                                    <div class="dash-mini-info">
+                                        <span class="dash-mini-title">{{ $dest->name }}</span>
+                                    </div>
+                                    <button type="button" class="dash-btn-lihat" aria-label="Lihat Rute">Lihat</button>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="dash-mini-spot-card" onclick="openDashSpotDetail('sekumpul')">
+                                <img src="/images/waterfall.jpg" alt="Air Terjun Sekumpul" class="dash-mini-img">
+                                <div class="dash-mini-info">
+                                    <span class="dash-mini-title">Air Terjun Sekumpul Buleleng</span>
+                                </div>
+                                <button type="button" class="dash-btn-lihat" aria-label="Lihat Rute">Lihat</button>
                             </div>
-                            <button type="button" class="dash-btn-lihat" aria-label="Lihat Rute">Lihat</button>
-                        </div>
-
-                        <!-- Spot 2 -->
-                        <div class="dash-mini-spot-card" onclick="openDashSpotDetail('sunset')">
-                            <img src="/images/sunset-beach.jpg" alt="Sunset Melasti" class="dash-mini-img">
-                            <div class="dash-mini-info">
-                                <span class="dash-mini-title">Tebing Pantai Melasti Ungasan</span>
-                            </div>
-                            <button type="button" class="dash-btn-lihat" aria-label="Lihat Rute">Lihat</button>
-                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -189,41 +194,25 @@
                     </div>
 
                     <div class="dash-history-list" id="dash-history-container">
-                        <!-- Card 1 -->
-                        <div class="dash-history-mini-card" data-spot-key="waterfall" onclick="openDashSpotDetail('waterfall')">
-                            <img src="/images/waterfall.jpg" alt="Air Terjun Tegenungan" class="dash-mini-img">
-                            <div class="dash-mini-info">
-                                <span class="dash-mini-title">Air Terjun Tegenungan</span>
+                        @if($destinations->isNotEmpty())
+                            @foreach($destinations->take(4) as $dest)
+                                <div class="dash-history-mini-card" data-spot-key="{{ $dest->id }}" onclick="openDashSpotDetail('{{ $dest->id }}')">
+                                    <img src="{{ $dest->image_url }}" alt="{{ $dest->name }}" class="dash-mini-img" loading="lazy">
+                                    <div class="dash-mini-info">
+                                        <span class="dash-mini-title">{{ $dest->name }}</span>
+                                    </div>
+                                    <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="dash-history-mini-card" data-spot-key="waterfall" onclick="openDashSpotDetail('waterfall')">
+                                <img src="/images/waterfall.jpg" alt="Air Terjun Tegenungan" class="dash-mini-img">
+                                <div class="dash-mini-info">
+                                    <span class="dash-mini-title">Air Terjun Tegenungan</span>
+                                </div>
+                                <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
                             </div>
-                            <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
-                        </div>
-
-                        <!-- Card 2 -->
-                        <div class="dash-history-mini-card" data-spot-key="sunrise" onclick="openDashSpotDetail('sunrise')">
-                            <img src="/images/sunrise-beach.jpg" alt="Pantai Sanur" class="dash-mini-img">
-                            <div class="dash-mini-info">
-                                <span class="dash-mini-title">Pantai Sanur Denpasar</span>
-                            </div>
-                            <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
-                        </div>
-
-                        <!-- Card 3 -->
-                        <div class="dash-history-mini-card" data-spot-key="mountain" onclick="openDashSpotDetail('mountain')">
-                            <img src="/images/mountain.jpg" alt="Gunung Batur" class="dash-mini-img">
-                            <div class="dash-mini-info">
-                                <span class="dash-mini-title">Gunung Batur Kintamani</span>
-                            </div>
-                            <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
-                        </div>
-
-                        <!-- Card 4 -->
-                        <div class="dash-history-mini-card" data-spot-key="sunset" onclick="openDashSpotDetail('sunset')">
-                            <img src="/images/sunset-beach.jpg" alt="Pura Luhur Uluwatu" class="dash-mini-img">
-                            <div class="dash-mini-info">
-                                <span class="dash-mini-title">Pura Luhur Uluwatu</span>
-                            </div>
-                            <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
-                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -235,7 +224,7 @@
 
                 <!-- Featured Hero Banner Card -->
                 <article class="dash-hero-card" id="dash-featured-banner">
-                    <div class="dash-hero-bg-img" id="dash-featured-img"></div>
+                    <div class="dash-hero-bg-img" id="dash-featured-img" style="background-image: url('{{ $featured?->image_url ?? asset('images/waterfall.jpg') }}');"></div>
                     <div class="dash-hero-overlay"></div>
 
                     <div class="dash-hero-content">
@@ -246,20 +235,19 @@
 
                         <!-- Tag Pills -->
                         <div class="dash-hero-tags" id="dash-featured-tags">
-                            <span class="dash-hero-tag">Waterfall</span>
-                            <span class="dash-hero-tag">Buleleng, Bali</span>
+                            <span class="dash-hero-tag">{{ $featured?->category ?? 'Waterfall' }}</span>
+                            <span class="dash-hero-tag">Bali, Indonesia</span>
                         </div>
 
                         <!-- Title & Description -->
-                        <h1 class="dash-hero-title" id="dash-featured-title">Sekumpul Hidden Falls: Mahakarya Tersembunyi Bali Utara</h1>
+                        <h1 class="dash-hero-title" id="dash-featured-title">{{ $featured?->name ?? 'Sekumpul Hidden Falls: Mahakarya Tersembunyi Bali Utara' }}</h1>
                         <p class="dash-hero-desc" id="dash-featured-desc">
-                            Keanggunan tujuh tingkatan air terjun di lembah tropis yang asri. Nikmati udara murni,
-                            pemandangan rimba hijau, serta panduan trekking lengkap bersama pemandu lokal berlisensi.
+                            {{ $featured?->description ?? 'Keanggunan air terjun di lembah tropis yang asri. Nikmati udara murni, pemandangan rimba hijau, serta panduan trekking lengkap bersama pemandu lokal berlisensi.' }}
                         </p>
 
                         <!-- Action Buttons Row -->
                         <div class="dash-hero-actions">
-                            <button type="button" class="dash-btn-primary" id="dash-hero-btn-start" aria-label="Lihat Destinasi" onclick="handleHeroLihatClick()">
+                            <button type="button" class="dash-btn-primary" id="dash-hero-btn-start" aria-label="Lihat Destinasi" onclick="openDashSpotDetail('{{ $featured?->id ?? 'sekumpul' }}')">
                                 <span>Lihat</span>
                             </button>
 
@@ -294,69 +282,46 @@
                     </div>
 
                     <div class="dash-recom-grid" id="dash-recom-grid">
-                        <!-- Card 1: Waterfall -->
-                        <div class="dash-recom-card" data-category="waterfall">
-                            <div class="dash-recom-img-wrap">
-                                <img src="/images/waterfall.jpg" alt="Air Terjun Tegenungan" class="dash-recom-img">
-                                <span class="dash-recom-badge">Waterfall</span>
-                            </div>
-                            <div class="dash-recom-body">
-                                <h3 class="dash-recom-card-title">Tegenungan Waterfall</h3>
-                                <p class="dash-recom-card-desc">Kolam alami segar di lembah Gianyar dekat Ubud.</p>
-                                <div class="dash-recom-footer">
-                                    <span class="dash-recom-time">06:30 - 18:00</span>
-                                    <button type="button" class="dash-btn-lihat" aria-label="Lihat" onclick="openDashSpotDetail('waterfall')">Lihat</button>
+                        @forelse($destinations as $dest)
+                            @php
+                                $catSlug = $dest->category_slug;
+                                $badgeClass = match($catSlug) {
+                                    'sunset' => 'badge-sunset',
+                                    'sunrise' => 'badge-sunrise',
+                                    'mountain' => 'badge-mountain',
+                                    default => '',
+                                };
+                            @endphp
+                            <div class="dash-recom-card" data-category="{{ $catSlug }}" data-id="{{ $dest->id }}" onclick="openDashSpotDetail('{{ $dest->id }}')">
+                                <div class="dash-recom-img-wrap">
+                                    <img src="{{ $dest->image_url }}" alt="{{ $dest->name }}" class="dash-recom-img" loading="lazy">
+                                    <span class="dash-recom-badge {{ $badgeClass }}">{{ $dest->category }}</span>
+                                </div>
+                                <div class="dash-recom-body">
+                                    <h3 class="dash-recom-card-title">{{ $dest->name }}</h3>
+                                    <p class="dash-recom-card-desc">{{ $dest->description }}</p>
+                                    <div class="dash-recom-footer">
+                                        <span class="dash-recom-time">{{ $dest->formatted_price }}</span>
+                                        <button type="button" class="dash-btn-lihat" aria-label="Lihat" onclick="event.stopPropagation(); openDashSpotDetail('{{ $dest->id }}')">Lihat</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Card 2: Sunset Beach -->
-                        <div class="dash-recom-card" data-category="sunset">
-                            <div class="dash-recom-img-wrap">
-                                <img src="/images/sunset-beach.jpg" alt="Pantai Tanah Lot" class="dash-recom-img">
-                                <span class="dash-recom-badge badge-sunset">Sunset Beach</span>
-                            </div>
-                            <div class="dash-recom-body">
-                                <h3 class="dash-recom-card-title">Pantai Tanah Lot</h3>
-                                <p class="dash-recom-card-desc">Siluet pura agung di atas karang laut saat senja.</p>
-                                <div class="dash-recom-footer">
-                                    <span class="dash-recom-time">17:00 - 18:45</span>
-                                    <button type="button" class="dash-btn-lihat" aria-label="Lihat" onclick="openDashSpotDetail('sunset')">Lihat</button>
+                        @empty
+                            <div class="dash-recom-card" data-category="waterfall">
+                                <div class="dash-recom-img-wrap">
+                                    <img src="/images/waterfall.jpg" alt="Air Terjun Tegenungan" class="dash-recom-img">
+                                    <span class="dash-recom-badge">Waterfall</span>
+                                </div>
+                                <div class="dash-recom-body">
+                                    <h3 class="dash-recom-card-title">Air Terjun Tegenungan</h3>
+                                    <p class="dash-recom-card-desc">Kolam alami segar di lembah Gianyar dekat Ubud.</p>
+                                    <div class="dash-recom-footer">
+                                        <span class="dash-recom-time">Rp 15.000 / orang</span>
+                                        <button type="button" class="dash-btn-lihat" aria-label="Lihat" onclick="openDashSpotDetail('waterfall')">Lihat</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Card 3: Sunrise Beach -->
-                        <div class="dash-recom-card" data-category="sunrise">
-                            <div class="dash-recom-img-wrap">
-                                <img src="/images/sunrise-beach.jpg" alt="Pantai Sanur" class="dash-recom-img">
-                                <span class="dash-recom-badge badge-sunrise">Sunrise Beach</span>
-                            </div>
-                            <div class="dash-recom-body">
-                                <h3 class="dash-recom-card-title">Pantai Sanur</h3>
-                                <p class="dash-recom-card-desc">Fajar hening nan damai dengan gazebo klasik tepi laut.</p>
-                                <div class="dash-recom-footer">
-                                    <span class="dash-recom-time">05:45 - 06:45</span>
-                                    <button type="button" class="dash-btn-lihat" aria-label="Lihat" onclick="openDashSpotDetail('sunrise')">Lihat</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 4: Mountain -->
-                        <div class="dash-recom-card" data-category="mountain">
-                            <div class="dash-recom-img-wrap">
-                                <img src="/images/mountain.jpg" alt="Gunung Batur" class="dash-recom-img">
-                                <span class="dash-recom-badge badge-mountain">Mountain</span>
-                            </div>
-                            <div class="dash-recom-body">
-                                <h3 class="dash-recom-card-title">Gunung Batur (1.717 mdpl)</h3>
-                                <p class="dash-recom-card-desc">Trekking kaldera aktif dan samudera awan spektakuler.</p>
-                                <div class="dash-recom-footer">
-                                    <span class="dash-recom-time">03:30 - 09:00</span>
-                                    <button type="button" class="dash-btn-lihat" aria-label="Lihat" onclick="openDashSpotDetail('mountain')">Lihat</button>
-                                </div>
-                            </div>
-                        </div>
+                        @endforelse
                     </div>
                 </section>
 
