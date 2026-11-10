@@ -2008,30 +2008,13 @@
             updateEditTimePreviews();
 
             const modal = document.getElementById('admin-edit-dest-modal');
-            if (modal) { modal.classList.add('show'); document.body.style.overflow = 'hidden'; }
+            if (modal) { modal.classList.add('show', 'active'); document.body.style.overflow = 'hidden'; }
         }
 
         function closeEditDestModal() {
             const modal = document.getElementById('admin-edit-dest-modal');
-            if (modal) { modal.classList.remove('show'); document.body.style.overflow = ''; }
+            if (modal) { modal.classList.remove('show', 'active'); document.body.style.overflow = ''; }
             currentEditingCard = null;
-        }
-
-        function updateDestCounts() {
-            const allCards = document.querySelectorAll('#admin-cards-container .dash-recom-card');
-            const total = allCards.length;
-            let postCount = 0;
-            let draftCount = 0;
-            allCards.forEach(c => {
-                if (c.dataset.status === 'draft') draftCount++;
-                else postCount++;
-            });
-            const badge = document.getElementById('admin-dest-count-badge');
-            if (badge) badge.textContent = `${total} Destinasi`;
-            const statPost = document.getElementById('stat-post-count');
-            if (statPost) statPost.textContent = postCount;
-            const statDraft = document.getElementById('stat-draft-count');
-            if (statDraft) statDraft.textContent = draftCount;
         }
 
         async function handleEditDestSubmit(e) {
@@ -2868,7 +2851,7 @@
             if (modal) {
                 initAdminHourSelects();
                 updateTimePreviews();
-                modal.classList.add('show');
+                modal.classList.add('show', 'active');
                 document.body.style.overflow = 'hidden';
             }
         }
@@ -2876,7 +2859,7 @@
         function closeAdminCreateModal() {
             const modal = document.getElementById('admin-create-dest-modal');
             if (modal) {
-                modal.classList.remove('show');
+                modal.classList.remove('show', 'active');
                 document.body.style.overflow = '';
             }
         }
@@ -3135,14 +3118,6 @@
             } catch (err) {
                 console.error(err);
                 showAdminToast('Terjadi gangguan saat menyimpan ke database.', '✕');
-            }
-        }
-
-            // Scroll to destination section
-            const secDest = document.getElementById('admin-destinasi-section');
-            if (secDest) {
-                secDest.classList.remove('admin-section-hidden');
-                setTimeout(() => secDest.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
             }
         }
 

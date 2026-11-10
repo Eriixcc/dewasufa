@@ -8444,10 +8444,20 @@ html[data-theme="dark"] .dest-spot-time {
     padding: 20px;
 }
 
+.admin-modal-backdrop:not(.active):not(.show),
+.dash-modal-backdrop:not(.active):not(.show) {
+    display: none !important;
+    pointer-events: none !important;
+}
+
 .admin-modal-backdrop.active,
 .admin-modal-backdrop.show,
+.dash-modal-backdrop.active,
 .dash-modal-backdrop.show {
-    display: flex;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
     animation: modalFadeIn 0.25s ease-out;
 }
 
