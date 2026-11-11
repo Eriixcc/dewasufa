@@ -544,20 +544,7 @@ const spotDetailsData = {
         gmapsUrl: 'https://maps.google.com/?q=Air+Terjun+Sekumpul+Buleleng+Bali',
         tags: ['Trekking Alami', 'Fotografi Lanskap', 'Air Sejuk Pegunungan'],
         desc: 'Air Terjun Sekumpul dinobatkan sebagai salah satu air terjun terindah di Bali. Tersembunyi di rimbunnya lembah Buleleng, destinasi ini menampilkan gugusan air terjun kembar megah berketinggian lebih dari 80 meter yang dikelilingi vegetasi hutan tropis dan perkebunan cengkeh asri.',
-        initialComments: [
-            {
-                name: 'Putu Arya Wiguna',
-                date: '2 hari lalu',
-                rating: 5,
-                comment: 'Trek menuju lokasi cukup menantang namun terbayar lunas saat melihat hempasan air terjun yang begitu megah. Disarankan datang pagi hari saat udara masih sejuk.'
-            },
-            {
-                name: 'Sarah Wijaya',
-                date: '1 minggu lalu',
-                rating: 5,
-                comment: 'Airnya luar biasa jernih dan segar. Pemandu lokal sangat ramah dan jalur trekking tertata baik.'
-            }
-        ]
+        initialComments: []
     },
     waterfall: {
         title: 'Air Terjun Tegenungan',
@@ -578,20 +565,7 @@ const spotDetailsData = {
         gmapsUrl: 'https://maps.google.com/?q=Air+Terjun+Tegenungan+Gianyar+Bali',
         tags: ['Akses Mudah', 'Spot Foto', 'Dekat Ubud'],
         desc: 'Air Terjun Tegenungan menawarkan debit air deras nan mempesona di lembah hijau Sukawati. Dengan akses tangga terawat, spot foto ayunan estetik, dan fasilitas lengkap, tempat ini menjadi tujuan favorit wisatawan yang ingin menikmati alam tanpa pendakian terjal.',
-        initialComments: [
-            {
-                name: 'Budi Santoso',
-                date: 'Kemarin',
-                rating: 5,
-                comment: 'Lokasi sangat strategis dekat Ubud. Fasilitas toilet dan kafe sekitar tertata rapi. Sangat nyaman untuk liburan keluarga.'
-            },
-            {
-                name: 'Ketut Dharmayana',
-                date: '5 hari lalu',
-                rating: 4,
-                comment: 'Pemandangan air terjun sangat indah. Datanglah sebelum jam 10 pagi agar tidak terlalu padat pengunjung.'
-            }
-        ]
+        initialComments: []
     },
     sunset: {
         title: 'Pantai Melasti & Tebing Karang',
@@ -612,20 +586,7 @@ const spotDetailsData = {
         gmapsUrl: 'https://maps.google.com/?q=Pantai+Melasti+Ungasan+Bali',
         tags: ['Sunset Epik', 'Pasir Putih Bersih', 'Tebing Kapur Megah'],
         desc: 'Pantai Melasti menyajikan perpaduan spektakuler tebing kapur putih menjulang tinggi dengan hamparan pasir putih bersih dan laut biru kehijauan. Jalan aspal berliku yang membelah tebing menjadi spot foto ikonik, disempurnakan momen matahari terbenam yang memukau.',
-        initialComments: [
-            {
-                name: 'Ni Made Anindya',
-                date: '3 hari lalu',
-                rating: 5,
-                comment: 'Sunset terindah di semenanjung Bukit Bali. Akses jalan mulus dan area parkir luas. Sangat direkomendasikan!'
-            },
-            {
-                name: 'Rizky Ramadhan',
-                date: '6 hari lalu',
-                rating: 5,
-                comment: 'Pantainya sangat bersih dan air lautnya jernih saat surut. Suasana sore hari sangat tenang dan damai.'
-            }
-        ]
+        initialComments: []
     },
     sunrise: {
         title: 'Pantai Sanur & Matahari Terbit',
@@ -646,20 +607,7 @@ const spotDetailsData = {
         gmapsUrl: 'https://maps.google.com/?q=Pantai+Sanur+Denpasar+Bali',
         tags: ['Jogging Track Tepi Laut', 'Sunrise Damai', 'Ramah Keluarga'],
         desc: 'Pantai Sanur merupakan surga fajar terbaik di pulau Dewata. Ombak tenang, jalur pedestrian sepanjang 5 kilometer yang nyaman untuk bersepeda, serta siluet gazebo tradisional di atas karang menjadikan Sanur destinasi ideal untuk memulai hari dengan ketenangan.',
-        initialComments: [
-            {
-                name: 'I Wayan Gede',
-                date: '4 hari lalu',
-                rating: 5,
-                comment: 'Matahari terbit di Pantai Sanur selalu menenangkan jiwa. Udara pagi segar dan banyak pilihan sarapan khas Bali di sekitar.'
-            },
-            {
-                name: 'Dewi Lestari',
-                date: '1 minggu lalu',
-                rating: 4,
-                comment: 'Tempat favorit untuk bersepeda pagi bersama keluarga. Pemandangan Gunung Agung di kejauhan saat cuaca cerah sangat menakjubkan.'
-            }
-        ]
+        initialComments: []
     },
     mountain: {
         title: 'Gunung Batur (1.717 mdpl)',
@@ -680,20 +628,7 @@ const spotDetailsData = {
         gmapsUrl: 'https://maps.google.com/?q=Gunung+Batur+Kintamani+Bali',
         tags: ['Sunrise Trekking', 'Samudera Awan', 'Kaldera Vulkanik'],
         desc: 'Gunung Batur menawarkan pengalaman pendakian berdurasi sekitar 2 jam menuju kawah aktif. Di puncak, pendaki disambut pemandangan magis matahari terbit di atas samudera awan tebal dengan latar megah Danau Batur, Gunung Abang, dan siluet Gunung Rinjani Lombok.',
-        initialComments: [
-            {
-                name: 'Agus Pratama',
-                date: 'Kemarin',
-                rating: 5,
-                comment: 'Pengalaman mendaki yang luar biasa. Pemandangan samudera awan saat fajar benar-benar memanjakan mata. Jangan lupa bawa jaket tebal.'
-            },
-            {
-                name: 'Jessica Tan',
-                date: '3 hari lalu',
-                rating: 5,
-                comment: 'Trek cukup bersahabat untuk pemula. Pemandu lokal sangat membantu dan sarapan telur rebus uap belerang di kawah sangat berkesan.'
-            }
-        ]
+        initialComments: []
     }
 };
 
@@ -1026,12 +961,17 @@ export function renderSavedPlansList() {
 function getStoredComments(key) {
     try {
         const stored = localStorage.getItem('dewasufa_comments_' + key);
-        if (stored) return JSON.parse(stored);
+        if (stored) {
+            const parsed = JSON.parse(stored);
+            if (Array.isArray(parsed)) {
+                // Filter out legacy dummy comments without a real database ID
+                return parsed.filter(c => c && c.id && c.name !== 'Komang D.' && c.name !== 'Wayan S.');
+            }
+        }
     } catch (e) {
         console.warn(e);
     }
-    const defaultData = spotDetailsData[key] || spotDetailsData.waterfall;
-    return defaultData.initialComments ? [...defaultData.initialComments] : [];
+    return [];
 }
 
 function saveStoredComments(key, comments) {
@@ -1244,17 +1184,20 @@ export async function renderDestinationComments(key) {
     // Fetch realtime comments from database API
     try {
         let destId = null;
-        if (window.dbDestinations && Array.isArray(window.dbDestinations)) {
+        if (/^\d+$/.test(String(key))) {
+            destId = Number(key);
+        } else if (window.dbDestinations && Array.isArray(window.dbDestinations)) {
             const found = window.dbDestinations.find(d => String(d.id) === String(key) || d.category_slug === key || (d.name && d.name.toLowerCase().includes(String(key).toLowerCase())));
             if (found) {
                 destId = found.id;
             }
         }
 
-        let apiUrl = `/api/comments?destination_slug=${encodeURIComponent(key)}`;
-        if (destId) {
-            apiUrl += `&destination_id=${encodeURIComponent(destId)}`;
-        }
+        let apiUrl = '/api/comments?';
+        const params = [];
+        if (destId) params.push(`destination_id=${encodeURIComponent(destId)}`);
+        if (key) params.push(`destination_slug=${encodeURIComponent(key)}`);
+        apiUrl += params.join('&');
 
         const res = await fetch(apiUrl, {
             headers: {
@@ -1264,7 +1207,7 @@ export async function renderDestinationComments(key) {
 
         if (res.ok) {
             const json = await res.json();
-            if (json.success && Array.isArray(json.comments) && json.comments.length > 0) {
+            if (json.success && Array.isArray(json.comments)) {
                 const dbMapped = json.comments.map(c => ({
                     id: c.id,
                     name: c.author_name,
@@ -1273,7 +1216,7 @@ export async function renderDestinationComments(key) {
                     comment: c.comment,
                     photos: c.photo_urls || c.photos || []
                 }));
-                // Update local storage cache and re-render with fresh DB data
+                // Update local storage cache and re-render with fresh DB data (even when 0 comments)
                 saveStoredComments(key, dbMapped);
                 renderList(dbMapped);
             }
@@ -1348,6 +1291,9 @@ export async function handleCommentSubmit(event) {
     // Identify current destination from window.dbDestinations
     let destId = null;
     let destName = null;
+    if (/^\d+$/.test(String(currentDetailSpotKey))) {
+        destId = Number(currentDetailSpotKey);
+    }
     if (window.dbDestinations && Array.isArray(window.dbDestinations)) {
         const found = window.dbDestinations.find(d => String(d.id) === String(currentDetailSpotKey) || d.category_slug === currentDetailSpotKey || (d.name && d.name.toLowerCase().includes(String(currentDetailSpotKey).toLowerCase())));
         if (found) {

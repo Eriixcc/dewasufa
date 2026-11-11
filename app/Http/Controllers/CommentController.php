@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Destination;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CommentController extends Controller
 {
@@ -16,12 +17,33 @@ class CommentController extends Controller
     {
         $query = Comment::with('destination')->where('status', 'published')->orderBy('id', 'desc');
 
-        if ($request->filled('destination_id')) {
-            $query->where('destination_id', $request->integer('destination_id'));
-        } elseif ($request->filled('destination_slug')) {
-            $slug = strtolower($request->input('destination_slug'));
+        $destId = $request->input('destination_id');
+        $slug = $request->input('destination_slug');
+
+        if (! empty($destId) && ! empty($slug)) {
+            $destId = (int) $destId;
+            $slug = strtolower($slug);
+            $query->where(function ($q) use ($destId, $slug) {
+                $q->where('destination_id', $destId)
+                    ->orWhere('destination_slug', $slug)
+                    ->orWhereHas('destination', function ($destQuery) use ($destId, $slug) {
+                        $destQuery->where('id', $destId)
+                            ->orWhere('name', 'like', "%{$slug}%");
+                    });
+            });
+        } elseif (! empty($destId)) {
+            $destId = (int) $destId;
+            $query->where(function ($q) use ($destId) {
+                $q->where('destination_id', $destId)
+                    ->orWhereHas('destination', function ($destQuery) use ($destId) {
+                        $destQuery->where('id', $destId);
+                    });
+            });
+        } elseif (! empty($slug)) {
+            $slug = strtolower($slug);
             $query->where(function ($q) use ($slug) {
                 $q->where('destination_slug', $slug)
+                    ->orWhere('destination_id', is_numeric($slug) ? (int) $slug : 0)
                     ->orWhereHas('destination', function ($destQuery) use ($slug) {
                         $destQuery->where('name', 'like', "%{$slug}%")
                             ->orWhere('category', 'like', "%{$slug}%");
@@ -55,12 +77,29 @@ class CommentController extends Controller
         ]);
 
         $destinationId = $validated['destination_id'] ?? null;
+        $destinationSlug = $validated['destination_slug'] ?? null;
         $destinationName = $validated['destination_name'] ?? null;
 
-        if ($destinationId && empty($destinationName)) {
+        if ($destinationId) {
             $destination = Destination::find($destinationId);
             if ($destination) {
-                $destinationName = $destination->name;
+                if (empty($destinationName)) {
+                    $destinationName = $destination->name;
+                }
+                if (empty($destinationSlug)) {
+                    $destinationSlug = Str::slug($destination->name);
+                }
+            }
+        } elseif (! empty($destinationSlug)) {
+            $destination = Destination::where('id', is_numeric($destinationSlug) ? (int) $destinationSlug : 0)
+                ->orWhere('name', 'like', "%{$destinationSlug}%")
+                ->orWhere('category', 'like', "%{$destinationSlug}%")
+                ->first();
+            if ($destination) {
+                $destinationId = $destination->id;
+                if (empty($destinationName)) {
+                    $destinationName = $destination->name;
+                }
             }
         }
 
@@ -115,7 +154,7 @@ class CommentController extends Controller
 
         $comment = Comment::create([
             'destination_id' => $destinationId,
-            'destination_slug' => $validated['destination_slug'] ?? null,
+            'destination_slug' => $destinationSlug,
             'destination_name' => $destinationName,
             'author_name' => $validated['author_name'],
             'author_role' => $validated['author_role'] ?? 'Wisatawan Terverifikasi',

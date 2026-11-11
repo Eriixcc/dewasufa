@@ -112,6 +112,46 @@ class CommentTest extends TestCase
         $response->assertSee('Trekking seru dan pemandangan luar biasa sejuk.');
     }
 
+    public function test_api_returns_empty_when_destination_has_no_comments(): void
+    {
+        $destination = Destination::factory()->create([
+            'name' => 'Destinasi Baru',
+            'category' => 'Waterfall',
+        ]);
+
+        $response = $this->getJson("/api/comments?destination_id={$destination->id}");
+
+        $response->assertStatus(200);
+        $response->assertJsonPath('success', true);
+        $response->assertJsonPath('count', 0);
+        $response->assertJsonPath('comments', []);
+    }
+
+    public function test_api_filters_comments_by_destination_id(): void
+    {
+        $dest1 = Destination::factory()->create(['name' => 'Pantai A']);
+        $dest2 = Destination::factory()->create(['name' => 'Pantai B']);
+
+        Comment::factory()->create([
+            'destination_id' => $dest1->id,
+            'author_name' => 'User Dest 1',
+            'comment' => 'Komentar Pantai A',
+        ]);
+
+        Comment::factory()->create([
+            'destination_id' => $dest2->id,
+            'author_name' => 'User Dest 2',
+            'comment' => 'Komentar Pantai B',
+        ]);
+
+        $response = $this->getJson("/api/comments?destination_id={$dest1->id}");
+
+        $response->assertStatus(200);
+        $response->assertJsonPath('count', 1);
+        $response->assertSee('User Dest 1');
+        $response->assertDontSee('User Dest 2');
+    }
+
     public function test_admin_can_delete_a_comment_from_database(): void
     {
         $comment = Comment::factory()->create([
@@ -129,4 +169,3 @@ class CommentTest extends TestCase
         ]);
     }
 }
-

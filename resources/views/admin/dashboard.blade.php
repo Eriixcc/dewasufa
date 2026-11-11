@@ -1676,18 +1676,20 @@
 
         // ===== DESTINATION DETAIL MODAL (NO PORTAL REDIRECT) =====
         // ===== DESTINATION DETAIL MODAL (MATCHING USER PORTAL) =====
-        function openAdminSpotDetail(key, btn) {
+        async function openAdminSpotDetail(key, btn) {
             const card = btn ? btn.closest('.dash-recom-card') : document.querySelector('.dash-recom-card[data-key="' + key + '"]');
             const modal = document.getElementById('dest-detail-modal');
             if (!modal) return;
+            let destId = (card && (card.dataset.id || card.dataset.key)) ? (card.dataset.id || card.dataset.key) : key;
             let title = 'Air Terjun Sekumpul', desc = 'Keindahan alam Bali yang memukau.',
-                time = '07:00 - 16:00 WITA', ticket = 'Rp 20.000 / orang', loc = 'Buleleng, Bali',
+                time = '07:00 - 18:00 WITA', ticket = 'Rp 20.000 / orang', loc = 'Buleleng, Bali',
                 cat = 'Waterfall', imgSrc = '/images/waterfall.jpg',
-                rating = '4.9', bestVisit = '07:00 – 09:30 WITA (Suasana tenang dan sejuk)',
+                rating = '5.0', bestVisit = '07:00 – 09:30 WITA (Suasana tenang dan sejuk)',
                 status = 'post', tags = 'Air Terjun, Alam, Spot Foto', gmaps = '';
             let thumb1 = '', thumb2 = '', thumb3 = '';
 
             if (card) {
+                destId = card.dataset.id || card.dataset.key || destId;
                 title  = card.dataset.title  || card.querySelector('.dash-recom-card-title')?.textContent  || title;
                 desc   = card.dataset.desc   || card.querySelector('.dash-recom-card-desc')?.textContent   || desc;
                 time   = card.dataset.time   || time;
@@ -1719,13 +1721,13 @@
 
             const statusPill = document.getElementById('dest-detail-status-pill');
             if (statusPill) {
-                if (status === 'draft') {
-                    statusPill.textContent = '● Draft (Konsep)';
+                if (status === 'pending') {
+                    statusPill.textContent = '● Pending (Hanya Admin)';
                     statusPill.style.background = 'rgba(234, 179, 8, 0.2)';
                     statusPill.style.color = '#facc15';
                     statusPill.style.borderColor = 'rgba(234, 179, 8, 0.35)';
                 } else {
-                    statusPill.textContent = '● Terbit Aktif';
+                    statusPill.textContent = '● Terbit Aktif (Post)';
                     statusPill.style.background = 'rgba(36, 75, 44, 0.5)';
                     statusPill.style.color = '#86efac';
                     statusPill.style.borderColor = 'rgba(34, 197, 94, 0.3)';
@@ -1756,65 +1758,124 @@
             const t3 = document.getElementById('dest-detail-img-thumb-3');
             if (t3) t3.src = thumb3 || imgSrc;
 
-            // Populate reviews in user portal style
+            // Load realtime comments from database API
             const counterEl = document.getElementById('dest-comments-counter');
-            if (counterEl) counterEl.textContent = '2 Komentar';
             const commentsListEl = document.getElementById('dest-comments-list');
+            if (counterEl) counterEl.textContent = 'Memuat...';
             if (commentsListEl) {
-                commentsListEl.innerHTML = `
-                    <div class="dash-comment-card">
-                        <div class="dash-comment-top">
-                            <div class="dash-comment-author-info">
-                                <div class="dash-comment-avatar">KD</div>
-                                <span class="dash-comment-author-name">
-                                    Ketut Dharmayana
-                                    <span class="dash-comment-badge-verified">Terverifikasi</span>
-                                </span>
-                            </div>
-                            <div class="dash-comment-meta-right">
-                                <span class="dash-comment-date">2 jam lalu</span>
-                                <div class="dash-comment-stars">
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="dash-comment-text">Air terjunnya sangat megah dan asri! Pemandu lokal sangat ramah dan jalur trekking sudah tertata rapi.</p>
-                    </div>
-                    <div class="dash-comment-card">
-                        <div class="dash-comment-top">
-                            <div class="dash-comment-author-info">
-                                <div class="dash-comment-avatar" style="background:#3b82f6;">WS</div>
-                                <span class="dash-comment-author-name">
-                                    Wayan Surya
-                                    <span class="dash-comment-badge-verified">Terverifikasi</span>
-                                </span>
-                            </div>
-                            <div class="dash-comment-meta-right">
-                                <span class="dash-comment-date">1 hari lalu</span>
-                                <div class="dash-comment-stars">
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="dash-comment-text">Sangat direkomendasikan dikunjungi saat pagi hari ketika suasana tenang dan udara masih sejuk!</p>
-                    </div>
-                `;
+                commentsListEl.innerHTML = '<div style="text-align: center; padding: 25px 15px; color: rgba(255,255,255,0.45); font-size: 13px;">Sedang memuat ulasan...</div>';
             }
 
             modal.classList.add('active', 'show');
             document.body.style.overflow = 'hidden';
+
+            try {
+                let fetchUrl = `/api/comments?destination_id=${encodeURIComponent(destId)}`;
+                if (key && key !== destId) {
+                    fetchUrl += `&destination_slug=${encodeURIComponent(key)}`;
+                }
+                const res = await fetch(fetchUrl, {
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const comments = (data && Array.isArray(data.comments)) ? data.comments : [];
+                    if (counterEl) counterEl.textContent = `${comments.length} Komentar`;
+                    if (commentsListEl) {
+                        if (comments.length === 0) {
+                            commentsListEl.innerHTML = `
+                                <div style="text-align: center; padding: 30px 15px; color: rgba(255,255,255,0.45); font-size: 13px;">
+                                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 10px; display: block; opacity: 0.5;">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    Belum ada ulasan untuk destinasi ini.
+                                </div>
+                            `;
+                        } else {
+                            commentsListEl.innerHTML = comments.map(c => {
+                                const initial = (c.author_name || 'W').slice(0, 2).toUpperCase();
+                                const photos = c.photo_urls || c.photos || [];
+                                const photosHtml = (Array.isArray(photos) && photos.length > 0)
+                                    ? `
+                                        <div class="dash-comment-photos-grid" style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+                                            ${photos.map((photoUrl, idx) => `
+                                                <div style="width:52px;height:52px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.3);cursor:pointer;" onclick="openAdminPhotoModal('${photoUrl}')" title="Klik untuk memperbesar foto">
+                                                    <img src="${photoUrl}" alt="Foto ulasan ${idx + 1}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    `
+                                    : '';
+
+                                const ratingNum = Number(c.rating) || 5;
+                                let starsSvg = '';
+                                for (let s = 1; s <= 5; s++) {
+                                    const fill = s <= ratingNum ? '#f5b842' : 'none';
+                                    const stroke = s <= ratingNum ? '#f5b842' : 'rgba(255,255,255,0.3)';
+                                    starsSvg += `<svg viewBox="0 0 24 24" width="13" height="13" fill="${fill}" stroke="${stroke}" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
+                                }
+
+                                return `
+                                    <div class="dash-comment-card" data-comment-id="${c.id}">
+                                        <div class="dash-comment-top">
+                                            <div class="dash-comment-author-info">
+                                                <div class="dash-comment-avatar" style="background:#244b2c;color:#ffffff;">${initial}</div>
+                                                <span class="dash-comment-author-name">
+                                                    ${c.author_name}
+                                                    <span class="dash-comment-badge-verified">${c.author_role || 'Terverifikasi'}</span>
+                                                </span>
+                                            </div>
+                                            <div class="dash-comment-meta-right">
+                                                <span class="dash-comment-date">${c.formatted_date || 'Baru saja'}</span>
+                                                <div class="dash-comment-stars" style="display:flex;gap:2px;">
+                                                    ${starsSvg}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="dash-comment-text">${c.comment}</p>
+                                        ${photosHtml}
+                                    </div>
+                                `;
+                            }).join('');
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error('Error fetching admin comments:', err);
+                if (commentsListEl) {
+                    commentsListEl.innerHTML = '<div style="text-align: center; padding: 20px; color: #ef4444; font-size: 13px;">Gagal memuat ulasan dari server.</div>';
+                }
+            }
         }
         function closeAdminSpotDetail() {
             const modal = document.getElementById('dest-detail-modal');
             if (modal) { modal.classList.remove('active', 'show'); document.body.style.overflow = ''; }
+        }
+
+        function openAdminPhotoModal(imgSrc) {
+            let lightbox = document.getElementById('admin-photo-lightbox');
+            if (!lightbox) {
+                lightbox = document.createElement('div');
+                lightbox.id = 'admin-photo-lightbox';
+                lightbox.className = 'dash-modal-backdrop active';
+                lightbox.style.zIndex = '99999';
+                lightbox.innerHTML = `
+                    <div class="dash-lightbox-content" style="position:relative;max-width:90vw;max-height:90vh;display:flex;align-items:center;justify-content:center;">
+                        <button type="button" class="dash-lightbox-close" onclick="closeAdminPhotoModal()" style="position:absolute;top:-40px;right:0;background:rgba(0,0,0,0.6);border:none;color:#fff;font-size:28px;cursor:pointer;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;">&times;</button>
+                        <img id="admin-lightbox-img" src="${imgSrc}" alt="Pratinjau Foto" style="max-width:100%;max-height:85vh;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,0.8);object-fit:contain;">
+                    </div>
+                `;
+                lightbox.onclick = (e) => { if (e.target === lightbox) closeAdminPhotoModal(); };
+                document.body.appendChild(lightbox);
+            } else {
+                const img = document.getElementById('admin-lightbox-img');
+                if (img) img.src = imgSrc;
+                lightbox.classList.add('active');
+            }
+        }
+        function closeAdminPhotoModal() {
+            const lightbox = document.getElementById('admin-photo-lightbox');
+            if (lightbox) lightbox.classList.remove('active');
         }
 
         // ===== EDIT DESTINATION MODAL LOGIC (IDENTICAL TO CREATE MODAL & DETAIL) =====

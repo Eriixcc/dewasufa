@@ -48,7 +48,7 @@ class AdminController extends Controller
             'status' => 'nullable|string|in:post,pending',
         ]);
 
-        $status = in_array($request->input('status'), ['post', 'pending']) ? $request->input('status') : ($destination->status ?? 'post');
+        $status = in_array($request->input('status'), ['post', 'pending']) ? $request->input('status') : 'post';
 
         $data = [
             'name' => $validated['name'],
