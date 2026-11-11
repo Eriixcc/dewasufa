@@ -1538,6 +1538,33 @@ html[data-theme="dark"] .form-input {
     color: var(--text-primary);
 }
 
+html[data-theme="dark"] .signup-avatar-upload-group {
+    background: var(--bg-sage-light);
+    border-color: var(--border-soft);
+}
+
+html[data-theme="dark"] .signup-avatar-upload-group:hover {
+    background: var(--bg-sage-pill);
+    border-color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .signup-avatar-circle {
+    background: var(--bg-surface);
+    border-color: var(--border-soft);
+}
+
+html[data-theme="dark"] .signup-avatar-badge {
+    border-color: var(--bg-surface);
+}
+
+html[data-theme="dark"] .signup-avatar-label {
+    color: var(--clr-forest);
+}
+
+html[data-theme="dark"] .signup-avatar-hint {
+    color: var(--text-secondary);
+}
+
 html[data-theme="dark"] .form-input:focus {
     background: var(--bg-surface);
     border-color: var(--clr-forest);
@@ -1677,6 +1704,134 @@ html[data-theme="dark"] .dest-spot-time {
     color: var(--text-secondary);
     margin-top: 3px;
     line-height: 1.4;
+}
+
+/* Signup Avatar Upload */
+.signup-avatar-upload-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px;
+    background: var(--bg-surface-soft);
+    border: 1.5px dashed rgba(36, 75, 44, 0.25);
+    border-radius: 16px;
+    margin-bottom: 14px;
+    transition: var(--transition-fast);
+}
+
+.signup-avatar-upload-group:hover {
+    border-color: var(--clr-forest);
+    background: #eef5ee;
+}
+
+.signup-avatar-preview-wrapper {
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.signup-avatar-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid rgba(36, 75, 44, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(36, 75, 44, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.signup-avatar-preview-wrapper:hover .signup-avatar-circle {
+    transform: scale(1.04);
+    border-color: var(--clr-forest);
+    box-shadow: 0 6px 16px rgba(36, 75, 44, 0.18);
+}
+
+.signup-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.signup-avatar-placeholder {
+    color: var(--clr-forest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.85;
+}
+
+.signup-avatar-badge {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--clr-forest);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border: 2px solid #ffffff;
+    transition: transform 0.2s ease;
+}
+
+.signup-avatar-preview-wrapper:hover .signup-avatar-badge {
+    transform: scale(1.1);
+}
+
+.signup-avatar-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    flex: 1;
+    min-width: 0;
+}
+
+.signup-avatar-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--clr-forest);
+    line-height: 1.25;
+}
+
+.signup-avatar-optional {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.signup-avatar-hint {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.signup-avatar-remove-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 0;
+    margin-top: 5px;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: underline;
+    transition: color 0.15s ease;
+}
+
+.signup-avatar-remove-btn:hover {
+    color: #b02a37;
 }
 
 .form-group {

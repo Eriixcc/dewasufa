@@ -97,11 +97,15 @@
                 <div class="dash-user-dropdown-wrap">
                     <button type="button" class="dash-user-pill" id="dash-user-menu-btn" aria-haspopup="true" aria-expanded="false">
                         <div class="dash-avatar" id="dash-header-avatar">
-                            <span class="dash-avatar-initials">W</span>
+                            @if(Auth::check() && Auth::user()->avatar)
+                                <img src="{{ asset(Auth::user()->avatar) }}" alt="Foto Profil" class="dash-avatar-img">
+                            @else
+                                <span class="dash-avatar-initials">{{ Auth::check() ? strtoupper(substr(Auth::user()->name, 0, 1)) : 'W' }}</span>
+                            @endif
                         </div>
                         <div class="dash-user-info">
-                            <span class="dash-user-name" id="dash-display-name">Wisatawan Bali</span>
-                            <span class="dash-user-role" id="dash-user-role">User</span>
+                            <span class="dash-user-name" id="dash-display-name">{{ Auth::check() ? Auth::user()->name : 'Wisatawan Bali' }}</span>
+                            <span class="dash-user-role" id="dash-user-role">{{ Auth::check() ? ucfirst(Auth::user()->role) : 'User' }}</span>
                         </div>
                         <svg class="dash-chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="6 9 12 15 18 9"></polyline>
@@ -419,8 +423,13 @@
                     <!-- Upload Foto Profil Sendiri -->
                     <div class="dash-settings-avatar-wrap">
                         <div class="dash-avatar-preview-box" id="dash-avatar-preview-box">
-                            <img id="settings-avatar-preview" src="" alt="Avatar" style="display: none;" class="dash-avatar-preview-img">
-                            <span id="settings-avatar-fallback" class="dash-avatar-preview-fallback">W</span>
+                            @if(Auth::check() && Auth::user()->avatar)
+                                <img id="settings-avatar-preview" src="{{ asset(Auth::user()->avatar) }}" alt="Avatar" class="dash-avatar-preview-img">
+                                <span id="settings-avatar-fallback" class="dash-avatar-preview-fallback" style="display: none;">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                            @else
+                                <img id="settings-avatar-preview" src="" alt="Avatar" style="display: none;" class="dash-avatar-preview-img">
+                                <span id="settings-avatar-fallback" class="dash-avatar-preview-fallback">{{ Auth::check() ? strtoupper(substr(Auth::user()->name, 0, 1)) : 'W' }}</span>
+                            @endif
                         </div>
                         <div class="dash-avatar-upload-actions">
                             <label for="settings-avatar-input" class="dash-btn-upload-avatar">
@@ -437,7 +446,7 @@
                     <div class="dash-form-grid">
                         <div class="dash-form-group">
                             <label for="settings-name">Nama Lengkap</label>
-                            <input type="text" id="settings-name" placeholder="Nama Anda" value="Wisatawan Bali">
+                            <input type="text" id="settings-name" placeholder="Nama Anda" value="{{ Auth::check() ? Auth::user()->name : 'Wisatawan Bali' }}">
                         </div>
                         <div class="dash-form-group">
                             <label for="settings-email">
@@ -450,14 +459,14 @@
                                     Terkunci
                                 </span>
                             </label>
-                            <input type="email" id="settings-email" class="dash-input-readonly" value="user@dewasufa.com" readonly aria-readonly="true" tabindex="-1" title="Email akun aktif terkunci dan tidak dapat diubah">
+                            <input type="email" id="settings-email" class="dash-input-readonly" value="{{ Auth::check() ? Auth::user()->email : 'user@dewasufa.com' }}" readonly aria-readonly="true" tabindex="-1" title="Email akun aktif terkunci dan tidak dapat diubah">
                         </div>
                     </div>
 
                     <div class="dash-form-grid">
                         <div class="dash-form-group">
                             <label for="settings-role">Status Akun</label>
-                            <input type="text" id="settings-role" value="User" readonly class="dash-input-readonly" title="Status akun hanya dapat diubah oleh sistem atau persetujuan Admin">
+                            <input type="text" id="settings-role" value="{{ Auth::check() ? ucfirst(Auth::user()->role) : 'User' }}" readonly class="dash-input-readonly" title="Status akun hanya dapat diubah oleh sistem atau persetujuan Admin">
                         </div>
                         <div class="dash-form-group">
                             <label for="settings-phone">
@@ -470,7 +479,7 @@
                                     Terkunci
                                 </span>
                             </label>
-                            <input type="tel" id="settings-phone" class="dash-input-readonly" value="+62 812-3456-7890" readonly aria-readonly="true" tabindex="-1" title="Nomor telepon akun aktif terkunci dan tidak dapat diubah">
+                            <input type="tel" id="settings-phone" class="dash-input-readonly" value="{{ Auth::check() && Auth::user()->phone ? Auth::user()->phone : '+62 812-3456-7890' }}" readonly aria-readonly="true" tabindex="-1" title="Nomor telepon akun aktif terkunci dan tidak dapat diubah">
                         </div>
                     </div>
 

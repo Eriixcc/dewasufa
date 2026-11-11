@@ -1,12 +1,20 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DestinationController;
 use Illuminate\Support\Facades\Route;
 
 // Public Front Page
 Route::get('/', [DestinationController::class, 'welcome'])->name('home');
+
+// Authentication Routes
+Route::post('/signup', [AuthController::class, 'signup'])->name('signup');
+Route::post('/register', [AuthController::class, 'signup'])->name('register');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout']);
 
 // User Dashboard
 Route::get('/dashboard', [DestinationController::class, 'dashboard'])->name('dashboard');

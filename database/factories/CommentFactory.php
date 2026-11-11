@@ -33,4 +33,3 @@ class CommentFactory extends Factory
         ];
     }
 }
-

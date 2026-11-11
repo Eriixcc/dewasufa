@@ -124,11 +124,15 @@
                     <div class="dash-user-dropdown-wrap admin-user-dropdown-wrap">
                         <button type="button" class="dash-user-pill" id="admin-user-menu-btn" onclick="toggleAdminUserMenu(event)" aria-haspopup="true" aria-expanded="false">
                             <div class="dash-avatar" style="background: linear-gradient(135deg, #1b3821 0%, #244b2c 100%);">
-                                <span class="dash-avatar-initials">ER</span>
+                                @if(Auth::check() && Auth::user()->avatar)
+                                    <img src="{{ asset(Auth::user()->avatar) }}" alt="Foto Profil Admin" class="dash-avatar-img" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                                @else
+                                    <span class="dash-avatar-initials">{{ Auth::check() ? strtoupper(substr(Auth::user()->name, 0, 2)) : 'ER' }}</span>
+                                @endif
                             </div>
                             <div class="dash-user-info">
-                                <span class="dash-user-name">Erick</span>
-                                <span class="dash-user-role" id="admin-user-role">Admin</span>
+                                <span class="dash-user-name">{{ Auth::check() ? Auth::user()->name : 'Erick' }}</span>
+                                <span class="dash-user-role" id="admin-user-role">{{ Auth::check() ? ucfirst(Auth::user()->role) : 'Admin' }}</span>
                             </div>
                             <svg class="dash-chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="6 9 12 15 18 9"></polyline>

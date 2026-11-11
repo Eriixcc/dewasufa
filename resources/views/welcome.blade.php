@@ -601,20 +601,21 @@
                 <p class="modal-subtitle">Akses panduan eksklusif dan simpan destinasi favorit Anda</p>
             </div>
 
-            <form id="login-form" onsubmit="handleLoginSubmit(event)">
+            <form id="login-form" method="POST" action="{{ route('login') }}" onsubmit="handleLoginSubmit(event)">
+                @csrf
                 <div class="form-group">
                     <label for="login-email" class="form-label">Email atau Nomor Telepon</label>
-                    <input type="text" id="login-email" class="form-input" placeholder="nama@email.com atau +62 812-xxxx" required autocomplete="username">
+                    <input type="text" id="login-email" name="login" class="form-input" placeholder="nama@email.com atau +62 812-xxxx" required autocomplete="username">
                 </div>
 
                 <div class="form-group">
                     <label for="login-password" class="form-label">Kata Sandi</label>
-                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+                    <input type="password" id="login-password" name="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
                 </div>
 
                 <div class="form-options">
                     <label class="form-checkbox">
-                        <input type="checkbox" id="remember-me" checked>
+                        <input type="checkbox" id="remember-me" name="remember" checked>
                         <span>Ingat saya</span>
                     </label>
                     <a href="javascript:void(0)" class="form-forgot-link" onclick="showToast('Fitur reset sandi telah dikirim ke email.')">Lupa sandi?</a>
@@ -664,30 +665,59 @@
                 <p class="modal-subtitle">Bergabung dan mulai jelajahi keindahan alam Bali</p>
             </div>
 
-            <form id="signup-form" onsubmit="handleSignupSubmit(event)">
+            <form id="signup-form" method="POST" action="{{ route('signup') }}" enctype="multipart/form-data" onsubmit="handleSignupSubmit(event)">
+                @csrf
+
+                <!-- Foto Profil (Avatar Upload) -->
+                <div class="signup-avatar-upload-group">
+                    <div class="signup-avatar-preview-wrapper" onclick="document.getElementById('signup-avatar').click()" role="button" tabindex="0" title="Klik untuk memilih foto profil">
+                        <div class="signup-avatar-circle" id="signup-avatar-circle">
+                            <img id="signup-avatar-preview" src="" alt="Pratinjau Foto Profil" style="display: none;" class="signup-avatar-img">
+                            <span id="signup-avatar-placeholder" class="signup-avatar-placeholder" aria-hidden="true">
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                    <circle cx="12" cy="13" r="4"></circle>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="signup-avatar-badge" title="Pilih Foto">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </div>
+                    </div>
+                    <input type="file" id="signup-avatar" name="avatar" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" style="display: none;">
+                    <div class="signup-avatar-info">
+                        <span class="signup-avatar-label">Foto Profil <span class="signup-avatar-optional">(Opsional)</span></span>
+                        <span class="signup-avatar-hint" id="signup-avatar-hint">Pilih foto JPG, PNG, WEBP (maks. 2MB)</span>
+                        <button type="button" class="signup-avatar-remove-btn" id="btn-remove-signup-avatar" style="display: none;" onclick="removeSignupAvatar(event)">Hapus Foto</button>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="signup-email" class="form-label">Email</label>
-                    <input type="email" id="signup-email" class="form-input" placeholder="nama@email.com" required autocomplete="email">
+                    <input type="email" id="signup-email" name="email" class="form-input" placeholder="nama@email.com" required autocomplete="email">
                 </div>
 
                 <div class="form-group">
                     <label for="signup-username" class="form-label">Username</label>
-                    <input type="text" id="signup-username" class="form-input" placeholder="Nama pengguna Anda" required autocomplete="username" minlength="3">
+                    <input type="text" id="signup-username" name="name" class="form-input" placeholder="Nama pengguna Anda" required autocomplete="username" minlength="3">
                 </div>
 
                 <div class="form-group">
                     <label for="signup-phone" class="form-label">Nomor Telepon</label>
-                    <input type="tel" id="signup-phone" class="form-input" placeholder="+62 812-3456-7890" required autocomplete="tel">
+                    <input type="tel" id="signup-phone" name="phone" class="form-input" placeholder="+62 812-3456-7890" required autocomplete="tel">
                 </div>
 
                 <div class="form-group">
                     <label for="signup-password" class="form-label">Kata Sandi</label>
-                    <input type="password" id="signup-password" class="form-input" placeholder="Min. 8 karakter" required autocomplete="new-password" minlength="8">
+                    <input type="password" id="signup-password" name="password" class="form-input" placeholder="Min. 8 karakter" required autocomplete="new-password" minlength="8">
                 </div>
 
                 <div class="form-group">
                     <label for="signup-confirm-password" class="form-label">Konfirmasi Kata Sandi</label>
-                    <input type="password" id="signup-confirm-password" class="form-input" placeholder="Ulangi kata sandi" required autocomplete="new-password" minlength="8">
+                    <input type="password" id="signup-confirm-password" name="password_confirmation" class="form-input" placeholder="Ulangi kata sandi" required autocomplete="new-password" minlength="8">
                 </div>
 
                 <button type="submit" class="btn-modal-submit" id="btn-signup-submit">

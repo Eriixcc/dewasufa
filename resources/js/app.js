@@ -96,14 +96,82 @@ export function closeSignupModal() {
     document.body.style.overflow = '';
 }
 
-export function handleSignupSubmit(event) {
+export function initSignupAvatar() {
+    const avatarInput = document.getElementById('signup-avatar');
+    const previewImg = document.getElementById('signup-avatar-preview');
+    const placeholder = document.getElementById('signup-avatar-placeholder');
+    const removeBtn = document.getElementById('btn-remove-signup-avatar');
+    const hintEl = document.getElementById('signup-avatar-hint');
+
+    if (!avatarInput) return;
+
+    avatarInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+
+        // Validasi tipe file
+        if (!file.type.match(/^image\/(png|jpeg|jpg|webp|gif)$/i)) {
+            showToast('Format foto profil harus JPG, PNG, WEBP, atau GIF.', '⚠');
+            avatarInput.value = '';
+            return;
+        }
+
+        // Validasi ukuran file (maksimal 2MB)
+        if (file.size > 2 * 1024 * 1024) {
+            showToast('Ukuran foto profil maksimal adalah 2MB.', '⚠');
+            avatarInput.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (loadEvt) => {
+            if (previewImg) {
+                previewImg.src = loadEvt.target.result;
+                previewImg.style.display = 'block';
+            }
+            if (placeholder) placeholder.style.display = 'none';
+            if (removeBtn) removeBtn.style.display = 'inline-block';
+            if (hintEl) {
+                const shortName = file.name.length > 20 ? file.name.slice(0, 17) + '...' : file.name;
+                hintEl.textContent = `${shortName} (${(file.size / 1024).toFixed(0)} KB)`;
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+export function removeSignupAvatar(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    const avatarInput = document.getElementById('signup-avatar');
+    const previewImg = document.getElementById('signup-avatar-preview');
+    const placeholder = document.getElementById('signup-avatar-placeholder');
+    const removeBtn = document.getElementById('btn-remove-signup-avatar');
+    const hintEl = document.getElementById('signup-avatar-hint');
+
+    if (avatarInput) avatarInput.value = '';
+    if (previewImg) {
+        previewImg.src = '';
+        previewImg.style.display = 'none';
+    }
+    if (placeholder) placeholder.style.display = 'flex';
+    if (removeBtn) removeBtn.style.display = 'none';
+    if (hintEl) hintEl.textContent = 'Pilih foto JPG, PNG, WEBP (maks. 2MB)';
+}
+
+export async function handleSignupSubmit(event) {
     if (event) event.preventDefault();
 
+    const form = document.getElementById('signup-form');
     const emailEl = document.getElementById('signup-email');
     const usernameEl = document.getElementById('signup-username');
     const phoneEl = document.getElementById('signup-phone');
     const passwordEl = document.getElementById('signup-password');
     const confirmEl = document.getElementById('signup-confirm-password');
+    const avatarInput = document.getElementById('signup-avatar');
+    const submitBtn = document.getElementById('btn-signup-submit');
 
     const email = emailEl ? emailEl.value.trim() : '';
     const username = usernameEl ? usernameEl.value.trim() : '';
@@ -111,9 +179,27 @@ export function handleSignupSubmit(event) {
     const password = passwordEl ? passwordEl.value : '';
     const confirm = confirmEl ? confirmEl.value : '';
 
+    if (!email) {
+        showToast('Email wajib diisi untuk pendaftaran akun.', '⚠');
+        if (emailEl) emailEl.focus();
+        return;
+    }
+
+    if (!username) {
+        showToast('Username wajib diisi untuk pendaftaran akun.', '⚠');
+        if (usernameEl) usernameEl.focus();
+        return;
+    }
+
     if (!phone) {
         showToast('Nomor telepon wajib diisi untuk pendaftaran akun.', '⚠');
         if (phoneEl) phoneEl.focus();
+        return;
+    }
+
+    if (!password || password.length < 8) {
+        showToast('Kata sandi minimal harus 8 karakter.', '⚠');
+        if (passwordEl) passwordEl.focus();
         return;
     }
 
@@ -123,47 +209,118 @@ export function handleSignupSubmit(event) {
         return;
     }
 
-    // Simpan akun terdaftar ke database localStorage
+    // Set loading state on submit button
+    const origBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Mendaftarkan Akun...</span>';
+    }
+
+    // Prepare FormData
+    const formData = new FormData(form || undefined);
+    if (!formData.has('email')) formData.append('email', email);
+    if (!formData.has('name')) formData.append('name', username);
+    if (!formData.has('phone')) formData.append('phone', phone);
+    if (!formData.has('password')) formData.append('password', password);
+    if (!formData.has('password_confirmation')) formData.append('password_confirmation', confirm);
+    if (avatarInput && avatarInput.files && avatarInput.files[0] && !formData.has('avatar')) {
+        formData.append('avatar', avatarInput.files[0]);
+    }
+
+    const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
+
     try {
-        const storedUsers = JSON.parse(localStorage.getItem('dewasufa_accounts') || '{}');
-        const accountData = { email, username, phone, password };
-        if (email) storedUsers[email.toLowerCase()] = accountData;
-        if (phone) storedUsers[phone.replace(/\s+/g, '')] = accountData;
-        localStorage.setItem('dewasufa_accounts', JSON.stringify(storedUsers));
-    } catch (e) {
-        console.warn('Storage warning:', e);
-    }
+        const response = await fetch('/signup', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+                ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {})
+            }
+        });
 
-    // Simpan data kredensial aktif ke storage
-    if (phone) {
-        sessionStorage.setItem('dewasufa_phone', phone);
-        localStorage.setItem('dewasufa_phone', phone);
-    }
-    if (email) {
-        sessionStorage.setItem('dewasufa_email', email);
-        localStorage.setItem('dewasufa_email', email);
-    }
-    if (username) {
-        sessionStorage.setItem('dewasufa_user', username);
-        localStorage.setItem('dewasufa_user', username);
-    }
+        const data = await response.json().catch(() => null);
 
-    // Clear fields after success
-    if (emailEl) emailEl.value = '';
-    if (usernameEl) usernameEl.value = '';
-    if (phoneEl) phoneEl.value = '';
-    if (passwordEl) passwordEl.value = '';
-    if (confirmEl) confirmEl.value = '';
+        if (!response.ok) {
+            let errorMsg = 'Gagal mendaftar akun. Silakan coba lagi.';
+            if (data && data.errors) {
+                const firstKey = Object.keys(data.errors)[0];
+                if (firstKey && data.errors[firstKey][0]) {
+                    errorMsg = data.errors[firstKey][0];
+                }
+            } else if (data && data.message) {
+                errorMsg = data.message;
+            }
+            showToast(errorMsg, '⚠');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origBtnHtml;
+            }
+            return;
+        }
 
-    closeSignupModal();
-    showToast(`Akun berhasil dibuat! Silakan masuk, ${username}.`, '✓');
+        const user = data?.user || {
+            name: username,
+            email: email,
+            phone: phone,
+            role: 'user',
+            avatar: null
+        };
 
-    // Pre-fill login email/phone and switch to login modal
-    setTimeout(() => {
-        const loginEmail = document.getElementById('login-email');
-        if (loginEmail && (email || phone)) loginEmail.value = email || phone;
-        openLoginModal();
-    }, 400);
+        // Simpan data kredensial aktif ke storage
+        sessionStorage.setItem('dewasufa_user', user.name);
+        localStorage.setItem('dewasufa_user', user.name);
+        sessionStorage.setItem('dewasufa_email', user.email);
+        localStorage.setItem('dewasufa_email', user.email);
+        if (user.phone) {
+            sessionStorage.setItem('dewasufa_phone', user.phone);
+            localStorage.setItem('dewasufa_phone', user.phone);
+        }
+        sessionStorage.setItem('dewasufa_role', user.role || 'user');
+        localStorage.setItem('dewasufa_role', user.role || 'user');
+
+        if (user.avatar) {
+            sessionStorage.setItem('dewasufa_avatar', user.avatar);
+            localStorage.setItem('dewasufa_avatar', user.avatar);
+        } else {
+            sessionStorage.removeItem('dewasufa_avatar');
+            localStorage.removeItem('dewasufa_avatar');
+        }
+
+        // Simpan akun ke database localStorage untuk backwards compatibility
+        try {
+            const storedUsers = JSON.parse(localStorage.getItem('dewasufa_accounts') || '{}');
+            const accountData = { email: user.email, username: user.name, phone: user.phone, role: user.role, avatar: user.avatar };
+            if (user.email) storedUsers[user.email.toLowerCase()] = accountData;
+            if (user.phone) storedUsers[user.phone.replace(/\s+/g, '')] = accountData;
+            localStorage.setItem('dewasufa_accounts', JSON.stringify(storedUsers));
+        } catch (e) {
+            console.warn('Storage warning:', e);
+        }
+
+        // Reset form & avatar preview
+        if (form) form.reset();
+        removeSignupAvatar();
+
+        closeSignupModal();
+        showToast(data?.message || `Akun berhasil dibuat! Selamat datang, ${user.name}.`, '✓');
+
+        // Redirect ke dashboard atau admin sesuai role
+        setTimeout(() => {
+            const redirectUrl = data?.redirect || (user.role === 'admin' ? '/admin' : '/dashboard');
+            window.location.href = redirectUrl;
+        }, 700);
+
+    } catch (err) {
+        console.error('Signup error:', err);
+        showToast('Terjadi kendala saat menghubungkan ke database server.', '⚠');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origBtnHtml;
+        }
+    }
 }
 
 export function openDestModal(categoryKey) {
@@ -250,56 +407,120 @@ export function showToast(message, icon = '✓') {
     }, 3500);
 }
 
-// Form Login Submit: Simulates Auth and redirects to /dashboard
-export function handleLoginSubmit(event) {
+// Form Login Submit: Authenticates via database /login or fallback
+export async function handleLoginSubmit(event) {
     if (event) event.preventDefault();
     const emailEl = document.getElementById('login-email');
+    const passwordEl = document.getElementById('login-password');
+    const rememberEl = document.getElementById('remember-me');
+    const submitBtn = document.querySelector('#login-form .btn-modal-submit');
+
     const inputVal = emailEl ? emailEl.value.trim() : '';
+    const password = passwordEl ? passwordEl.value : '';
+    const remember = rememberEl ? rememberEl.checked : true;
 
-    let matchedAccount = null;
+    if (!inputVal) {
+        showToast('Email atau nomor telepon wajib diisi.', '⚠');
+        if (emailEl) emailEl.focus();
+        return;
+    }
+
+    if (!password) {
+        showToast('Kata sandi wajib diisi.', '⚠');
+        if (passwordEl) passwordEl.focus();
+        return;
+    }
+
+    const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
+
+    const origBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Memeriksa Akun...</span>';
+    }
+
     try {
-        const storedUsers = JSON.parse(localStorage.getItem('dewasufa_accounts') || '{}');
-        if (inputVal && storedUsers[inputVal.toLowerCase()]) {
-            matchedAccount = storedUsers[inputVal.toLowerCase()];
-        } else if (inputVal && storedUsers[inputVal.replace(/\s+/g, '')]) {
-            matchedAccount = storedUsers[inputVal.replace(/\s+/g, '')];
+        const response = await fetch('/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                login: inputVal,
+                password: password,
+                remember: remember
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+                ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {})
+            }
+        });
+
+        const data = await response.json().catch(() => null);
+
+        if (!response.ok) {
+            // Check if account exists in localStorage as fallback
+            let matchedAccount = null;
+            try {
+                const storedUsers = JSON.parse(localStorage.getItem('dewasufa_accounts') || '{}');
+                if (storedUsers[inputVal.toLowerCase()] && storedUsers[inputVal.toLowerCase()].password === password) {
+                    matchedAccount = storedUsers[inputVal.toLowerCase()];
+                }
+            } catch (e) { }
+
+            if (!matchedAccount) {
+                const errorMsg = data?.message || 'Email/telepon atau kata sandi tidak cocok.';
+                showToast(errorMsg, '⚠');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = origBtnHtml;
+                }
+                return;
+            }
         }
-    } catch (e) {
-        console.warn('Storage warning:', e);
-    }
 
-    let username = 'Wisatawan Bali';
-    let email = 'user@dewasufa.com';
-    let phone = localStorage.getItem('dewasufa_phone') || '+62 812-3456-7890';
+        const user = data?.user || {
+            name: inputVal.includes('@') ? inputVal.split('@')[0] : inputVal,
+            email: inputVal.includes('@') ? inputVal : 'user@dewasufa.com',
+            phone: localStorage.getItem('dewasufa_phone') || '+62 812-3456-7890',
+            role: 'user',
+            avatar: null
+        };
 
-    if (matchedAccount) {
-        username = matchedAccount.username || username;
-        email = matchedAccount.email || email;
-        phone = matchedAccount.phone || phone;
-    } else if (inputVal) {
-        if (inputVal.includes('@')) {
-            email = inputVal;
-            username = inputVal.split('@')[0];
-        } else if (/^[0-9+ -]+$/.test(inputVal)) {
-            phone = inputVal;
-            username = 'Pengguna ' + inputVal.replace(/\D/g, '').slice(-4);
+        sessionStorage.setItem('dewasufa_user', user.name);
+        localStorage.setItem('dewasufa_user', user.name);
+        sessionStorage.setItem('dewasufa_email', user.email);
+        localStorage.setItem('dewasufa_email', user.email);
+        if (user.phone) {
+            sessionStorage.setItem('dewasufa_phone', user.phone);
+            localStorage.setItem('dewasufa_phone', user.phone);
+        }
+        sessionStorage.setItem('dewasufa_role', user.role || 'user');
+        localStorage.setItem('dewasufa_role', user.role || 'user');
+
+        if (user.avatar) {
+            sessionStorage.setItem('dewasufa_avatar', user.avatar);
+            localStorage.setItem('dewasufa_avatar', user.avatar);
         } else {
-            username = inputVal;
+            sessionStorage.removeItem('dewasufa_avatar');
+            localStorage.removeItem('dewasufa_avatar');
+        }
+
+        closeLoginModal();
+        showToast(data?.message || `Selamat datang kembali, ${user.name}!`, '✓');
+        setTimeout(() => {
+            const redirectUrl = data?.redirect || (user.role === 'admin' ? '/admin' : '/dashboard');
+            window.location.href = redirectUrl;
+        }, 600);
+
+    } catch (err) {
+        console.error('Login error:', err);
+        showToast('Terjadi kendala saat menghubungkan ke database server.', '⚠');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origBtnHtml;
         }
     }
-
-    sessionStorage.setItem('dewasufa_user', username);
-    localStorage.setItem('dewasufa_user', username);
-    sessionStorage.setItem('dewasufa_email', email);
-    localStorage.setItem('dewasufa_email', email);
-    sessionStorage.setItem('dewasufa_phone', phone);
-    localStorage.setItem('dewasufa_phone', phone);
-
-    closeLoginModal();
-    showToast(`Selamat datang, ${username}! Mengalihkan ke dashboard...`, '');
-    setTimeout(() => {
-        window.location.href = '/dashboard';
-    }, 600);
 }
 
 // Social Google Login Simulation
@@ -1776,6 +1997,9 @@ function initApp() {
         });
     }
 
+    // Initialize signup modal profile photo picker
+    initSignupAvatar();
+
     if (destModal) {
         destModal.addEventListener('click', (e) => {
             if (e.target === destModal) closeDestModal();
@@ -1893,11 +2117,28 @@ function initApp() {
         sessionStorage.removeItem('dewasufa_user');
         sessionStorage.removeItem('dewasufa_role');
         sessionStorage.removeItem('dewasufa_email');
+        sessionStorage.removeItem('dewasufa_avatar');
+        sessionStorage.removeItem('dewasufa_phone');
         localStorage.removeItem('dewasufa_user');
         localStorage.removeItem('dewasufa_role');
         localStorage.removeItem('dewasufa_email');
+        localStorage.removeItem('dewasufa_avatar');
+        localStorage.removeItem('dewasufa_phone');
         if (userDropdown) userDropdown.classList.remove('show');
         closeSettingsModal();
+
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
+
+        fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+                ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {})
+            }
+        }).catch(() => {});
+
         showToast('Anda telah logout. Mengalihkan ke beranda...', '');
         setTimeout(() => {
             window.location.href = '/';
@@ -2198,3 +2439,6 @@ window.closeLoginModal = closeLoginModal;
 window.openSignupModal = openSignupModal;
 window.closeSignupModal = closeSignupModal;
 window.handleSignupSubmit = handleSignupSubmit;
+window.handleLoginSubmit = handleLoginSubmit;
+window.initSignupAvatar = initSignupAvatar;
+window.removeSignupAvatar = removeSignupAvatar;
