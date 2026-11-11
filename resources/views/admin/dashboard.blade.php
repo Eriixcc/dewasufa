@@ -190,27 +190,24 @@
                         </div>
                     </div>
 
-                    <!-- 2. DRAFT (Konsep / Siap Rilis) -->
-                    <div class="admin-status-card stat-card-draft" onclick="filterByStatus('draft')" role="button" tabindex="0" title="Klik untuk memfilter draft destinasi">
+                    <!-- 2. PENDING (Hanya Admin yang Melihat) -->
+                    <div class="admin-status-card stat-card-draft" onclick="filterByStatus('pending')" role="button" tabindex="0" title="Klik untuk memfilter destinasi pending (khusus admin)">
                         <div class="stat-card-icon-wrap icon-draft">
                             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                                <polyline points="10 9 9 9 8 9"></polyline>
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
                             </svg>
                         </div>
                         <div class="stat-card-content">
                             <div class="stat-card-header">
-                                <span class="stat-card-title">Draft</span>
-                                <span class="stat-pill-badge badge-draft">● Konsep</span>
+                                <span class="stat-card-title">Pending</span>
+                                <span class="stat-pill-badge badge-draft" style="background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.35);">● Admin Only</span>
                             </div>
                             <div class="stat-card-value-group">
-                                <span class="stat-main-number" id="stat-draft-count">{{ $stats['draft'] ?? 0 }}</span>
-                                <span class="stat-unit">Tersimpan</span>
+                                <span class="stat-main-number" id="stat-draft-count">{{ $stats['pending'] ?? 0 }}</span>
+                                <span class="stat-unit">Pending</span>
                             </div>
-                            <p class="stat-card-desc">Destinasi siap uji &amp; rilis ke publik</p>
+                            <p class="stat-card-desc">Hanya admin yang dapat melihat konten ini</p>
                         </div>
                     </div>
                 </div>
@@ -332,7 +329,7 @@
                         <div class="dash-recom-card"
                             data-id="{{ $dest->id }}"
                             data-category="{{ $catSlug }}"
-                            data-status="post"
+                            data-status="{{ $dest->status ?? 'post' }}"
                             data-key="{{ $dest->id }}"
                             data-title="{{ $dest->name }}"
                             data-desc="{{ $dest->description }}"
@@ -350,7 +347,11 @@
                             <div class="dash-recom-img-wrap">
                                 <img src="{{ $dest->image_url }}" alt="{{ $dest->name }}" class="dash-recom-img" loading="lazy">
                                 <span class="dash-recom-badge {{ $badgeClass }}">{{ $dest->category }}</span>
-                                <span class="admin-card-status-pill badge-status-post">● Post</span>
+                                @if(($dest->status ?? 'post') === 'pending')
+                                    <span class="admin-card-status-pill badge-status-draft" style="background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.35);">● Pending (Admin Only)</span>
+                                @else
+                                    <span class="admin-card-status-pill badge-status-post">● Post (Publik)</span>
+                                @endif
                             </div>
                             <div class="dash-recom-body">
                                 <h3 class="dash-recom-card-title">{{ $dest->name }}</h3>
@@ -765,10 +766,10 @@
                 <div class="admin-form-group" style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
                     <label for="dest-input-status" class="admin-form-label">Status Destinasi</label>
                     <select id="dest-input-status" class="admin-form-select" required>
-                        <option value="post">Post (Terbit Aktif ke Pengunjung)</option>
-                        <option value="draft">Draft (Konsep Tersimpan)</option>
+                        <option value="post">Post (Semua Bisa Melihat / Terbit)</option>
+                        <option value="pending">Pending (Hanya Admin yang Bisa Melihat)</option>
                     </select>
-                    <span class="admin-input-hint">Tentukan apakah destinasi langsung dipublikasikan ke katalog atau disimpan sebagai draft.</span>
+                    <span class="admin-input-hint">Post: Semua pengunjung dapat melihat destinasi ini. Pending: Hanya admin yang dapat melihat di portal admin.</span>
                 </div>
 
                 <div class="admin-modal-actions">
@@ -1217,10 +1218,10 @@
                 <div class="admin-form-group" style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
                     <label for="edit-dest-status" class="admin-form-label">Status Destinasi</label>
                     <select id="edit-dest-status" class="admin-form-select" required>
-                        <option value="post">Post (Terbit Aktif ke Pengunjung)</option>
-                        <option value="draft">Draft (Konsep Tersimpan)</option>
+                        <option value="post">Post (Semua Bisa Melihat / Terbit)</option>
+                        <option value="pending">Pending (Hanya Admin yang Bisa Melihat)</option>
                     </select>
-                    <span class="admin-input-hint">Tentukan apakah destinasi langsung dipublikasikan ke katalog atau disimpan sebagai draft.</span>
+                    <span class="admin-input-hint">Post: Semua pengunjung dapat melihat destinasi ini. Pending: Hanya admin yang dapat melihat di portal admin.</span>
                 </div>
 
                 <div class="admin-modal-actions">
@@ -2061,6 +2062,7 @@
             formData.append('category', newCat);
             formData.append('description', newDesc);
             formData.append('price', newTicket);
+            formData.append('status', newStatus);
             if (editUploadedPhotoFiles.main) {
                 formData.append('image', editUploadedPhotoFiles.main);
             }
@@ -2121,12 +2123,19 @@
                 // Update status pill badge on card
                 const statusPill = currentEditingCard.querySelector('.admin-card-status-pill');
                 if (statusPill) {
-                    if (newStatus === 'draft') {
+                    const isPending = (newStatus === 'pending' || newStatus === 'draft');
+                    if (isPending) {
                         statusPill.className = 'admin-card-status-pill badge-status-draft';
-                        statusPill.textContent = '● Draft';
+                        statusPill.textContent = '● Pending (Admin Only)';
+                        statusPill.style.background = 'rgba(234, 179, 8, 0.2)';
+                        statusPill.style.color = '#facc15';
+                        statusPill.style.border = '1px solid rgba(234, 179, 8, 0.35)';
                     } else {
                         statusPill.className = 'admin-card-status-pill badge-status-post';
-                        statusPill.textContent = '● Post';
+                        statusPill.textContent = '● Post (Publik)';
+                        statusPill.style.background = '';
+                        statusPill.style.color = '';
+                        statusPill.style.border = '';
                     }
                 }
 
@@ -2272,7 +2281,7 @@
             let wfCount = 0, sunCount = 0, sriCount = 0, mtnCount = 0;
 
             allCards.forEach(c => {
-                if (c.dataset.status === 'draft') draftCount++;
+                if (c.dataset.status === 'draft' || c.dataset.status === 'pending') draftCount++;
                 else postCount++;
                 const cat = (c.dataset.category || '').toLowerCase();
                 if (cat === 'waterfall' || cat.includes('terjun')) wfCount++;
@@ -2610,9 +2619,9 @@
             if (_currentStatusFilter === 'all') {
                 showAdminToast('Menampilkan semua status destinasi');
             } else if (_currentStatusFilter === 'post') {
-                showAdminToast('Menampilkan destinasi berstatus Post (Terbit)');
-            } else if (_currentStatusFilter === 'draft') {
-                showAdminToast('Menampilkan destinasi berstatus Draft (Konsep)');
+                showAdminToast('Menampilkan destinasi berstatus Post (Terbit ke Semua)');
+            } else if (_currentStatusFilter === 'draft' || _currentStatusFilter === 'pending') {
+                showAdminToast('Menampilkan destinasi berstatus Pending (Khusus Admin)');
             }
 
             if (secDestinasi) {
@@ -2662,7 +2671,7 @@
                 else postCard.classList.remove('active');
             }
             if (draftCard) {
-                if (_currentStatusFilter === 'draft') draftCard.classList.add('active');
+                if (_currentStatusFilter === 'draft' || _currentStatusFilter === 'pending') draftCard.classList.add('active');
                 else draftCard.classList.remove('active');
             }
 
@@ -2686,7 +2695,9 @@
                 const cardCat = (card.dataset.category || '').toLowerCase();
                 const cardStatus = (card.dataset.status || 'post').toLowerCase();
 
-                const matchStatus = (_currentStatusFilter === 'all') || (cardStatus === _currentStatusFilter);
+                const matchStatus = (_currentStatusFilter === 'all')
+                    || (cardStatus === _currentStatusFilter)
+                    || ((_currentStatusFilter === 'draft' || _currentStatusFilter === 'pending') && (cardStatus === 'draft' || cardStatus === 'pending'));
                 const matchCategory = (_currentCategoryFilter === 'all') || (cardCat === _currentCategoryFilter);
 
                 if (matchStatus && matchCategory) {
@@ -3010,6 +3021,7 @@
             formData.append('category', cat);
             formData.append('description', desc);
             formData.append('price', ticket);
+            formData.append('status', status);
             if (uploadedPhotoFiles.main) {
                 formData.append('image', uploadedPhotoFiles.main);
             }
@@ -3067,15 +3079,17 @@
                     card.dataset.thumb2 = resolvedImg;
                     card.dataset.thumb3 = resolvedImg;
 
-                    const statusPillClass = status === 'draft' ? 'badge-status-draft' : 'badge-status-post';
-                    const statusPillText  = status === 'draft' ? '● Draft' : '● Post';
+                    const isPending = (status === 'pending' || status === 'draft');
+                    const statusPillClass = isPending ? 'badge-status-draft' : 'badge-status-post';
+                    const statusPillText  = isPending ? '● Pending (Admin Only)' : '● Post (Publik)';
+                    const statusPillStyle = isPending ? 'style="background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.35);"' : '';
                     const badgeClass = catKey === 'sunset' ? 'badge-sunset' : (catKey === 'sunrise' ? 'badge-sunrise' : (catKey === 'mountain' ? 'badge-mountain' : ''));
 
                     card.innerHTML = `
                         <div class="dash-recom-img-wrap">
                             <img src="${resolvedImg}" alt="${name}" class="dash-recom-img" loading="lazy">
                             <span class="dash-recom-badge ${badgeClass}">${cat}</span>
-                            <span class="admin-card-status-pill ${statusPillClass}">${statusPillText}</span>
+                            <span class="admin-card-status-pill ${statusPillClass}" ${statusPillStyle}>${statusPillText}</span>
                         </div>
                         <div class="dash-recom-body">
                             <h3 class="dash-recom-card-title">${name}</h3>

@@ -21,8 +21,9 @@ class AdminController extends Controller
 
         $stats = [
             'total' => $destinations->count(),
-            'post' => $destinations->count(),
-            'draft' => 0,
+            'post' => $destinations->where('status', 'post')->count(),
+            'pending' => $destinations->where('status', 'pending')->count(),
+            'draft' => $destinations->where('status', 'pending')->count(),
             'comments' => $comments->count(),
             'waterfall' => $destinations->filter(fn (Destination $d) => stripos($d->category, 'waterfall') !== false)->count(),
             'sunset' => $destinations->filter(fn (Destination $d) => stripos($d->category, 'sunset') !== false)->count(),
@@ -44,13 +45,17 @@ class AdminController extends Controller
             'description' => 'required|string',
             'price' => 'nullable',
             'image' => 'nullable',
+            'status' => 'nullable|string|in:post,pending',
         ]);
+
+        $status = in_array($request->input('status'), ['post', 'pending']) ? $request->input('status') : ($destination->status ?? 'post');
 
         $data = [
             'name' => $validated['name'],
             'category' => $validated['category'],
             'description' => $validated['description'],
             'price' => $this->parsePrice($request->input('price')),
+            'status' => $status,
         ];
 
         if ($request->hasFile('image')) {
@@ -90,13 +95,17 @@ class AdminController extends Controller
             'description' => 'required|string',
             'price' => 'nullable',
             'image' => 'nullable',
+            'status' => 'nullable|string|in:post,pending',
         ]);
+
+        $status = in_array($request->input('status'), ['post', 'pending']) ? $request->input('status') : ($destination->status ?? 'post');
 
         $data = [
             'name' => $validated['name'],
             'category' => $validated['category'],
             'description' => $validated['description'],
             'price' => $this->parsePrice($request->input('price')),
+            'status' => $status,
         ];
 
         if ($request->hasFile('image')) {

@@ -9,11 +9,11 @@ use Illuminate\View\View;
 class DestinationController extends Controller
 {
     /**
-     * Display the public welcome page with real-time destinations.
+     * Display the public welcome page with published ('post') destinations.
      */
     public function welcome(): View
     {
-        $destinations = Destination::orderBy('id', 'asc')->get();
+        $destinations = Destination::published()->orderBy('id', 'asc')->get();
 
         $counts = [
             'total' => $destinations->count(),
@@ -27,23 +27,23 @@ class DestinationController extends Controller
     }
 
     /**
-     * Display the user dashboard with real-time destinations.
+     * Display the user dashboard with published ('post') destinations.
      */
     public function dashboard(): View
     {
-        $destinations = Destination::orderBy('id', 'asc')->get();
-        $latestDestinations = Destination::latest()->take(4)->get();
+        $destinations = Destination::published()->orderBy('id', 'asc')->get();
+        $latestDestinations = Destination::published()->latest()->take(4)->get();
         $featured = $destinations->first();
 
         return view('dashboard', compact('destinations', 'latestDestinations', 'featured'));
     }
 
     /**
-     * Return all destinations as JSON for client-side consumption.
+     * Return all published destinations as JSON for client-side consumption.
      */
     public function apiIndex(): JsonResponse
     {
-        return response()->json(Destination::orderBy('id', 'asc')->get());
+        return response()->json(Destination::published()->orderBy('id', 'asc')->get());
     }
 
     /**
@@ -51,6 +51,10 @@ class DestinationController extends Controller
      */
     public function apiShow(Destination $destination): JsonResponse
     {
+        if ($destination->status === 'pending') {
+            abort(404, 'Destinasi ini masih pending dan belum dipublikasikan.');
+        }
+
         return response()->json($destination);
     }
 }

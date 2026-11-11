@@ -19,6 +19,7 @@ return new class extends Migration
                 $table->text('description');
                 $table->string('image')->nullable();
                 $table->decimal('price', 10, 2)->default(0);
+                $table->string('status')->default('post')->index();
                 $table->timestamps();
             });
         }

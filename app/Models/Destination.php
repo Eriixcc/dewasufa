@@ -30,6 +30,7 @@ class Destination extends Model
         'description',
         'image',
         'price',
+        'status',
     ];
 
     /**
@@ -117,6 +118,14 @@ class Destination extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Scope query to only include published ('post') destinations.
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('status', 'post');
     }
 
     /**
