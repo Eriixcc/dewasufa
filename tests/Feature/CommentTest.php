@@ -168,4 +168,81 @@ class CommentTest extends TestCase
             'id' => $comment->id,
         ]);
     }
+
+    public function test_destination_rating_and_reviews_count_are_calculated_correctly_on_comment_store(): void
+    {
+        $dest = Destination::factory()->create([
+            'rating' => 0.0,
+            'reviews_count' => 0,
+        ]);
+
+        // Submit first comment with rating 5
+        $this->postJson('/api/comments', [
+            'destination_id' => $dest->id,
+            'author_name' => 'Reviewer 1',
+            'rating' => 5,
+            'comment' => 'Bagus sekali!',
+        ])->assertStatus(201);
+
+        $dest->refresh();
+        $this->assertEquals(5.0, (float) $dest->rating);
+        $this->assertEquals(1, $dest->reviews_count);
+
+        // Submit second comment with rating 3
+        $this->postJson('/api/comments', [
+            'destination_id' => $dest->id,
+            'author_name' => 'Reviewer 2',
+            'rating' => 3,
+            'comment' => 'Cukup bagus.',
+        ])->assertStatus(201);
+
+        $dest->refresh();
+        // (5 + 3) / 2 = 4.0
+        $this->assertEquals(4.0, (float) $dest->rating);
+        $this->assertEquals(2, $dest->reviews_count);
+    }
+
+    public function test_api_comments_returns_avg_rating_breakdown_and_supports_star_filtering(): void
+    {
+        $dest = Destination::factory()->create();
+
+        Comment::factory()->create([
+            'destination_id' => $dest->id,
+            'rating' => 5,
+            'comment' => 'Bintang 5 A',
+        ]);
+        Comment::factory()->create([
+            'destination_id' => $dest->id,
+            'rating' => 5,
+            'comment' => 'Bintang 5 B',
+        ]);
+        Comment::factory()->create([
+            'destination_id' => $dest->id,
+            'rating' => 1,
+            'comment' => 'Bintang 1 Kurang Memuaskan',
+        ]);
+
+        // 1. Get all comments for destination
+        $resAll = $this->getJson("/api/comments?destination_id={$dest->id}");
+        $resAll->assertStatus(200);
+        $resAll->assertJsonPath('count', 3);
+        $resAll->assertJsonPath('avg_rating', 3.7);
+        $resAll->assertJsonPath('rating_breakdown.5', 2);
+        $resAll->assertJsonPath('rating_breakdown.1', 1);
+
+        // 2. Filter only 1 star
+        $resStar1 = $this->getJson("/api/comments?destination_id={$dest->id}&rating=1");
+        $resStar1->assertStatus(200);
+        $resStar1->assertJsonPath('filtered_count', 1);
+        $resStar1->assertSee('Bintang 1 Kurang Memuaskan');
+        $resStar1->assertDontSee('Bintang 5 A');
+
+        // 3. Filter only 5 stars
+        $resStar5 = $this->getJson("/api/comments?destination_id={$dest->id}&rating=5");
+        $resStar5->assertStatus(200);
+        $resStar5->assertJsonPath('filtered_count', 2);
+        $resStar5->assertSee('Bintang 5 A');
+        $resStar5->assertSee('Bintang 5 B');
+        $resStar5->assertDontSee('Bintang 1 Kurang Memuaskan');
+    }
 }

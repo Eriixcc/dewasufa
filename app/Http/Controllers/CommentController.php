@@ -53,10 +53,30 @@ class CommentController extends Controller
 
         $comments = $query->get();
 
+        $totalCount = $comments->count();
+        $avgRating = $totalCount > 0 ? round((float) $comments->avg('rating'), 1) : 0.0;
+        $ratingBreakdown = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
+        foreach ($comments as $c) {
+            $star = (int) round((float) $c->rating);
+            if (isset($ratingBreakdown[$star])) {
+                $ratingBreakdown[$star]++;
+            }
+        }
+
+        $filterRating = $request->input('rating');
+        $filteredComments = $comments;
+        if (! empty($filterRating) && $filterRating !== 'all' && is_numeric($filterRating)) {
+            $targetStar = (int) $filterRating;
+            $filteredComments = $comments->filter(fn ($c) => (int) round((float) $c->rating) === $targetStar)->values();
+        }
+
         return response()->json([
             'success' => true,
-            'count' => $comments->count(),
-            'comments' => $comments,
+            'count' => $totalCount,
+            'filtered_count' => $filteredComments->count(),
+            'avg_rating' => $avgRating,
+            'rating_breakdown' => $ratingBreakdown,
+            'comments' => $filteredComments,
         ]);
     }
 
@@ -164,10 +184,24 @@ class CommentController extends Controller
             'status' => 'published',
         ]);
 
+        $destinationRating = 0.0;
+        $destinationReviewsCount = 0;
+        if ($destinationId) {
+            $dest = Destination::find($destinationId);
+            if ($dest) {
+                $dest->recalculateRating();
+                $dest->refresh();
+                $destinationRating = (float) ($dest->rating ?? 0.0);
+                $destinationReviewsCount = (int) ($dest->reviews_count ?? 0);
+            }
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Ulasan Anda berhasil dikirimkan ke database!',
             'comment' => $comment->fresh(),
+            'destination_rating' => $destinationRating,
+            'destination_reviews_count' => $destinationReviewsCount,
         ], 201);
     }
 }

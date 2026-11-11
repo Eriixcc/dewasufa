@@ -302,7 +302,13 @@
                                     <h3 class="dash-recom-card-title">{{ $dest->name }}</h3>
                                     <p class="dash-recom-card-desc">{{ $dest->description }}</p>
                                     <div class="dash-recom-footer">
-                                        <span class="dash-recom-time">{{ $dest->formatted_price }}</span>
+                                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                                            <span class="dash-recom-time">{{ $dest->formatted_price }}</span>
+                                            <span style="font-size: 11px; color: #facc15; display: flex; align-items: center; gap: 3px;">
+                                                ★ {{ number_format($dest->rating ?? 0.0, 1) }}
+                                                <span style="color: rgba(255,255,255,0.5);">({{ $dest->reviews_count ?? 0 }} ulasan)</span>
+                                            </span>
+                                        </div>
                                         <button type="button" class="dash-btn-lihat" aria-label="Lihat" onclick="event.stopPropagation(); openDashSpotDetail('{{ $dest->id }}')">Lihat</button>
                                     </div>
                                 </div>
@@ -604,7 +610,8 @@
                                 </div>
                                 <div class="dash-dest-feat-text">
                                     <span class="dash-dest-feat-label">Rating</span>
-                                    <span class="dash-dest-feat-val"><strong id="dest-detail-score">4.9</strong> / 5.0</span>
+                                    <span class="dash-dest-feat-val"><strong id="dest-detail-score">0.0</strong> / 5.0</span>
+                                    <span id="dest-detail-reviews-count" style="font-size: 11px; color: #94a3b8; display: block; margin-top: 1px;">(0 Ulasan)</span>
                                 </div>
                             </div>
                             <div class="dash-dest-feat-item">
@@ -757,7 +764,36 @@
 
                         <!-- Comments Counter & List -->
                         <div class="dash-dest-comments-divider">
-                            <span class="dash-dest-comment-badge" id="dest-comments-counter">2 Komentar</span>
+                            <span class="dash-dest-comment-badge" id="dest-comments-counter">0 Komentar</span>
+                            <span id="dest-detail-rating-summary" class="dash-dest-rating-summary">★ 0.0 (0 Ulasan)</span>
+                        </div>
+
+                        <!-- Rating Star Filter Bar -->
+                        <div class="dash-rating-filter-bar" id="dest-rating-filter-bar" role="group" aria-label="Filter ulasan berdasarkan rating bintang">
+                            <button type="button" class="dash-rating-chip active" data-star="all" onclick="filterCommentsByStar('all', this)">
+                                <span>Semua</span>
+                                <span class="chip-count" id="chip-cnt-all">(0)</span>
+                            </button>
+                            <button type="button" class="dash-rating-chip" data-star="5" onclick="filterCommentsByStar(5, this)">
+                                <span class="chip-star-icon">★</span> 5
+                                <span class="chip-count" id="chip-cnt-5">(0)</span>
+                            </button>
+                            <button type="button" class="dash-rating-chip" data-star="4" onclick="filterCommentsByStar(4, this)">
+                                <span class="chip-star-icon">★</span> 4
+                                <span class="chip-count" id="chip-cnt-4">(0)</span>
+                            </button>
+                            <button type="button" class="dash-rating-chip" data-star="3" onclick="filterCommentsByStar(3, this)">
+                                <span class="chip-star-icon">★</span> 3
+                                <span class="chip-count" id="chip-cnt-3">(0)</span>
+                            </button>
+                            <button type="button" class="dash-rating-chip" data-star="2" onclick="filterCommentsByStar(2, this)">
+                                <span class="chip-star-icon">★</span> 2
+                                <span class="chip-count" id="chip-cnt-2">(0)</span>
+                            </button>
+                            <button type="button" class="dash-rating-chip" data-star="1" onclick="filterCommentsByStar(1, this)">
+                                <span class="chip-star-icon">★</span> 1
+                                <span class="chip-count" id="chip-cnt-1">(0)</span>
+                            </button>
                         </div>
 
                         <div class="dash-comments-list dash-comments-list-compact" id="dest-comments-list">

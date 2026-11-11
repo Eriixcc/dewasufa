@@ -5445,6 +5445,65 @@ html[data-theme="dark"] .dest-spot-time {
     border-radius: var(--radius-pill);
 }
 
+.dash-dest-rating-summary {
+    font-size: 11px;
+    font-weight: 600;
+    color: #facc15;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Rating Star Filter Bar */
+.dash-rating-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin: 8px 0 10px 0;
+    scrollbar-width: thin;
+}
+
+.dash-rating-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.dash-rating-chip:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.dash-rating-chip.active {
+    background: rgba(34, 197, 94, 0.22);
+    border-color: rgba(34, 197, 94, 0.55);
+    color: #86efac;
+    font-weight: 700;
+}
+
+.dash-rating-chip .chip-star-icon {
+    color: #facc15;
+}
+
+.dash-rating-chip .chip-count {
+    font-size: 10px;
+    opacity: 0.75;
+}
+
 /* Compact Comments List */
 .dash-comments-list-compact {
     display: flex;

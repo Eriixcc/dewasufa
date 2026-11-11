@@ -674,6 +674,10 @@ export function openDashSpotDetail(key) {
         const found = window.dbDestinations.find(d => String(d.id) === String(key) || d.category_slug === key || (d.name && d.name.toLowerCase().includes(String(key).toLowerCase())));
         if (found) {
             const img = found.image_url || '/images/waterfall.jpg';
+            const ratingVal = (found.rating !== undefined && found.rating !== null && Number(found.rating) > 0)
+                ? Number(found.rating)
+                : 0.0;
+            const revCount = Number(found.reviews_count || 0);
             data = {
                 title: found.name,
                 category: found.category,
@@ -681,7 +685,8 @@ export function openDashSpotDetail(key) {
                 image: img,
                 gallery: [img, img, img, img],
                 desc: found.description,
-                rating: 5.0,
+                rating: ratingVal,
+                reviews_count: revCount,
                 bestTime: '07:00 - 18:00 WITA',
                 bestVisit: '07:00 – 09:30 WITA (Suasana tenang dan sejuk)',
                 ticket: found.formatted_price || (found.price > 0 ? `Rp ${Number(found.price).toLocaleString('id-ID')} / orang` : 'Gratis'),
@@ -726,6 +731,8 @@ export function openDashSpotDetail(key) {
     const locTextEl = document.getElementById('dest-detail-location-text');
     const scoreEl = document.getElementById('dest-detail-score');
     const sideScoreEl = document.getElementById('dest-detail-score-side');
+    const revCountEl = document.getElementById('dest-detail-reviews-count');
+    const ratingSummaryEl = document.getElementById('dest-detail-rating-summary');
     const timeEl = document.getElementById('dest-detail-time');
     const bestVisitEl = document.getElementById('dest-detail-best-visit');
     const ticketEl = document.getElementById('dest-detail-ticket');
@@ -733,11 +740,18 @@ export function openDashSpotDetail(key) {
     const tagsEl = document.getElementById('dest-detail-tags');
     const gmapsLink = document.getElementById('dest-detail-gmaps-link');
 
+    const scoreFormatted = (data.rating !== undefined && data.rating !== null && Number(data.rating) > 0)
+        ? Number(data.rating).toFixed(1)
+        : '0.0';
+    const reviewsNum = data.reviews_count || 0;
+
     if (titleEl) titleEl.textContent = data.title;
     if (catEl) catEl.textContent = data.category;
     if (locTextEl) locTextEl.textContent = data.location;
-    if (scoreEl) scoreEl.textContent = Number(data.rating).toFixed(1);
-    if (sideScoreEl) sideScoreEl.textContent = Number(data.rating).toFixed(1);
+    if (scoreEl) scoreEl.textContent = scoreFormatted;
+    if (sideScoreEl) sideScoreEl.textContent = scoreFormatted;
+    if (revCountEl) revCountEl.textContent = `(${reviewsNum} Ulasan)`;
+    if (ratingSummaryEl) ratingSummaryEl.textContent = `★ ${scoreFormatted} (${reviewsNum} Ulasan)`;
     if (timeEl) timeEl.textContent = data.bestTime;
     if (bestVisitEl) bestVisitEl.textContent = data.bestVisit || data.bestTime;
     if (ticketEl) ticketEl.textContent = data.ticket;
@@ -1212,11 +1226,46 @@ export async function renderDestinationComments(key) {
                     id: c.id,
                     name: c.author_name,
                     date: c.formatted_date || 'Baru saja',
-                    rating: c.rating || 5,
+                    rating: Number(c.rating) || 5,
                     comment: c.comment,
                     photos: c.photo_urls || c.photos || []
                 }));
-                // Update local storage cache and re-render with fresh DB data (even when 0 comments)
+
+                const totalRev = Number(json.count ?? dbMapped.length ?? 0);
+                const avgR = (json.avg_rating !== undefined && Number(json.avg_rating) > 0)
+                    ? Number(json.avg_rating).toFixed(1)
+                    : (totalRev > 0 ? '5.0' : '0.0');
+
+                // Update UI rating and review stats
+                const scoreEl = document.getElementById('dest-detail-score');
+                const sideScoreEl = document.getElementById('dest-detail-score-side');
+                const revCountEl = document.getElementById('dest-detail-reviews-count');
+                const ratingSummaryEl = document.getElementById('dest-detail-rating-summary');
+
+                if (scoreEl) scoreEl.textContent = avgR;
+                if (sideScoreEl) sideScoreEl.textContent = avgR;
+                if (revCountEl) revCountEl.textContent = `(${totalRev} Ulasan)`;
+                if (ratingSummaryEl) ratingSummaryEl.textContent = `★ ${avgR} (${totalRev} Ulasan)`;
+
+                // Update Filter Chip Counts
+                const bd = json.rating_breakdown || { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+                const setEl = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+                setEl('chip-cnt-all', `(${totalRev})`);
+                setEl('chip-cnt-5', `(${bd[5] || 0})`);
+                setEl('chip-cnt-4', `(${bd[4] || 0})`);
+                setEl('chip-cnt-3', `(${bd[3] || 0})`);
+                setEl('chip-cnt-2', `(${bd[2] || 0})`);
+                setEl('chip-cnt-1', `(${bd[1] || 0})`);
+
+                // Reset filter active chip to 'all'
+                document.querySelectorAll('#dest-rating-filter-bar .dash-rating-chip').forEach(c => c.classList.remove('active'));
+                document.querySelector('#dest-rating-filter-bar .dash-rating-chip[data-star="all"]')?.classList.add('active');
+
+                // Save to window for filtering
+                window._currentDestinationAllComments = dbMapped;
+                window._renderDestinationCommentsList = renderList;
+
+                // Update local storage cache and re-render with fresh DB data
                 saveStoredComments(key, dbMapped);
                 renderList(dbMapped);
             }
@@ -1225,6 +1274,28 @@ export async function renderDestinationComments(key) {
         console.warn('Realtime comments sync error:', err);
     }
 }
+
+export function filterCommentsByStar(star, btn) {
+    document.querySelectorAll('#dest-rating-filter-bar .dash-rating-chip').forEach(c => c.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    const allComments = window._currentDestinationAllComments || [];
+    let filtered = allComments;
+    if (star !== 'all') {
+        const targetStar = Number(star);
+        filtered = allComments.filter(c => Math.round(Number(c.rating)) === targetStar);
+    }
+
+    if (typeof window._renderDestinationCommentsList === 'function') {
+        window._renderDestinationCommentsList(filtered);
+    }
+
+    const counterEl = document.getElementById('dest-comments-counter');
+    if (counterEl) {
+        counterEl.textContent = `${filtered.length} Komentar ${star !== 'all' ? '(★ ' + star + ')' : ''}`;
+    }
+}
+window.filterCommentsByStar = filterCommentsByStar;
 
 export function setCommentRating(rating) {
     currentCommentRating = Math.max(1, Math.min(5, rating));
@@ -1659,6 +1730,7 @@ Object.assign(window, {
     closeCommentPhotoModal,
     openPhotoModal,
     closePhotoModal,
+    filterCommentsByStar,
     getCurrentUsername,
 });
 

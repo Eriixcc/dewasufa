@@ -171,7 +171,15 @@ class AdminController extends Controller
             }
         }
 
+        $destId = $comment->destination_id;
         $comment->delete();
+
+        if ($destId) {
+            $dest = Destination::find($destId);
+            if ($dest) {
+                $dest->recalculateRating();
+            }
+        }
 
         if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
             return response()->json([

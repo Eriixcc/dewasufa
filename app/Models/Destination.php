@@ -31,6 +31,8 @@ class Destination extends Model
         'image',
         'price',
         'status',
+        'rating',
+        'reviews_count',
     ];
 
     /**
@@ -53,6 +55,8 @@ class Destination extends Model
     {
         return [
             'price' => 'float',
+            'rating' => 'float',
+            'reviews_count' => 'integer',
         ];
     }
 
@@ -118,6 +122,22 @@ class Destination extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Recalculate and persist rating + reviews_count from published comments.
+     */
+    public function recalculateRating(): void
+    {
+        $stats = $this->comments()
+            ->where('status', 'published')
+            ->selectRaw('COUNT(*) as cnt, COALESCE(AVG(rating), 0) as avg_r')
+            ->first();
+
+        $this->update([
+            'reviews_count' => (int) ($stats->cnt ?? 0),
+            'rating' => round((float) ($stats->avg_r ?? 0), 1),
+        ]);
     }
 
     /**

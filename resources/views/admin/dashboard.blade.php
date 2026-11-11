@@ -337,7 +337,8 @@
                             data-ticket="{{ $dest->formatted_price }}"
                             data-price="{{ $dest->price }}"
                             data-loc="Bali, Indonesia"
-                            data-rating="5.0"
+                            data-rating="{{ number_format($dest->rating ?? 0.0, 1) }}"
+                            data-reviews-count="{{ $dest->reviews_count ?? 0 }}"
                             data-best-visit="07:00 – 09:30 WITA"
                             data-tags="{{ $dest->category }}, Bali, Spot Foto"
                             data-gmaps="https://maps.google.com/?q={{ urlencode($dest->name . ' Bali') }}"
@@ -846,7 +847,8 @@
                                 </div>
                                 <div class="dash-dest-feat-text">
                                     <span class="dash-dest-feat-label">Rating</span>
-                                    <span class="dash-dest-feat-val"><strong id="dest-detail-score">4.9</strong> / 5.0</span>
+                                    <span class="dash-dest-feat-val"><strong id="dest-detail-score">0.0</strong> / 5.0</span>
+                                    <span id="dest-detail-reviews-count" style="font-size: 11px; color: #94a3b8; display: block; margin-top: 1px;">(0 Ulasan)</span>
                                 </div>
                             </div>
                             <div class="dash-dest-feat-item">
@@ -935,7 +937,36 @@
 
                         <!-- Comments Counter & List -->
                         <div class="dash-dest-comments-divider">
-                            <span class="dash-dest-comment-badge" id="dest-comments-counter">2 Komentar</span>
+                            <span class="dash-dest-comment-badge" id="dest-comments-counter">0 Komentar</span>
+                            <span id="dest-detail-rating-summary" class="dash-dest-rating-summary">★ 0.0 (0 Ulasan)</span>
+                        </div>
+
+                        <!-- Rating Star Filter Bar -->
+                        <div class="dash-rating-filter-bar" id="admin-dest-rating-filter-bar" role="group" aria-label="Filter ulasan berdasarkan rating bintang">
+                            <button type="button" class="dash-rating-chip active" data-star="all" onclick="filterAdminCommentsByStar('all', this)">
+                                <span>Semua</span>
+                                <span class="chip-count" id="admin-chip-cnt-all">(0)</span>
+                            </button>
+                            <button type="button" class="dash-rating-chip" data-star="5" onclick="filterAdminCommentsByStar(5, this)">
+                                <span class="chip-star-icon">★</span> 5
+                                <span class="chip-count" id="admin-chip-cnt-5">(0)</span>
+                            </button>
+                            <button type="button" class="dash-rating-chip" data-star="4" onclick="filterAdminCommentsByStar(4, this)">
+                                <span class="chip-star-icon">★</span> 4
+                                <span class="chip-count" id="admin-chip-cnt-4">(0)</span>
+                            </button>
+                            <button type="button" class="dash-rating-chip" data-star="3" onclick="filterAdminCommentsByStar(3, this)">
+                                <span class="chip-star-icon">★</span> 3
+                                <span class="chip-count" id="admin-chip-cnt-3">(0)</span>
+                            </button>
+                            <button type="button" class="dash-rating-chip" data-star="2" onclick="filterAdminCommentsByStar(2, this)">
+                                <span class="chip-star-icon">★</span> 2
+                                <span class="chip-count" id="admin-chip-cnt-2">(0)</span>
+                            </button>
+                            <button type="button" class="dash-rating-chip" data-star="1" onclick="filterAdminCommentsByStar(1, this)">
+                                <span class="chip-star-icon">★</span> 1
+                                <span class="chip-count" id="admin-chip-cnt-1">(0)</span>
+                            </button>
                         </div>
 
                         <div class="dash-comments-list dash-comments-list-compact" id="dest-comments-list">
@@ -1780,71 +1811,118 @@
                 if (res.ok) {
                     const data = await res.json();
                     const comments = (data && Array.isArray(data.comments)) ? data.comments : [];
-                    if (counterEl) counterEl.textContent = `${comments.length} Komentar`;
-                    if (commentsListEl) {
-                        if (comments.length === 0) {
-                            commentsListEl.innerHTML = `
-                                <div style="text-align: center; padding: 30px 15px; color: rgba(255,255,255,0.45); font-size: 13px;">
-                                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 10px; display: block; opacity: 0.5;">
-                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                    </svg>
-                                    Belum ada ulasan untuk destinasi ini.
-                                </div>
-                            `;
-                        } else {
-                            commentsListEl.innerHTML = comments.map(c => {
-                                const initial = (c.author_name || 'W').slice(0, 2).toUpperCase();
-                                const photos = c.photo_urls || c.photos || [];
-                                const photosHtml = (Array.isArray(photos) && photos.length > 0)
-                                    ? `
-                                        <div class="dash-comment-photos-grid" style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
-                                            ${photos.map((photoUrl, idx) => `
-                                                <div style="width:52px;height:52px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.3);cursor:pointer;" onclick="openAdminPhotoModal('${photoUrl}')" title="Klik untuk memperbesar foto">
-                                                    <img src="${photoUrl}" alt="Foto ulasan ${idx + 1}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    `
-                                    : '';
+                    window._adminAllCurrentComments = comments;
 
-                                const ratingNum = Number(c.rating) || 5;
-                                let starsSvg = '';
-                                for (let s = 1; s <= 5; s++) {
-                                    const fill = s <= ratingNum ? '#f5b842' : 'none';
-                                    const stroke = s <= ratingNum ? '#f5b842' : 'rgba(255,255,255,0.3)';
-                                    starsSvg += `<svg viewBox="0 0 24 24" width="13" height="13" fill="${fill}" stroke="${stroke}" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
-                                }
+                    const totalRev = Number(data.count ?? comments.length ?? 0);
+                    const avgR = (data.avg_rating !== undefined && Number(data.avg_rating) > 0) ? Number(data.avg_rating).toFixed(1) : (totalRev > 0 ? '5.0' : '0.0');
 
-                                return `
-                                    <div class="dash-comment-card" data-comment-id="${c.id}">
-                                        <div class="dash-comment-top">
-                                            <div class="dash-comment-author-info">
-                                                <div class="dash-comment-avatar" style="background:#244b2c;color:#ffffff;">${initial}</div>
-                                                <span class="dash-comment-author-name">
-                                                    ${c.author_name}
-                                                    <span class="dash-comment-badge-verified">${c.author_role || 'Terverifikasi'}</span>
-                                                </span>
-                                            </div>
-                                            <div class="dash-comment-meta-right">
-                                                <span class="dash-comment-date">${c.formatted_date || 'Baru saja'}</span>
-                                                <div class="dash-comment-stars" style="display:flex;gap:2px;">
-                                                    ${starsSvg}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="dash-comment-text">${c.comment}</p>
-                                        ${photosHtml}
-                                    </div>
-                                `;
-                            }).join('');
-                        }
-                    }
+                    set('dest-detail-score', avgR);
+                    set('dest-detail-score-side', avgR);
+                    set('dest-detail-reviews-count', `(${totalRev} Ulasan)`);
+                    set('dest-detail-rating-summary', `★ ${avgR} (${totalRev} Ulasan)`);
+                    if (counterEl) counterEl.textContent = `${totalRev} Komentar`;
+
+                    // Update filter counts
+                    const bd = data.rating_breakdown || { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+                    set('admin-chip-cnt-all', `(${totalRev})`);
+                    set('admin-chip-cnt-5', `(${bd[5] || 0})`);
+                    set('admin-chip-cnt-4', `(${bd[4] || 0})`);
+                    set('admin-chip-cnt-3', `(${bd[3] || 0})`);
+                    set('admin-chip-cnt-2', `(${bd[2] || 0})`);
+                    set('admin-chip-cnt-1', `(${bd[1] || 0})`);
+
+                    // Reset active chip
+                    document.querySelectorAll('#admin-dest-rating-filter-bar .dash-rating-chip').forEach(c => c.classList.remove('active'));
+                    document.querySelector('#admin-dest-rating-filter-bar .dash-rating-chip[data-star="all"]')?.classList.add('active');
+
+                    renderAdminCommentsList(comments);
                 }
             } catch (err) {
                 console.error('Error fetching admin comments:', err);
                 if (commentsListEl) {
                     commentsListEl.innerHTML = '<div style="text-align: center; padding: 20px; color: #ef4444; font-size: 13px;">Gagal memuat ulasan dari server.</div>';
                 }
+            }
+        }
+
+        function renderAdminCommentsList(comments) {
+            const commentsListEl = document.getElementById('dest-comments-list');
+            if (!commentsListEl) return;
+
+            if (!comments || comments.length === 0) {
+                commentsListEl.innerHTML = `
+                    <div style="text-align: center; padding: 30px 15px; color: rgba(255,255,255,0.45); font-size: 13px;">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 10px; display: block; opacity: 0.5;">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        Belum ada ulasan untuk destinasi ini.
+                    </div>
+                `;
+                return;
+            }
+
+            commentsListEl.innerHTML = comments.map(c => {
+                const initial = (c.author_name || 'W').slice(0, 2).toUpperCase();
+                const photos = c.photo_urls || c.photos || [];
+                const photosHtml = (Array.isArray(photos) && photos.length > 0)
+                    ? `
+                        <div class="dash-comment-photos-grid" style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+                            ${photos.map((photoUrl, idx) => `
+                                <div style="width:52px;height:52px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.3);cursor:pointer;" onclick="openAdminPhotoModal('${photoUrl}')" title="Klik untuk memperbesar foto">
+                                    <img src="${photoUrl}" alt="Foto ulasan ${idx + 1}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+                                </div>
+                            `).join('')}
+                        </div>
+                    `
+                    : '';
+
+                const ratingNum = Math.round(Number(c.rating)) || 5;
+                let starsSvg = '';
+                for (let s = 1; s <= 5; s++) {
+                    const fill = s <= ratingNum ? '#f5b842' : 'none';
+                    const stroke = s <= ratingNum ? '#f5b842' : 'rgba(255,255,255,0.3)';
+                    starsSvg += `<svg viewBox="0 0 24 24" width="13" height="13" fill="${fill}" stroke="${stroke}" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
+                }
+
+                return `
+                    <div class="dash-comment-card" data-comment-id="${c.id}">
+                        <div class="dash-comment-top">
+                            <div class="dash-comment-author-info">
+                                <div class="dash-comment-avatar" style="background:#244b2c;color:#ffffff;">${initial}</div>
+                                <span class="dash-comment-author-name">
+                                    ${c.author_name}
+                                    <span class="dash-comment-badge-verified">${c.author_role || 'Terverifikasi'}</span>
+                                </span>
+                            </div>
+                            <div class="dash-comment-meta-right">
+                                <span class="dash-comment-date">${c.formatted_date || 'Baru saja'}</span>
+                                <div class="dash-comment-stars" style="display:flex;gap:2px;">
+                                    ${starsSvg}
+                                </div>
+                            </div>
+                        </div>
+                        <p class="dash-comment-text">${c.comment}</p>
+                        ${photosHtml}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterAdminCommentsByStar(star, btn) {
+            document.querySelectorAll('#admin-dest-rating-filter-bar .dash-rating-chip').forEach(c => c.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const allComments = window._adminAllCurrentComments || [];
+            let filtered = allComments;
+            if (star !== 'all') {
+                const targetStar = Number(star);
+                filtered = allComments.filter(c => Math.round(Number(c.rating)) === targetStar);
+            }
+
+            renderAdminCommentsList(filtered);
+            const counterEl = document.getElementById('dest-comments-counter');
+            if (counterEl) {
+                counterEl.textContent = `${filtered.length} Komentar ${star !== 'all' ? '(★ ' + star + ')' : ''}`;
             }
         }
         function closeAdminSpotDetail() {
