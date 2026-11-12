@@ -191,5 +191,19 @@ class AuthTest extends TestCase
         $response->assertSee('id="signup-username"', false);
         $response->assertSee('id="signup-phone"', false);
     }
-}
 
+    /**
+     * Test login modal contains "Belum punya akun?" and "Daftar Sekarang" button without Google login.
+     */
+    public function test_login_modal_has_register_button_without_google_login(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+        $response->assertSee('Belum punya akun?');
+        $response->assertSee('btn-modal-signup-switch');
+        $response->assertSee('Daftar Sekarang');
+        $response->assertDontSee('Masuk dengan Google');
+        $response->assertDontSee('atau masuk dengan');
+    }
+}
