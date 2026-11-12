@@ -66,17 +66,20 @@ class Comment extends Model
             return 'Baru saja';
         }
 
-        $diffHours = $this->created_at->diffInHours();
-        if ($diffHours < 1) {
-            $mins = $this->created_at->diffInMinutes();
-
-            return $mins <= 1 ? 'Baru saja' : $mins.' menit lalu';
+        $diffMinutes = (int) floor($this->created_at->diffInMinutes());
+        if ($diffMinutes < 1) {
+            return 'Baru saja';
         }
+        if ($diffMinutes < 60) {
+            return $diffMinutes.' menit lalu';
+        }
+
+        $diffHours = (int) floor($this->created_at->diffInHours());
         if ($diffHours < 24) {
             return $diffHours.' jam lalu';
         }
 
-        $diffDays = $this->created_at->diffInDays();
+        $diffDays = (int) floor($this->created_at->diffInDays());
         if ($diffDays === 1) {
             return 'Kemarin';
         }

@@ -245,4 +245,23 @@ class CommentTest extends TestCase
         $resStar5->assertSee('Bintang 5 B');
         $resStar5->assertDontSee('Bintang 1 Kurang Memuaskan');
     }
+
+    public function test_comment_formatted_date_is_rounded_without_decimals(): void
+    {
+        $comment1 = new Comment;
+        $comment1->created_at = now()->subHours(30); // ~1.25 hari
+        $this->assertEquals('Kemarin', $comment1->formatted_date);
+
+        $comment2 = new Comment;
+        $comment2->created_at = now()->subHours(75); // ~3.12 hari
+        $this->assertEquals('3 hari lalu', $comment2->formatted_date);
+
+        $comment3 = new Comment;
+        $comment3->created_at = now()->subMinutes(15);
+        $this->assertEquals('15 menit lalu', $comment3->formatted_date);
+
+        $comment4 = new Comment;
+        $comment4->created_at = now()->subHours(5);
+        $this->assertEquals('5 jam lalu', $comment4->formatted_date);
+    }
 }
