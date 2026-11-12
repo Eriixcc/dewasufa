@@ -128,6 +128,18 @@
                             </svg>
                             <span>Pengaturan</span>
                         </a>
+                        @if(Auth::check() && Auth::user()->isAdmin())
+                            <hr class="dash-dropdown-divider">
+                            <a href="{{ route('admin.dashboard') }}" class="dash-dropdown-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                                <span>Dashboard Admin</span>
+                            </a>
+                        @endif
                         <hr class="dash-dropdown-divider">
                         <a href="javascript:void(0)" class="dash-dropdown-item text-danger" id="dash-btn-logout">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
