@@ -688,15 +688,30 @@ export function bringHistoryCardToTop(key) {
     const historyContainer = document.getElementById('dash-history-container');
     if (!historyContainer) return;
 
-    // Config map for each spot key
+    // Config map for static slug-based spots
     const spotConfig = {
-        sekumpul:  { name: 'Air Terjun Sekumpul Buleleng',    cat: 'waterfall', img: '/images/waterfall.jpg',       badge: 'Waterfall',  badgeCls: '' },
-        waterfall: { name: 'Air Terjun Tegenungan',            cat: 'waterfall', img: '/images/waterfall.jpg',       badge: 'Waterfall',  badgeCls: '' },
-        sunset:    { name: 'Pura Luhur Uluwatu',               cat: 'sunset',    img: '/images/sunset-beach.jpg',    badge: 'Sunset',     badgeCls: 'badge-sunset-h' },
-        sunrise:   { name: 'Pantai Sanur Denpasar',            cat: 'sunrise',   img: '/images/sunrise-beach.jpg',   badge: 'Sunrise',    badgeCls: 'badge-sunrise-h' },
-        mountain:  { name: 'Gunung Batur Kintamani',           cat: 'mountain',  img: '/images/mountain.jpg',        badge: 'Mountain',   badgeCls: 'badge-mountain-h' }
+        sekumpul:  { name: 'Air Terjun Sekumpul Buleleng',    img: '/images/waterfall.jpg' },
+        waterfall: { name: 'Air Terjun Tegenungan',            img: '/images/waterfall.jpg' },
+        sunset:    { name: 'Pura Luhur Uluwatu',               img: '/images/sunset-beach.jpg' },
+        sunrise:   { name: 'Pantai Sanur Denpasar',            img: '/images/sunrise-beach.jpg' },
+        mountain:  { name: 'Gunung Batur Kintamani',           img: '/images/mountain.jpg' },
     };
-    const conf = spotConfig[key] || spotConfig.waterfall;
+
+    // For numeric keys, look up from dbDestinations or userRecentlyViewed
+    let conf;
+    if (/^\d+$/.test(String(key))) {
+        const sources = [
+            ...(Array.isArray(window.userRecentlyViewed) ? window.userRecentlyViewed : []),
+            ...(Array.isArray(window.dbDestinations) ? window.dbDestinations : []),
+        ];
+        const found = sources.find(d => String(d.id) === String(key));
+        if (found) {
+            conf = { name: found.name, img: found.image_url || '/images/waterfall.jpg' };
+        }
+    }
+    if (!conf) {
+        conf = spotConfig[key] || spotConfig.waterfall;
+    }
 
     // Check if card already exists in history
     const existing = historyContainer.querySelector(`[data-spot-key="${key}"]`);
@@ -711,14 +726,14 @@ export function bringHistoryCardToTop(key) {
         void existing.offsetWidth; // reflow
         existing.classList.add('dash-history-highlight');
         setTimeout(() => existing.classList.remove('dash-history-highlight'), 1400);
-        // Enforce max 5 items in history
-        while (historyContainer.children.length > 5) {
+        // Enforce max 4 items in history
+        while (historyContainer.children.length > 4) {
             historyContainer.removeChild(historyContainer.lastElementChild);
         }
         return;
     }
 
-    // Create a new mini-card in the same style as "Destinasi Baru Rilis"
+    // Create a new mini-card
     const card = document.createElement('div');
     card.className = 'dash-history-mini-card';
     card.dataset.spotKey = key;
@@ -734,8 +749,8 @@ export function bringHistoryCardToTop(key) {
     card.onclick = () => openDashSpotDetail(key);
     historyContainer.prepend(card);
 
-    // Enforce max 5 items in history
-    while (historyContainer.children.length > 5) {
+    // Enforce max 4 items in history
+    while (historyContainer.children.length > 4) {
         historyContainer.removeChild(historyContainer.lastElementChild);
     }
 
@@ -889,6 +904,19 @@ export function swapDestDetailImage(thumbIndex) {
 export function openDashSpotDetail(key) {
     // Bring history card to top
     bringHistoryCardToTop(key);
+
+    // Record view in DB for numeric destination IDs (authenticated users only)
+    if (/^\d+$/.test(String(key))) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+        fetch(`/api/destinations/${key}/view`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+                ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {}),
+            },
+        }).catch(() => {});
+    }
 
     let data = spotDetailsData[key];
     if (window.dbDestinations && Array.isArray(window.dbDestinations)) {

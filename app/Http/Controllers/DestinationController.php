@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Destination;
+use App\Models\DestinationView;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class DestinationController extends Controller
@@ -35,7 +39,43 @@ class DestinationController extends Controller
         $latestDestinations = Destination::published()->latest()->take(4)->get();
         $featured = $destinations->first();
 
-        return view('dashboard', compact('destinations', 'latestDestinations', 'featured'));
+        /** @var Collection<int, Destination> $recentlyViewed */
+        $recentlyViewed = collect();
+        if (Auth::check()) {
+            $recentlyViewed = DestinationView::where('user_id', Auth::id())
+                ->with('destination')
+                ->orderByDesc('updated_at')
+                ->take(4)
+                ->get()
+                ->pluck('destination')
+                ->filter()
+                ->values();
+        }
+
+        return view('dashboard', compact('destinations', 'latestDestinations', 'featured', 'recentlyViewed'));
+    }
+
+    /**
+     * Record that the authenticated user viewed a destination.
+     */
+    public function recordView(Request $request, Destination $destination): JsonResponse
+    {
+        if (! Auth::check()) {
+            return response()->json(['success' => false], 401);
+        }
+
+        $userId = Auth::id();
+
+        // updateOrCreate to avoid duplicates, then touch updated_at to track recency
+        DestinationView::updateOrCreate(
+            ['user_id' => $userId, 'destination_id' => $destination->id],
+        );
+
+        DestinationView::where('user_id', $userId)
+            ->where('destination_id', $destination->id)
+            ->touch();
+
+        return response()->json(['success' => true]);
     }
 
     /**

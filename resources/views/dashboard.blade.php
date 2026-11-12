@@ -13,6 +13,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         window.dbDestinations = @json($destinations ?? []);
+        window.userRecentlyViewed = @json(($recentlyViewed ?? collect())->map(fn($d) => ['id' => $d->id, 'name' => $d->name, 'image_url' => $d->image_url])->values());
     </script>
 </head>
 
@@ -199,25 +200,17 @@
                     </div>
 
                     <div class="dash-history-list" id="dash-history-container">
-                        @if($destinations->isNotEmpty())
-                            @foreach($destinations->take(4) as $dest)
-                                <div class="dash-history-mini-card" data-spot-key="{{ $dest->id }}" onclick="openDashSpotDetail('{{ $dest->id }}')">
-                                    <img src="{{ $dest->image_url }}" alt="{{ $dest->name }}" class="dash-mini-img" loading="lazy">
-                                    <div class="dash-mini-info">
-                                        <span class="dash-mini-title">{{ $dest->name }}</span>
-                                    </div>
-                                    <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="dash-history-mini-card" data-spot-key="waterfall" onclick="openDashSpotDetail('waterfall')">
-                                <img src="/images/waterfall.jpg" alt="Air Terjun Tegenungan" class="dash-mini-img">
+                        @forelse($recentlyViewed ?? [] as $dest)
+                            <div class="dash-history-mini-card" data-spot-key="{{ $dest->id }}" data-dest-id="{{ $dest->id }}" onclick="openDashSpotDetail('{{ $dest->id }}')">
+                                <img src="{{ $dest->image_url }}" alt="{{ $dest->name }}" class="dash-mini-img" loading="lazy">
                                 <div class="dash-mini-info">
-                                    <span class="dash-mini-title">Air Terjun Tegenungan</span>
+                                    <span class="dash-mini-title">{{ $dest->name }}</span>
                                 </div>
                                 <button type="button" class="dash-btn-lihat" aria-label="Lihat">Lihat</button>
                             </div>
-                        @endif
+                        @empty
+                            {{-- Kosong: belum ada riwayat --}}
+                        @endforelse
                     </div>
                 </div>
 
