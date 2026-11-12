@@ -125,6 +125,14 @@ class Destination extends Model
     }
 
     /**
+     * Get the destination view records (used for trending calculation).
+     */
+    public function views(): HasMany
+    {
+        return $this->hasMany(DestinationView::class);
+    }
+
+    /**
      * Recalculate and persist rating + reviews_count from published comments.
      */
     public function recalculateRating(): void

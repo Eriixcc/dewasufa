@@ -54,7 +54,28 @@ class DestinationController extends Controller
             ->filter()
             ->values();
 
-        return view('dashboard', compact('destinations', 'latestDestinations', 'featured', 'recentlyViewed'));
+        // Hero slider: 3 slides from real data
+        $trending = Destination::published()
+            ->withCount('views')
+            ->orderByDesc('views_count')
+            ->orderByDesc('reviews_count')
+            ->first();
+
+        $newest = Destination::published()
+            ->latest()
+            ->first();
+
+        $topRated = Destination::published()
+            ->where('reviews_count', '>', 0)
+            ->orderByDesc('rating')
+            ->orderByDesc('reviews_count')
+            ->first();
+
+        $trending = $trending ?? $featured;
+        $newest = $newest ?? $featured;
+        $topRated = $topRated ?? $featured;
+
+        return view('dashboard', compact('destinations', 'latestDestinations', 'featured', 'recentlyViewed', 'trending', 'newest', 'topRated'));
     }
 
     /**

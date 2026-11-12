@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Destination;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
@@ -56,7 +57,8 @@ class DestinationTest extends TestCase
         $welcomeResponse->assertDontSee('Spot Rahasia Pending');
 
         // 2. User Dashboard: only post is visible
-        $dashResponse = $this->get('/dashboard');
+        $user = User::factory()->create(['role' => 'user']);
+        $dashResponse = $this->actingAs($user)->get('/dashboard');
         $dashResponse->assertStatus(200);
         $dashResponse->assertSee('Spot Publik Aktif');
         $dashResponse->assertDontSee('Spot Rahasia Pending');
@@ -99,7 +101,8 @@ class DestinationTest extends TestCase
             'status' => 'post',
         ]);
 
-        $response = $this->get('/dashboard');
+        $user = User::factory()->create(['role' => 'user']);
+        $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
         $response->assertSee('Air Terjun Gitgit');

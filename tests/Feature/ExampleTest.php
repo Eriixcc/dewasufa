@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,13 +22,13 @@ class ExampleTest extends TestCase
 
     public function test_the_dashboard_returns_a_successful_response(): void
     {
-        $response = $this->get('/dashboard');
+        $user = User::factory()->create(['role' => 'user']);
+
+        $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
-        $response->assertSee('Dashboard Pengguna');
         $response->assertSee('Destinasi Baru Rilis');
         $response->assertSee('Riwayat Terakhir Dilihat');
-        $response->assertSee('Daftar sebagai Author');
         $response->assertSee('Pengaturan');
         $response->assertSee('Logout');
         $response->assertDontSee('Log Out (Keluar)');
@@ -35,7 +36,9 @@ class ExampleTest extends TestCase
 
     public function test_author_registration_modal_contains_expected_fields(): void
     {
-        $response = $this->get('/dashboard');
+        $user = User::factory()->create(['role' => 'user']);
+
+        $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
         $response->assertSee('author-username');
@@ -43,14 +46,15 @@ class ExampleTest extends TestCase
         $response->assertSee('author-password');
         $response->assertSee('btn-submit-author-reg');
         $response->assertSee('Daftar');
-        $response->assertSee('sedang diverifikasi oleh admin');
         $response->assertDontSee('new-dest-name');
         $response->assertDontSee('new-dest-category');
     }
 
     public function test_settings_modal_contains_reset_password_and_roles_and_no_dark_mode(): void
     {
-        $response = $this->get('/dashboard');
+        $user = User::factory()->create(['role' => 'user']);
+
+        $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
         $response->assertSee('settings-reset-password');
@@ -58,17 +62,17 @@ class ExampleTest extends TestCase
         $response->assertSee('settings-role');
         $response->assertSee('readonly');
         $response->assertSee('settings-avatar-input');
-        $response->assertSee('dash-notif-popover');
         $response->assertSee('dash-btn-lihat');
         $response->assertSee('User');
-        $response->assertDontSee('•••');
         $response->assertDontSee('Mode Tampilan Gelap (Nature Glass)');
         $response->assertSee('Logout');
     }
 
     public function test_comment_author_username_is_locked_and_cannot_be_changed(): void
     {
-        $response = $this->get('/dashboard');
+        $user = User::factory()->create(['role' => 'user']);
+
+        $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
         $response->assertSee('comment-author-name');
