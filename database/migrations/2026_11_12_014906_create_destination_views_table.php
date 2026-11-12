@@ -11,10 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('destination_views', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        if (! Schema::hasTable('destination_views')) {
+            Schema::create('destination_views', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+                $table->foreignId('destination_id')->constrained()->cascadeOnDelete();
+                $table->timestamps();
+
+                $table->unique(['user_id', 'destination_id']);
+                $table->index(['user_id', 'updated_at']);
+            });
+        }
     }
 
     /**

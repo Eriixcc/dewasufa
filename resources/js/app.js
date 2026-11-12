@@ -459,59 +459,48 @@ export async function handleLoginSubmit(event) {
         const data = await response.json().catch(() => null);
 
         if (!response.ok) {
-            // Check if account exists in localStorage as fallback
-            let matchedAccount = null;
-            try {
-                const storedUsers = JSON.parse(localStorage.getItem('dewasufa_accounts') || '{}');
-                if (storedUsers[inputVal.toLowerCase()] && storedUsers[inputVal.toLowerCase()].password === password) {
-                    matchedAccount = storedUsers[inputVal.toLowerCase()];
-                }
-            } catch (e) { }
+            const errorMsg = data?.message || 'Email/telepon atau kata sandi tidak cocok.';
+            showToast(errorMsg, '⚠');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origBtnHtml;
+            }
+            return;
+        }
 
-            if (!matchedAccount) {
-                const errorMsg = data?.message || 'Email/telepon atau kata sandi tidak cocok.';
-                showToast(errorMsg, '⚠');
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = origBtnHtml;
-                }
-                return;
+        // Bersihkan storage sesi lama agar tidak tertukar akun
+        sessionStorage.clear();
+        localStorage.removeItem('dewasufa_user');
+        localStorage.removeItem('dewasufa_role');
+        localStorage.removeItem('dewasufa_email');
+        localStorage.removeItem('dewasufa_avatar');
+        localStorage.removeItem('dewasufa_phone');
+
+        const user = data?.user;
+        if (user) {
+            sessionStorage.setItem('dewasufa_user', user.name);
+            localStorage.setItem('dewasufa_user', user.name);
+            sessionStorage.setItem('dewasufa_email', user.email);
+            localStorage.setItem('dewasufa_email', user.email);
+            if (user.phone) {
+                sessionStorage.setItem('dewasufa_phone', user.phone);
+                localStorage.setItem('dewasufa_phone', user.phone);
+            }
+            sessionStorage.setItem('dewasufa_role', user.role || 'user');
+            localStorage.setItem('dewasufa_role', user.role || 'user');
+
+            if (user.avatar) {
+                sessionStorage.setItem('dewasufa_avatar', user.avatar);
+                localStorage.setItem('dewasufa_avatar', user.avatar);
             }
         }
 
-        const user = data?.user || {
-            name: inputVal.includes('@') ? inputVal.split('@')[0] : inputVal,
-            email: inputVal.includes('@') ? inputVal : 'user@dewasufa.com',
-            phone: localStorage.getItem('dewasufa_phone') || '+62 812-3456-7890',
-            role: 'user',
-            avatar: null
-        };
-
-        sessionStorage.setItem('dewasufa_user', user.name);
-        localStorage.setItem('dewasufa_user', user.name);
-        sessionStorage.setItem('dewasufa_email', user.email);
-        localStorage.setItem('dewasufa_email', user.email);
-        if (user.phone) {
-            sessionStorage.setItem('dewasufa_phone', user.phone);
-            localStorage.setItem('dewasufa_phone', user.phone);
-        }
-        sessionStorage.setItem('dewasufa_role', user.role || 'user');
-        localStorage.setItem('dewasufa_role', user.role || 'user');
-
-        if (user.avatar) {
-            sessionStorage.setItem('dewasufa_avatar', user.avatar);
-            localStorage.setItem('dewasufa_avatar', user.avatar);
-        } else {
-            sessionStorage.removeItem('dewasufa_avatar');
-            localStorage.removeItem('dewasufa_avatar');
-        }
-
         closeLoginModal();
-        showToast(data?.message || `Selamat datang kembali, ${user.name}!`, '✓');
+        showToast(data?.message || `Selamat datang kembali, ${user?.name || ''}!`, '✓');
         setTimeout(() => {
-            const redirectUrl = data?.redirect || (user.role === 'admin' ? '/admin' : '/dashboard');
+            const redirectUrl = data?.redirect || (user?.role === 'admin' ? '/admin' : '/dashboard');
             window.location.href = redirectUrl;
-        }, 600);
+        }, 500);
 
     } catch (err) {
         console.error('Login error:', err);
@@ -697,26 +686,35 @@ export function bringHistoryCardToTop(key) {
         mountain:  { name: 'Gunung Batur Kintamani',           img: '/images/mountain.jpg' },
     };
 
-    // For numeric keys, look up from dbDestinations or userRecentlyViewed
-    let conf;
-    if (/^\d+$/.test(String(key))) {
-        const sources = [
-            ...(Array.isArray(window.userRecentlyViewed) ? window.userRecentlyViewed : []),
-            ...(Array.isArray(window.dbDestinations) ? window.dbDestinations : []),
-        ];
-        const found = sources.find(d => String(d.id) === String(key));
-        if (found) {
-            conf = { name: found.name, img: found.image_url || '/images/waterfall.jpg' };
-        }
+    let conf = null;
+    let actualKey = String(key);
+
+    // Look up from userRecentlyViewed or dbDestinations
+    const sources = [
+        ...(Array.isArray(window.userRecentlyViewed) ? window.userRecentlyViewed : []),
+        ...(Array.isArray(window.dbDestinations) ? window.dbDestinations : []),
+    ];
+    const found = sources.find(d =>
+        String(d.id) === String(key) ||
+        d.category_slug === key ||
+        (d.name && d.name.toLowerCase().includes(String(key).toLowerCase()))
+    );
+
+    if (found) {
+        conf = { name: found.name, img: found.image_url || '/images/waterfall.jpg' };
+        if (found.id) actualKey = String(found.id);
     }
+
     if (!conf) {
         conf = spotConfig[key] || spotConfig.waterfall;
     }
 
-    // Check if card already exists in history
-    const existing = historyContainer.querySelector(`[data-spot-key="${key}"]`);
+    // Check if card already exists in history (check both actualKey and key)
+    const existing = historyContainer.querySelector(`[data-spot-key="${actualKey}"]`) ||
+                     historyContainer.querySelector(`[data-spot-key="${key}"]`);
     if (existing) {
         // Move to top without duplicating
+        existing.dataset.spotKey = actualKey;
         historyContainer.prepend(existing);
         // Update the timestamp text
         const timeEl = existing.querySelector('.dash-history-mini-time');
@@ -736,7 +734,7 @@ export function bringHistoryCardToTop(key) {
     // Create a new mini-card
     const card = document.createElement('div');
     card.className = 'dash-history-mini-card';
-    card.dataset.spotKey = key;
+    card.dataset.spotKey = actualKey;
     card.innerHTML = `
         <img src="${conf.img}" alt="${conf.name}" class="dash-mini-img">
         <div class="dash-mini-info">
@@ -746,7 +744,7 @@ export function bringHistoryCardToTop(key) {
             Lihat
         </button>
     `;
-    card.onclick = () => openDashSpotDetail(key);
+    card.onclick = () => openDashSpotDetail(actualKey);
     historyContainer.prepend(card);
 
     // Enforce max 4 items in history
@@ -905,10 +903,24 @@ export function openDashSpotDetail(key) {
     // Bring history card to top
     bringHistoryCardToTop(key);
 
-    // Record view in DB for numeric destination IDs (authenticated users only)
+    // Resolve numeric destination ID for DB recording
+    let destId = null;
     if (/^\d+$/.test(String(key))) {
+        destId = parseInt(key, 10);
+    } else if (window.dbDestinations && Array.isArray(window.dbDestinations)) {
+        const match = window.dbDestinations.find(d =>
+            String(d.id) === String(key) ||
+            d.category_slug === key ||
+            (d.name && d.name.toLowerCase().includes(String(key).toLowerCase()))
+        );
+        if (match && match.id) {
+            destId = match.id;
+        }
+    }
+
+    if (destId) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
-        fetch(`/api/destinations/${key}/view`, {
+        fetch(`/api/destinations/${destId}/view`, {
             method: 'POST',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -1570,15 +1582,15 @@ export function setCommentRating(rating) {
 
 // Get username of currently logged-in account
 export function getCurrentUsername() {
+    const fromDisplay = document.getElementById('dash-display-name')?.textContent?.trim();
+    if (fromDisplay && fromDisplay !== 'Wisatawan Bali') {
+        return fromDisplay;
+    }
     const fromSession = sessionStorage.getItem('dewasufa_user') || localStorage.getItem('dewasufa_user');
     if (fromSession && fromSession.trim()) {
         return fromSession.trim();
     }
-    const fromDisplay = document.getElementById('dash-display-name')?.textContent?.trim();
-    if (fromDisplay) {
-        return fromDisplay;
-    }
-    return 'Wisatawan Bali';
+    return fromDisplay || 'Wisatawan Bali';
 }
 
 export async function handleCommentSubmit(event) {
@@ -2069,22 +2081,8 @@ function initApp() {
     }
 
     // 2. USER DASHBOARD LISTENERS
-    const dashDisplayName = document.getElementById('dash-display-name');
-    if (dashDisplayName) {
-        const savedUser = sessionStorage.getItem('dewasufa_user') || localStorage.getItem('dewasufa_user');
-        if (savedUser) {
-            dashDisplayName.textContent = savedUser;
-        }
-    }
-    const dashRole = document.querySelector('.dash-user-role');
-    if (dashRole) {
-        if (document.body.classList.contains('admin-body')) {
-            dashRole.textContent = 'Admin';
-        } else {
-            const savedRole = sessionStorage.getItem('dewasufa_role');
-            dashRole.textContent = savedRole || 'User';
-        }
-    }
+    // Catatan: Nama dan role akun pengguna di header dirender secara presisi dan aman dari data session backend (Blade),
+    // sehingga tidak ditimpa oleh localStorage agar tidak tertukar saat berganti akun.
 
     // Initialize locked registered email with active account
     const settingsEmailInput = document.getElementById('settings-email');
@@ -2142,11 +2140,7 @@ function initApp() {
 
     // Shared Logout Handler
     function performLogout() {
-        sessionStorage.removeItem('dewasufa_user');
-        sessionStorage.removeItem('dewasufa_role');
-        sessionStorage.removeItem('dewasufa_email');
-        sessionStorage.removeItem('dewasufa_avatar');
-        sessionStorage.removeItem('dewasufa_phone');
+        sessionStorage.clear();
         localStorage.removeItem('dewasufa_user');
         localStorage.removeItem('dewasufa_role');
         localStorage.removeItem('dewasufa_email');
@@ -2154,6 +2148,12 @@ function initApp() {
         localStorage.removeItem('dewasufa_phone');
         if (userDropdown) userDropdown.classList.remove('show');
         closeSettingsModal();
+
+        const logoutForm = document.getElementById('dash-logout-form');
+        if (logoutForm) {
+            logoutForm.submit();
+            return;
+        }
 
         const csrfMeta = document.querySelector('meta[name="csrf-token"]');
         const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
@@ -2165,12 +2165,9 @@ function initApp() {
                 'Accept': 'application/json',
                 ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {})
             }
-        }).catch(() => {});
-
-        showToast('Anda telah logout. Mengalihkan ke beranda...', '');
-        setTimeout(() => {
+        }).finally(() => {
             window.location.href = '/';
-        }, 600);
+        });
     }
 
     // Dashboard Logout Button (Dropdown Menu)
@@ -2286,6 +2283,17 @@ function initApp() {
         btnClearHistory.addEventListener('click', () => {
             const histContainer = document.getElementById('dash-history-container');
             if (histContainer) histContainer.innerHTML = '';
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+            fetch('/api/history/clear', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                    ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {}),
+                },
+            }).catch(() => {});
+
             showToast('Riwayat penelusuran berhasil dibersihkan.', '');
         });
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Destination;
 use App\Models\DestinationView;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -33,24 +34,25 @@ class DestinationController extends Controller
     /**
      * Display the user dashboard with published ('post') destinations.
      */
-    public function dashboard(): View
+    public function dashboard(): View|RedirectResponse
     {
+        if (! Auth::check()) {
+            return redirect()->route('home')->with('error', 'Silakan masuk ke akun Anda terlebih dahulu.');
+        }
+
         $destinations = Destination::published()->orderBy('id', 'asc')->get();
         $latestDestinations = Destination::published()->latest()->take(4)->get();
         $featured = $destinations->first();
 
         /** @var Collection<int, Destination> $recentlyViewed */
-        $recentlyViewed = collect();
-        if (Auth::check()) {
-            $recentlyViewed = DestinationView::where('user_id', Auth::id())
-                ->with('destination')
-                ->orderByDesc('updated_at')
-                ->take(4)
-                ->get()
-                ->pluck('destination')
-                ->filter()
-                ->values();
-        }
+        $recentlyViewed = DestinationView::where('user_id', Auth::id())
+            ->with('destination')
+            ->orderByDesc('updated_at')
+            ->take(4)
+            ->get()
+            ->pluck('destination')
+            ->filter()
+            ->values();
 
         return view('dashboard', compact('destinations', 'latestDestinations', 'featured', 'recentlyViewed'));
     }
@@ -66,14 +68,25 @@ class DestinationController extends Controller
 
         $userId = Auth::id();
 
-        // updateOrCreate to avoid duplicates, then touch updated_at to track recency
-        DestinationView::updateOrCreate(
+        // updateOrCreate to track recency via updated_at
+        $view = DestinationView::updateOrCreate(
             ['user_id' => $userId, 'destination_id' => $destination->id],
+            ['updated_at' => now()]
         );
 
-        DestinationView::where('user_id', $userId)
-            ->where('destination_id', $destination->id)
-            ->touch();
+        $view->touch();
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * Clear all destination views history for the authenticated user.
+     */
+    public function clearHistory(): JsonResponse
+    {
+        if (Auth::check()) {
+            DestinationView::where('user_id', Auth::id())->delete();
+        }
 
         return response()->json(['success' => true]);
     }

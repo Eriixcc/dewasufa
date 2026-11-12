@@ -850,5 +850,10 @@
         <span id="toast-text">Berhasil!</span>
     </div>
 
+    <!-- ===== HIDDEN LOGOUT FORM ===== -->
+    <form id="dash-logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+
 </body>
 </html>
