@@ -2246,37 +2246,6 @@ function initApp() {
         });
     }
 
-    // Notification button & Popover
-    const btnNotif = document.getElementById('btn-dash-notif');
-    const notifPopover = document.getElementById('dash-notif-popover');
-    const btnMarkNotif = document.getElementById('btn-mark-notif-read');
-    const notifBadge = document.getElementById('dash-notif-badge');
-
-    if (btnNotif && notifPopover) {
-        btnNotif.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (userDropdown) userDropdown.classList.remove('show');
-            const isOpen = notifPopover.classList.toggle('show');
-            btnNotif.setAttribute('aria-expanded', isOpen);
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('#dash-notif-wrap')) {
-                notifPopover.classList.remove('show');
-                btnNotif.setAttribute('aria-expanded', 'false');
-            }
-        });
-    }
-
-    if (btnMarkNotif) {
-        btnMarkNotif.addEventListener('click', () => {
-            const unreadItems = document.querySelectorAll('.dash-notif-pop-item.unread');
-            unreadItems.forEach(item => item.classList.remove('unread'));
-            if (notifBadge) notifBadge.style.display = 'none';
-            showToast('Semua notifikasi telah ditandai dibaca.', '');
-        });
-    }
-
     // Clear History button
     const btnClearHistory = document.getElementById('btn-clear-history');
     if (btnClearHistory) {
@@ -2457,7 +2426,6 @@ function initApp() {
             closeDestDetailModal();
             closeSavedPlansModal();
             if (userDropdown) userDropdown.classList.remove('show');
-            if (notifPopover) notifPopover.classList.remove('show');
         }
     });
 }

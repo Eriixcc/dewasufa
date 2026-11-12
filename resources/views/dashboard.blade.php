@@ -47,53 +47,8 @@
                 <button type="button" class="dash-cat-pill" data-filter="mountain">Mountain</button>
             </nav>
 
-            <!-- Right Actions: Notifications & User Profile -->
+            <!-- Right Actions: User Profile -->
             <div class="dash-top-actions">
-                <!-- Notification Bell & Small Popover Modal -->
-                <div class="dash-notif-wrap" id="dash-notif-wrap">
-                    <button type="button" class="dash-btn-icon-pill" id="btn-dash-notif" aria-label="Notifikasi" aria-haspopup="true" aria-expanded="false">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        </svg>
-                        <span class="dash-notif-dot" id="dash-notif-badge" aria-label="Pemberitahuan baru"></span>
-                    </button>
-
-                    <!-- Small Notification Popover Modal -->
-                    <div class="dash-notif-popover" id="dash-notif-popover" role="dialog" aria-label="Notifikasi Anda">
-                        <div class="dash-notif-pop-header">
-                            <span class="dash-notif-pop-title">Notifikasi</span>
-                            <button type="button" class="dash-notif-pop-clear" id="btn-mark-notif-read">Tandai Dibaca</button>
-                        </div>
-                        <div class="dash-notif-pop-list">
-                            <div class="dash-notif-pop-item unread">
-                                <span class="dash-notif-indicator"></span>
-                                <div class="dash-notif-pop-body">
-                                    <p class="dash-notif-item-title">Verifikasi Akun</p>
-                                    <p class="dash-notif-item-text">Pendaftaran status akun Anda sedang diverifikasi oleh admin.</p>
-                                    <span class="dash-notif-item-time">Baru saja</span>
-                                </div>
-                            </div>
-                            <div class="dash-notif-pop-item">
-                                <span class="dash-notif-indicator"></span>
-                                <div class="dash-notif-pop-body">
-                                    <p class="dash-notif-item-title">Spot Populer Hari Ini</p>
-                                    <p class="dash-notif-item-text">Air Terjun Sekumpul mendapatkan 120 ulasan wisatawan baru.</p>
-                                    <span class="dash-notif-item-time">1 jam lalu</span>
-                                </div>
-                            </div>
-                            <div class="dash-notif-pop-item">
-                                <span class="dash-notif-indicator"></span>
-                                <div class="dash-notif-pop-body">
-                                    <p class="dash-notif-item-title">Pembaruan Rute</p>
-                                    <p class="dash-notif-item-text">Jalur akses menuju Pantai Melasti telah diperbarui.</p>
-                                    <span class="dash-notif-item-time">3 jam lalu</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- User Profile Pill with Dropdown -->
                 <div class="dash-user-dropdown-wrap">
                     <button type="button" class="dash-user-pill" id="dash-user-menu-btn" aria-haspopup="true" aria-expanded="false">
@@ -497,28 +452,6 @@
                             <label for="settings-confirm-password">Konfirmasi Password</label>
                             <input type="password" id="settings-confirm-password" name="confirm_password" placeholder="Ulangi password baru" autocomplete="new-password">
                         </div>
-                    </div>
-                </div>
-
-                <!-- Preferensi Notifikasi & Eksplorasi -->
-                <div class="dash-settings-section">
-                    <h4 class="dash-settings-sec-title">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        </svg>
-                        <span>Preferensi Aplikasi</span>
-                    </h4>
-
-                    <div class="dash-settings-toggle-row">
-                        <div class="dash-toggle-info">
-                            <span class="dash-toggle-title">Pemberitahuan Rekomendasi Destinasi</span>
-                            <span class="dash-toggle-sub">Terima tips wisata Bali dan spot anyar setiap minggu</span>
-                        </div>
-                        <label class="dash-switch">
-                            <input type="checkbox" id="settings-toggle-notif" checked>
-                            <span class="dash-switch-slider"></span>
-                        </label>
                     </div>
                 </div>
 

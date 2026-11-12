@@ -109,17 +109,6 @@
 
                 <div class="admin-topbar-actions">
 
-                    <!-- Icon Tools -->
-                    <div class="admin-icon-tools">
-                        <button type="button" class="admin-tool-icon-btn admin-notif-btn" title="Notifikasi Admin" onclick="showAdminToast('Tidak ada notifikasi baru.')">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                            </svg>
-                            <span class="admin-notif-indicator"></span>
-                        </button>
-                    </div>
-
                     <!-- Profile Pill with Dropdown (Matching User Dashboard) -->
                     <div class="dash-user-dropdown-wrap admin-user-dropdown-wrap">
                         <button type="button" class="dash-user-pill" id="admin-user-menu-btn" onclick="toggleAdminUserMenu(event)" aria-haspopup="true" aria-expanded="false">
@@ -1396,28 +1385,6 @@
                             <label for="admin-settings-confirm-password">Konfirmasi Password</label>
                             <input type="password" id="admin-settings-confirm-password" name="confirm_password" placeholder="Ulangi password baru" autocomplete="new-password">
                         </div>
-                    </div>
-                </div>
-
-                <!-- Preferensi Notifikasi & Eksplorasi Sistem -->
-                <div class="dash-settings-section">
-                    <h4 class="dash-settings-sec-title">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        </svg>
-                        <span>Preferensi Aplikasi &amp; Sistem</span>
-                    </h4>
-
-                    <div class="dash-settings-toggle-row">
-                        <div class="dash-toggle-info">
-                            <span class="dash-toggle-title">Pemberitahuan Sistem &amp; Moderasi Destinasi</span>
-                            <span class="dash-toggle-sub">Terima notifikasi otomatis saat ada permohonan destinasi atau komentar baru</span>
-                        </div>
-                        <label class="dash-switch">
-                            <input type="checkbox" id="admin-settings-toggle-notif" checked>
-                            <span class="dash-switch-slider"></span>
-                        </label>
                     </div>
                 </div>
 
