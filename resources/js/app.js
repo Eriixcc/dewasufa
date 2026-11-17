@@ -1058,18 +1058,98 @@ export function closeDestDetailModal() {
 }
 
 // ===== RENCANA TERSIMPAN (SAVED PLANS) =====
+
+export function resolveSpotInfo(key) {
+    if (!key) return spotDetailsData.waterfall;
+    const strKey = String(key).trim();
+
+    // 1. Cari di window.dbDestinations
+    if (window.dbDestinations && Array.isArray(window.dbDestinations)) {
+        const found = window.dbDestinations.find(d =>
+            String(d.id) === strKey ||
+            (d.category_slug && d.category_slug.toLowerCase() === strKey.toLowerCase()) ||
+            (d.category && d.category.toLowerCase() === strKey.toLowerCase()) ||
+            (d.name && d.name.toLowerCase().includes(strKey.toLowerCase()))
+        );
+        if (found) {
+            return {
+                id: found.id,
+                key: String(found.id),
+                title: found.name,
+                category: found.category || 'Wisata Alam',
+                location: 'Bali, Indonesia',
+                image: found.image_url || '/images/waterfall.jpg',
+            };
+        }
+    }
+
+    // 2. Cari di window.userSavedPlans
+    if (window.userSavedPlans && Array.isArray(window.userSavedPlans)) {
+        const found = window.userSavedPlans.find(d =>
+            String(d.id) === strKey ||
+            (d.title && d.title.toLowerCase().includes(strKey.toLowerCase())) ||
+            (d.name && d.name.toLowerCase().includes(strKey.toLowerCase()))
+        );
+        if (found) {
+            return {
+                id: found.id,
+                key: String(found.id),
+                title: found.title || found.name,
+                category: found.category || 'Wisata Alam',
+                location: found.location || 'Bali, Indonesia',
+                image: found.image || found.image_url || '/images/waterfall.jpg',
+            };
+        }
+    }
+
+    // 3. Fallback ke spotDetailsData jika key cocok
+    if (spotDetailsData[key]) {
+        const st = spotDetailsData[key];
+        return {
+            id: null,
+            key: key,
+            title: st.title,
+            category: st.category,
+            location: st.location,
+            image: st.image,
+        };
+    }
+
+    return {
+        id: null,
+        key: key,
+        title: 'Destinasi Wisata Bali',
+        category: 'Wisata Alam',
+        location: 'Bali, Indonesia',
+        image: '/images/waterfall.jpg',
+    };
+}
+
 export function getSavedPlans() {
+    if (Array.isArray(window.userSavedPlanIds)) {
+        return window.userSavedPlanIds.map(id => String(id));
+    }
     try {
         const saved = localStorage.getItem('dewasufa_saved_plans');
-        return saved ? JSON.parse(saved) : [];
+        return saved ? JSON.parse(saved).map(id => String(id)) : [];
     } catch (e) {
         return [];
     }
 }
 
 export function isSpotSaved(key) {
+    if (!key) return false;
     const plans = getSavedPlans();
-    return plans.includes(key);
+    const strKey = String(key);
+
+    if (plans.includes(strKey)) return true;
+
+    const info = resolveSpotInfo(key);
+    if (info && info.id && plans.includes(String(info.id))) {
+        return true;
+    }
+
+    return false;
 }
 
 let isTogglingPlan = false;
@@ -1112,7 +1192,8 @@ export function updateDestModalSaveButtonState(key) {
 export function updateHeroBookmarkState() {
     const btnBookmark = document.getElementById('dash-hero-btn-bookmark');
     if (!btnBookmark) return;
-    const currentKey = dashboardSlides[currentSlideIndex]?.key || 'sekumpul';
+    const currentSlide = dashboardSlides[currentSlideIndex];
+    const currentKey = currentSlide?.id || currentSlide?.key || 'sekumpul';
     const isSaved = isSpotSaved(currentKey);
     btnBookmark.classList.toggle('active', isSaved);
     const svg = btnBookmark.querySelector('svg');
@@ -1121,32 +1202,82 @@ export function updateHeroBookmarkState() {
     }
 }
 
-export function toggleSavePlanByKey(key) {
+export async function toggleSavePlanByKey(key) {
     if (isTogglingPlan) return;
     isTogglingPlan = true;
-    setTimeout(() => { isTogglingPlan = false; }, 200);
+    setTimeout(() => { isTogglingPlan = false; }, 300);
 
-    let plans = getSavedPlans();
-    const data = spotDetailsData[key] || spotDetailsData.waterfall;
-    const title = data.title || 'Destinasi';
+    const info = resolveSpotInfo(key);
+    const destId = info.id;
+    const title = info.title || 'Destinasi';
 
-    if (plans.includes(key)) {
-        plans = plans.filter(k => k !== key);
-        localStorage.setItem('dewasufa_saved_plans', JSON.stringify(plans));
-        if (currentDetailSpotKey === key) {
-            updateDestModalSaveButtonState(key);
+    // If destination is in database, persist via API
+    if (destId) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+        try {
+            const res = await fetch(`/api/destinations/${destId}/save`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                    ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {}),
+                },
+            });
+            const data = await res.json();
+            if (data && data.success) {
+                const strId = String(destId);
+                if (data.is_saved) {
+                    if (!Array.isArray(window.userSavedPlanIds)) window.userSavedPlanIds = [];
+                    if (!window.userSavedPlanIds.includes(strId)) {
+                        window.userSavedPlanIds.unshift(strId);
+                    }
+                    if (!Array.isArray(window.userSavedPlans)) window.userSavedPlans = [];
+                    if (!window.userSavedPlans.some(p => String(p.id) === strId)) {
+                        window.userSavedPlans.unshift({
+                            id: destId,
+                            title: info.title,
+                            category: info.category,
+                            location: info.location,
+                            image: info.image,
+                        });
+                    }
+                } else {
+                    if (Array.isArray(window.userSavedPlanIds)) {
+                        window.userSavedPlanIds = window.userSavedPlanIds.filter(id => String(id) !== strId);
+                    }
+                    if (Array.isArray(window.userSavedPlans)) {
+                        window.userSavedPlans = window.userSavedPlans.filter(p => String(p.id) !== strId);
+                    }
+                }
+
+                localStorage.setItem('dewasufa_saved_plans', JSON.stringify(window.userSavedPlanIds));
+                updateDestModalSaveButtonState(currentDetailSpotKey || key);
+                updateHeroBookmarkState();
+                renderSavedPlansList();
+                showToast(data.message || (data.is_saved ? `"${title}" berhasil disimpan!` : `"${title}" dihapus.`), '');
+                return;
+            }
+        } catch (err) {
+            console.error('Failed to toggle save destination:', err);
         }
-        updateHeroBookmarkState();
+    }
+
+    // Local fallback for static non-database items
+    let plans = getSavedPlans();
+    const strKey = String(key);
+    if (plans.includes(strKey)) {
+        plans = plans.filter(k => k !== strKey);
         showToast(`"${title}" dihapus dari Rencana Tersimpan.`, '');
     } else {
-        plans.push(key);
-        localStorage.setItem('dewasufa_saved_plans', JSON.stringify(plans));
-        if (currentDetailSpotKey === key) {
-            updateDestModalSaveButtonState(key);
-        }
-        updateHeroBookmarkState();
+        plans.unshift(strKey);
         showToast(`"${title}" berhasil disimpan ke Rencana Tersimpan!`, '');
     }
+    window.userSavedPlanIds = plans;
+    localStorage.setItem('dewasufa_saved_plans', JSON.stringify(plans));
+
+    updateDestModalSaveButtonState(currentDetailSpotKey || key);
+    updateHeroBookmarkState();
     renderSavedPlansList();
 }
 
@@ -1157,7 +1288,7 @@ export function toggleSaveCurrentPlan() {
 
 export function handleHeroLihatClick() {
     const slide = dashboardSlides[currentSlideIndex];
-    const key = slide?.key || 'sekumpul';
+    const key = slide?.id || slide?.key || 'sekumpul';
     openDashSpotDetail(key);
 }
 
@@ -1180,17 +1311,7 @@ export function closeSavedPlansModal() {
 
 export function removeSavedPlan(key, event) {
     if (event) event.stopPropagation();
-    let plans = getSavedPlans();
-    const data = spotDetailsData[key] || spotDetailsData.waterfall;
-    const title = data.title || 'Destinasi';
-    plans = plans.filter(k => k !== key);
-    localStorage.setItem('dewasufa_saved_plans', JSON.stringify(plans));
-    if (currentDetailSpotKey === key) {
-        updateDestModalSaveButtonState(key);
-    }
-    updateHeroBookmarkState();
-    renderSavedPlansList();
-    showToast(`"${title}" dihapus dari Rencana Tersimpan.`, '');
+    toggleSavePlanByKey(key);
 }
 
 export function renderSavedPlansList() {
@@ -1211,17 +1332,18 @@ export function renderSavedPlansList() {
     }
 
     listEl.innerHTML = plans.map(key => {
-        const item = spotDetailsData[key] || spotDetailsData.waterfall;
+        const item = resolveSpotInfo(key);
+        const spotKey = item.id ? String(item.id) : key;
         return `
-            <div class="dash-saved-plan-item" onclick="closeSavedPlansModal(); openDashSpotDetail('${key}')">
+            <div class="dash-saved-plan-item" onclick="closeSavedPlansModal(); openDashSpotDetail('${spotKey}')">
                 <img src="${item.image}" alt="${item.title}" class="dash-saved-plan-img">
                 <div class="dash-saved-plan-info">
                     <span class="dash-saved-plan-title">${item.title}</span>
                     <span class="dash-saved-plan-loc">${item.location} &bull; ${item.category}</span>
                 </div>
                 <div class="dash-saved-plan-actions">
-                    <button type="button" class="dash-btn-lihat" onclick="event.stopPropagation(); closeSavedPlansModal(); openDashSpotDetail('${key}')">Lihat</button>
-                    <button type="button" class="dash-saved-plan-remove" aria-label="Hapus dari Rencana" title="Hapus dari Rencana" onclick="removeSavedPlan('${key}', event)">
+                    <button type="button" class="dash-btn-lihat" onclick="event.stopPropagation(); closeSavedPlansModal(); openDashSpotDetail('${spotKey}')">Lihat</button>
+                    <button type="button" class="dash-saved-plan-remove" aria-label="Hapus dari Rencana" title="Hapus dari Rencana" onclick="removeSavedPlan('${spotKey}', event)">
                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -2146,6 +2268,7 @@ function initApp() {
         localStorage.removeItem('dewasufa_email');
         localStorage.removeItem('dewasufa_avatar');
         localStorage.removeItem('dewasufa_phone');
+        localStorage.removeItem('dewasufa_saved_plans');
         if (userDropdown) userDropdown.classList.remove('show');
         closeSettingsModal();
 

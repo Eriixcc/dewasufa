@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Destination;
 use App\Models\DestinationView;
+use App\Models\SavedDestination;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -54,10 +55,20 @@ class DestinationController extends Controller
             ->filter()
             ->values();
 
+        /** @var Collection<int, Destination> $savedDestinations */
+        $savedDestinations = SavedDestination::where('user_id', Auth::id())
+            ->with('destination')
+            ->orderByDesc('created_at')
+            ->get()
+            ->pluck('destination')
+            ->filter()
+            ->values();
+
         // Hero slider: 3 slides from real data
         $trending = Destination::published()
+            ->withCount('saves')
             ->withCount('views')
-            ->orderByDesc('views_count')
+            ->orderByRaw('(saves_count * 2 + views_count) DESC')
             ->orderByDesc('reviews_count')
             ->first();
 
@@ -75,7 +86,7 @@ class DestinationController extends Controller
         $newest = $newest ?? $featured;
         $topRated = $topRated ?? $featured;
 
-        return view('dashboard', compact('destinations', 'latestDestinations', 'featured', 'recentlyViewed', 'trending', 'newest', 'topRated'));
+        return view('dashboard', compact('destinations', 'latestDestinations', 'featured', 'recentlyViewed', 'savedDestinations', 'trending', 'newest', 'topRated'));
     }
 
     /**
@@ -130,5 +141,74 @@ class DestinationController extends Controller
         }
 
         return response()->json($destination);
+    }
+
+    /**
+     * Toggle saved destination for the authenticated user.
+     */
+    public function toggleSave(Request $request, Destination $destination): JsonResponse
+    {
+        if (! Auth::check()) {
+            return response()->json(['success' => false, 'message' => 'Silakan login terlebih dahulu.'], 401);
+        }
+
+        $userId = Auth::id();
+
+        $existing = SavedDestination::where('user_id', $userId)
+            ->where('destination_id', $destination->id)
+            ->first();
+
+        if ($existing) {
+            $existing->delete();
+            $isSaved = false;
+            $message = "\"{$destination->name}\" dihapus dari Rencana Tersimpan.";
+        } else {
+            SavedDestination::create([
+                'user_id' => $userId,
+                'destination_id' => $destination->id,
+            ]);
+            $isSaved = true;
+            $message = "\"{$destination->name}\" berhasil disimpan ke Rencana Tersimpan!";
+        }
+
+        return response()->json([
+            'success' => true,
+            'is_saved' => $isSaved,
+            'message' => $message,
+            'destination' => [
+                'id' => $destination->id,
+                'name' => $destination->name,
+                'category' => $destination->category,
+                'image_url' => $destination->image_url,
+                'location' => 'Bali, Indonesia',
+            ],
+        ]);
+    }
+
+    /**
+     * Return all saved destinations for the authenticated user as JSON.
+     */
+    public function savedPlans(): JsonResponse
+    {
+        if (! Auth::check()) {
+            return response()->json([], 401);
+        }
+
+        $saved = SavedDestination::where('user_id', Auth::id())
+            ->with('destination')
+            ->orderByDesc('created_at')
+            ->get()
+            ->pluck('destination')
+            ->filter()
+            ->map(fn (Destination $d) => [
+                'id' => $d->id,
+                'title' => $d->name,
+                'category' => $d->category,
+                'location' => 'Bali, Indonesia',
+                'image' => $d->image_url,
+            ])
+            ->values();
+
+        return response()->json($saved);
     }
 }

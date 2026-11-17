@@ -11,43 +11,61 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @php
+        $recentlyViewedData = ($recentlyViewed ?? collect())->map(fn($d) => [
+            'id' => $d->id,
+            'name' => $d->name,
+            'image_url' => $d->image_url,
+        ])->values();
+
+        $savedPlansData = ($savedDestinations ?? collect())->map(fn($d) => [
+            'id' => $d->id,
+            'title' => $d->name,
+            'category' => $d->category,
+            'location' => 'Bali, Indonesia',
+            'image' => $d->image_url,
+        ])->values();
+
+        $savedPlanIdsData = ($savedDestinations ?? collect())->pluck('id')->map(fn($id) => (string) $id)->values();
+
+        $heroSlides = [
+            [
+                'id'       => $trending?->id,
+                'key'      => (string) ($trending?->id ?? 'sekumpul'),
+                'trend'    => 'Trending Minggu Ini',
+                'tags'     => [$trending?->category ?? 'Wisata Alam', 'Bali, Indonesia'],
+                'title'    => $trending?->name ?? '',
+                'desc'     => $trending?->description ?? '',
+                'image'    => $trending?->image_url ?? asset('images/waterfall.jpg'),
+                'fallback' => asset('images/waterfall.jpg'),
+            ],
+            [
+                'id'       => $newest?->id,
+                'key'      => (string) ($newest?->id ?? 'sekumpul'),
+                'trend'    => 'Destinasi Baru Rilis',
+                'tags'     => [$newest?->category ?? 'Wisata Alam', 'Bali, Indonesia'],
+                'title'    => $newest?->name ?? '',
+                'desc'     => $newest?->description ?? '',
+                'image'    => $newest?->image_url ?? asset('images/waterfall.jpg'),
+                'fallback' => asset('images/waterfall.jpg'),
+            ],
+            [
+                'id'       => $topRated?->id,
+                'key'      => (string) ($topRated?->id ?? 'sekumpul'),
+                'trend'    => 'Rating Tertinggi',
+                'tags'     => [$topRated?->category ?? 'Wisata Alam', 'Bali, Indonesia'],
+                'title'    => $topRated?->name ?? '',
+                'desc'     => $topRated?->description ?? '',
+                'image'    => $topRated?->image_url ?? asset('images/waterfall.jpg'),
+                'fallback' => asset('images/waterfall.jpg'),
+            ],
+        ];
+    @endphp
     <script>
         window.dbDestinations = @json($destinations ?? []);
-        window.userRecentlyViewed = @json(($recentlyViewed ?? collect())->map(fn($d) => ['id' => $d->id, 'name' => $d->name, 'image_url' => $d->image_url])->values());
-        @php
-            $heroSlides = [
-                [
-                    'id'       => $trending?->id,
-                    'key'      => (string) ($trending?->id ?? 'sekumpul'),
-                    'trend'    => 'Trending Minggu Ini',
-                    'tags'     => [$trending?->category ?? 'Wisata Alam', 'Bali, Indonesia'],
-                    'title'    => $trending?->name ?? '',
-                    'desc'     => $trending?->description ?? '',
-                    'image'    => $trending?->image_url ?? asset('images/waterfall.jpg'),
-                    'fallback' => asset('images/waterfall.jpg'),
-                ],
-                [
-                    'id'       => $newest?->id,
-                    'key'      => (string) ($newest?->id ?? 'sekumpul'),
-                    'trend'    => 'Destinasi Baru Rilis',
-                    'tags'     => [$newest?->category ?? 'Wisata Alam', 'Bali, Indonesia'],
-                    'title'    => $newest?->name ?? '',
-                    'desc'     => $newest?->description ?? '',
-                    'image'    => $newest?->image_url ?? asset('images/waterfall.jpg'),
-                    'fallback' => asset('images/waterfall.jpg'),
-                ],
-                [
-                    'id'       => $topRated?->id,
-                    'key'      => (string) ($topRated?->id ?? 'sekumpul'),
-                    'trend'    => 'Rating Tertinggi',
-                    'tags'     => [$topRated?->category ?? 'Wisata Alam', 'Bali, Indonesia'],
-                    'title'    => $topRated?->name ?? '',
-                    'desc'     => $topRated?->description ?? '',
-                    'image'    => $topRated?->image_url ?? asset('images/waterfall.jpg'),
-                    'fallback' => asset('images/waterfall.jpg'),
-                ],
-            ];
-        @endphp
+        window.userRecentlyViewed = @json($recentlyViewedData);
+        window.userSavedPlans = @json($savedPlansData);
+        window.userSavedPlanIds = @json($savedPlanIdsData);
         window.dbHeroSlides = @json($heroSlides);
     </script>
 </head>

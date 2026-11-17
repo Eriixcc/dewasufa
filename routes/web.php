@@ -33,6 +33,8 @@ Route::delete('/admin/comments/{comment}', [AdminController::class, 'destroyComm
 Route::get('/api/destinations', [DestinationController::class, 'apiIndex'])->name('api.destinations.index');
 Route::get('/api/destinations/{destination}', [DestinationController::class, 'apiShow'])->name('api.destinations.show');
 Route::post('/api/destinations/{destination}/view', [DestinationController::class, 'recordView'])->name('api.destinations.view');
+Route::post('/api/destinations/{destination}/save', [DestinationController::class, 'toggleSave'])->name('api.destinations.save');
+Route::get('/api/saved-plans', [DestinationController::class, 'savedPlans'])->name('api.saved-plans');
 Route::post('/api/history/clear', [DestinationController::class, 'clearHistory'])->name('api.history.clear');
 Route::get('/api/comments', [CommentController::class, 'index'])->name('api.comments.index');
 Route::post('/api/comments', [CommentController::class, 'store'])->name('api.comments.store');

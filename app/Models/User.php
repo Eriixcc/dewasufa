@@ -48,6 +48,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the saved destinations for this user.
+     */
+    public function savedDestinations(): HasMany
+    {
+        return $this->hasMany(SavedDestination::class)->with('destination')->orderByDesc('created_at');
+    }
+
+    /**
      * Get the URL for the user's avatar.
      */
     public function getAvatarUrlAttribute(): ?string

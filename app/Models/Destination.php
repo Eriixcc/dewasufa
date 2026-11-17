@@ -133,6 +133,14 @@ class Destination extends Model
     }
 
     /**
+     * Get the users who saved this destination.
+     */
+    public function saves(): HasMany
+    {
+        return $this->hasMany(SavedDestination::class);
+    }
+
+    /**
      * Recalculate and persist rating + reviews_count from published comments.
      */
     public function recalculateRating(): void
