@@ -116,11 +116,11 @@
                                 @if(Auth::check() && Auth::user()->avatar)
                                     <img src="{{ asset(Auth::user()->avatar) }}" alt="Foto Profil Admin" class="dash-avatar-img" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
                                 @else
-                                    <span class="dash-avatar-initials">{{ Auth::check() ? strtoupper(substr(Auth::user()->name, 0, 2)) : 'ER' }}</span>
+                                    <span class="dash-avatar-initials">{{ Auth::check() ? strtoupper(substr(Auth::user()->name, 0, 2)) : 'AD' }}</span>
                                 @endif
                             </div>
                             <div class="dash-user-info">
-                                <span class="dash-user-name">{{ Auth::check() ? Auth::user()->name : 'Erick' }}</span>
+                                <span class="dash-user-name" id="admin-display-name">{{ Auth::check() ? Auth::user()->name : 'Admin' }}</span>
                                 <span class="dash-user-role" id="admin-user-role">{{ Auth::check() ? ucfirst(Auth::user()->role) : 'Admin' }}</span>
                             </div>
                             <svg class="dash-chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -146,7 +146,14 @@
                                 <span>Portal Pengguna</span>
                             </a>
                             <hr class="dash-dropdown-divider">
-                            <a href="{{ route('home') }}" class="dash-dropdown-item text-danger" id="btn-admin-logout">
+                            <a href="javascript:void(0)" class="dash-dropdown-item text-danger" id="btn-admin-logout" onclick="performAdminLogout()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                                </svg>
+                                <span>Logout</span>
+                            </a>
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                                     <polyline points="16 17 21 12 16 7"></polyline>
@@ -1321,8 +1328,13 @@
                     <!-- Upload Foto Profil Admin -->
                     <div class="dash-settings-avatar-wrap">
                         <div class="dash-avatar-preview-box" id="admin-avatar-preview-box">
-                            <img id="admin-settings-avatar-preview" src="" alt="Avatar Admin" style="display: none;" class="dash-avatar-preview-img">
-                            <span id="admin-settings-avatar-fallback" class="dash-avatar-preview-fallback">ER</span>
+                            @if(Auth::check() && Auth::user()->avatar)
+                                <img id="admin-settings-avatar-preview" src="{{ asset(Auth::user()->avatar) }}" alt="Avatar Admin" style="display: block;" class="dash-avatar-preview-img">
+                                <span id="admin-settings-avatar-fallback" class="dash-avatar-preview-fallback" style="display: none;">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</span>
+                            @else
+                                <img id="admin-settings-avatar-preview" src="" alt="Avatar Admin" style="display: none;" class="dash-avatar-preview-img">
+                                <span id="admin-settings-avatar-fallback" class="dash-avatar-preview-fallback">{{ Auth::check() ? strtoupper(substr(Auth::user()->name, 0, 2)) : 'AD' }}</span>
+                            @endif
                         </div>
                         <div class="dash-avatar-upload-actions">
                             <label for="admin-settings-avatar-input" class="dash-btn-upload-avatar">
@@ -1330,7 +1342,7 @@
                             </label>
                             <input type="file" id="admin-settings-avatar-input" accept="image/*" style="display: none;">
                             <div class="dash-avatar-btns">
-                                <button type="button" class="dash-btn-remove-avatar" id="btn-admin-remove-avatar" style="display: none;" onclick="removeAdminAvatar()">Hapus Foto</button>
+                                <button type="button" class="dash-btn-remove-avatar" id="btn-admin-remove-avatar" style="{{ Auth::check() && Auth::user()->avatar ? 'display: inline-flex;' : 'display: none;' }}" onclick="removeAdminAvatar()">Hapus Foto</button>
                             </div>
                             <span class="dash-avatar-hint">Format JPG, PNG, WEBP. Maksimal 2MB.</span>
                         </div>
@@ -1339,7 +1351,7 @@
                     <div class="dash-form-grid">
                         <div class="dash-form-group">
                             <label for="admin-settings-name">Nama Lengkap</label>
-                            <input type="text" id="admin-settings-name" placeholder="Nama Anda" value="Erick">
+                            <input type="text" id="admin-settings-name" placeholder="Nama Anda" value="{{ Auth::check() ? Auth::user()->name : 'Admin' }}">
                         </div>
                         <div class="dash-form-group">
                             <label for="admin-settings-email">
@@ -1352,14 +1364,14 @@
                                     Terkunci
                                 </span>
                             </label>
-                            <input type="email" id="admin-settings-email" class="dash-input-readonly" value="admin@dewasufa.com" readonly aria-readonly="true" tabindex="-1" title="Email akun aktif terkunci dan tidak dapat diubah">
+                            <input type="email" id="admin-settings-email" class="dash-input-readonly" value="{{ Auth::check() ? Auth::user()->email : 'admin@dewasufa.com' }}" readonly aria-readonly="true" tabindex="-1" title="Email akun aktif terkunci dan tidak dapat diubah">
                         </div>
                     </div>
 
                     <div class="dash-form-grid">
                         <div class="dash-form-group">
                             <label for="admin-settings-role">Status Akun</label>
-                            <input type="text" id="admin-settings-role" value="Admin" readonly class="dash-input-readonly" title="Status akun Administrator dikelola oleh sistem Dewasufa">
+                            <input type="text" id="admin-settings-role" value="{{ Auth::check() ? ucfirst(Auth::user()->role) : 'Admin' }}" readonly class="dash-input-readonly" title="Status akun Administrator dikelola oleh sistem Dewasufa">
                         </div>
                         <div class="dash-form-group">
                             <label for="admin-settings-phone">
@@ -1372,7 +1384,7 @@
                                     Terkunci
                                 </span>
                             </label>
-                            <input type="tel" id="admin-settings-phone" class="dash-input-readonly" value="+62 811-2345-6789" readonly aria-readonly="true" tabindex="-1" title="Nomor telepon akun aktif terkunci dan tidak dapat diubah">
+                            <input type="tel" id="admin-settings-phone" class="dash-input-readonly" value="{{ Auth::check() && Auth::user()->phone ? Auth::user()->phone : '-' }}" readonly aria-readonly="true" tabindex="-1" title="Nomor telepon akun aktif terkunci dan tidak dapat diubah">
                         </div>
                     </div>
 
@@ -1408,7 +1420,7 @@
                         Ingin mengakhiri sesi administrator Anda di Dewasufa? Anda dapat masuk kembali kapan saja.
                     </p>
                 </div>
-                <a href="{{ route('home') }}" class="dash-btn-logout-inside" id="admin-btn-logout-inside" style="text-decoration: none;">
+                <a href="javascript:void(0)" class="dash-btn-logout-inside" id="admin-btn-logout-inside" style="text-decoration: none;" onclick="performAdminLogout()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                         <polyline points="16 17 21 12 16 7"></polyline>
@@ -1507,11 +1519,42 @@
             }
         });
 
-        // ===== ADMIN SETTINGS & AVATAR MANAGER =====
+        // ===== ADMIN SETTINGS, LOGOUT & PROFILE MANAGER =====
+        function performAdminLogout() {
+            sessionStorage.clear();
+            localStorage.removeItem('dewasufa_admin_name');
+            localStorage.removeItem('dewasufa_admin_avatar');
+            localStorage.removeItem('dewasufa_admin_email');
+            localStorage.removeItem('dewasufa_admin_phone');
+            localStorage.removeItem('dewasufa_user');
+            localStorage.removeItem('dewasufa_role');
+            localStorage.removeItem('dewasufa_email');
+            localStorage.removeItem('dewasufa_avatar');
+            localStorage.removeItem('dewasufa_phone');
+            localStorage.removeItem('dewasufa_saved_plans');
+
+            const logoutForm = document.getElementById('admin-logout-form');
+            if (logoutForm) {
+                logoutForm.submit();
+                return;
+            }
+            window.location.href = "{{ route('home') }}";
+        }
+
         function initAdminProfile() {
-            const savedName = localStorage.getItem('dewasufa_admin_name') || 'Erick';
-            document.querySelectorAll('.dash-user-name').forEach(el => el.textContent = savedName);
-            document.querySelectorAll('.dash-user-role').forEach(el => el.textContent = 'Admin');
+            const displayNameEl = document.getElementById('admin-display-name');
+            const authName = displayNameEl ? displayNameEl.textContent.trim() : '';
+
+            // Bersihkan cache nama browser jika berbeda dengan akun yang sedang login
+            const savedName = localStorage.getItem('dewasufa_admin_name');
+            if (savedName && authName && savedName !== authName) {
+                localStorage.removeItem('dewasufa_admin_name');
+            }
+
+            // Utamakan server-rendered value dari akun admin yang sedang login
+            if (authName) {
+                document.querySelectorAll('.dash-user-name').forEach(el => el.textContent = authName);
+            }
 
             const savedAvatar = localStorage.getItem('dewasufa_admin_avatar');
             const headerAvatar = document.querySelector('#admin-user-menu-btn .dash-avatar');
@@ -1524,27 +1567,21 @@
             const modal = document.getElementById('admin-settings-modal');
             if (!modal) return;
 
-            // Prefill nama
+            // Prefill nama dari akun admin yang sedang aktif
             const nameInput = document.getElementById('admin-settings-name');
-            const savedName = localStorage.getItem('dewasufa_admin_name') || 'Erick';
-            if (nameInput) nameInput.value = savedName;
+            const displayNameEl = document.getElementById('admin-display-name');
+            const authName = displayNameEl ? displayNameEl.textContent.trim() : 'Admin';
+            if (nameInput) {
+                nameInput.value = authName;
+            }
 
-            // Prefill email & phone & role (locked/readonly)
+            // Input email, phone, role sudah ter-render langsung dari server (Blade)
             const emailInput = document.getElementById('admin-settings-email');
             const phoneInput = document.getElementById('admin-settings-phone');
             const roleInput = document.getElementById('admin-settings-role');
-            if (emailInput) {
-                emailInput.value = localStorage.getItem('dewasufa_admin_email') || 'admin@dewasufa.com';
-                emailInput.readOnly = true;
-            }
-            if (phoneInput) {
-                phoneInput.value = localStorage.getItem('dewasufa_admin_phone') || '+62 811-2345-6789';
-                phoneInput.readOnly = true;
-            }
-            if (roleInput) {
-                roleInput.value = 'Admin';
-                roleInput.readOnly = true;
-            }
+            if (emailInput) emailInput.readOnly = true;
+            if (phoneInput) phoneInput.readOnly = true;
+            if (roleInput) roleInput.readOnly = true;
 
             // Reset password inputs
             const resetPass = document.getElementById('admin-settings-reset-password');
@@ -1562,11 +1599,6 @@
                 previewImg.style.display = 'block';
                 fallbackSpan.style.display = 'none';
                 if (removeBtn) removeBtn.style.display = 'inline-flex';
-            } else if (previewImg && fallbackSpan) {
-                previewImg.src = '';
-                previewImg.style.display = 'none';
-                fallbackSpan.style.display = 'block';
-                if (removeBtn) removeBtn.style.display = 'none';
             }
 
             modal.classList.add('show', 'active');
@@ -1587,7 +1619,9 @@
         function saveAdminSettings(e) {
             e.preventDefault();
             const nameInput = document.getElementById('admin-settings-name');
-            const newName = nameInput ? nameInput.value.trim() : 'Erick';
+            const displayNameEl = document.getElementById('admin-display-name');
+            const authName = displayNameEl ? displayNameEl.textContent.trim() : 'Admin';
+            const newName = nameInput ? nameInput.value.trim() : authName;
 
             if (newName) {
                 localStorage.setItem('dewasufa_admin_name', newName);
@@ -1622,6 +1656,7 @@
             const fallbackSpan = document.getElementById('admin-settings-avatar-fallback');
             const removeBtn = document.getElementById('btn-admin-remove-avatar');
             const headerAvatar = document.querySelector('#admin-user-menu-btn .dash-avatar');
+            const authInitials = "{{ Auth::check() ? strtoupper(substr(Auth::user()->name, 0, 2)) : 'AD' }}";
 
             function applyAdminAvatar(dataUrl) {
                 if (dataUrl) {
@@ -1642,7 +1677,7 @@
                     if (fallbackSpan) fallbackSpan.style.display = 'block';
                     if (removeBtn) removeBtn.style.display = 'none';
                     if (headerAvatar) {
-                        headerAvatar.innerHTML = `<span class="dash-avatar-initials">ER</span>`;
+                        headerAvatar.innerHTML = `<span class="dash-avatar-initials">${authInitials}</span>`;
                     }
                 }
             }
@@ -3264,5 +3299,10 @@
             }, 3200);
         }
     </script>
+
+    <!-- Hidden Admin Logout Form -->
+    <form id="admin-logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
 </body>
 </html>

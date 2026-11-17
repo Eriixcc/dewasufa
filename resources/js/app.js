@@ -475,6 +475,10 @@ export async function handleLoginSubmit(event) {
         localStorage.removeItem('dewasufa_email');
         localStorage.removeItem('dewasufa_avatar');
         localStorage.removeItem('dewasufa_phone');
+        localStorage.removeItem('dewasufa_admin_name');
+        localStorage.removeItem('dewasufa_admin_avatar');
+        localStorage.removeItem('dewasufa_admin_email');
+        localStorage.removeItem('dewasufa_admin_phone');
 
         const user = data?.user;
         if (user) {
@@ -488,6 +492,13 @@ export async function handleLoginSubmit(event) {
             }
             sessionStorage.setItem('dewasufa_role', user.role || 'user');
             localStorage.setItem('dewasufa_role', user.role || 'user');
+
+            if (user.role === 'admin') {
+                localStorage.setItem('dewasufa_admin_name', user.name);
+                localStorage.setItem('dewasufa_admin_email', user.email);
+                if (user.phone) localStorage.setItem('dewasufa_admin_phone', user.phone);
+                if (user.avatar) localStorage.setItem('dewasufa_admin_avatar', user.avatar);
+            }
 
             if (user.avatar) {
                 sessionStorage.setItem('dewasufa_avatar', user.avatar);
@@ -2269,6 +2280,10 @@ function initApp() {
         localStorage.removeItem('dewasufa_avatar');
         localStorage.removeItem('dewasufa_phone');
         localStorage.removeItem('dewasufa_saved_plans');
+        localStorage.removeItem('dewasufa_admin_name');
+        localStorage.removeItem('dewasufa_admin_avatar');
+        localStorage.removeItem('dewasufa_admin_email');
+        localStorage.removeItem('dewasufa_admin_phone');
         if (userDropdown) userDropdown.classList.remove('show');
         closeSettingsModal();
 
