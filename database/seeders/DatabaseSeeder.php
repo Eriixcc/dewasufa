@@ -37,5 +37,8 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('password123'),
             ]
         );
+
+        // Seed 80 tourist destinations (20 per category)
+        $this->call(DestinationSeeder::class);
     }
 }

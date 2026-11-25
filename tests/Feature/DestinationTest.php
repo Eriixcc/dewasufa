@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Destination;
 use App\Models\User;
+use Database\Seeders\DestinationSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
@@ -201,5 +202,16 @@ class DestinationTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonCount(3);
+    }
+
+    public function test_destination_seeder_seeds_eighty_destinations_twenty_each_category(): void
+    {
+        $this->seed(DestinationSeeder::class);
+
+        $this->assertEquals(80, Destination::count());
+        $this->assertEquals(20, Destination::where('category', 'Waterfall')->count());
+        $this->assertEquals(20, Destination::where('category', 'Sunset Beach')->count());
+        $this->assertEquals(20, Destination::where('category', 'Sunrise Beach')->count());
+        $this->assertEquals(20, Destination::where('category', 'Mountain')->count());
     }
 }
